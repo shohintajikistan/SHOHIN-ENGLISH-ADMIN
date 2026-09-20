@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SHOHIN ENGLISH — Admin Panel</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+    <div id="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-name">SHOHIN</div>
+                <div class="brand-subtitle">ENGLISH</div>
+                <div class="brand-admin">ADMIN PANEL</div>
+            </div>
+
+            <nav class="menu">
+
+                <button class="menu-item active" data-section="dashboard">
+                    Dashboard
+                </button>
+
+                <button class="menu-item" data-section="levels">
+                    Levels
+                </button>
+
+                <button class="menu-item" data-section="lessons">
+                    Lessons
+                </button>
+
+                <button class="menu-item" data-section="vocabulary">
+                    Vocabulary
+                </button>
+
+                <button class="menu-item" data-section="phrases">
+                    Phrases
+                </button>
+
+                <button class="menu-item" data-section="exercises">
+                    Exercises
+                </button>
+
+                <button class="menu-item" data-section="videos">
+                    Videos
+                </button>
+
+                <button class="menu-item" data-section="tests">
+                    Tests
+                </button>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <!-- HEADER -->
+            <header class="header">
+
+                <div>
+                    <h1 id="page-title">Dashboard</h1>
+                    <p>SHOHIN ENGLISH content management</p>
+                </div>
+
+                <button class="mobile-menu">
+                    ☰
+                </button>
+
+            </header>
+
+
+            <!-- CONTENT -->
+            <section class="content">
+
+
+                <!-- DASHBOARD -->
+                <div class="section active" id="dashboard">
+
+                    <div class="welcome-card">
+
+                        <div>
+                            <span class="small-label">SHOHIN ENGLISH</span>
+
+                            <h2>Welcome to Admin Panel</h2>
+
+                            <p>
+                                Manage levels, lessons, vocabulary,
+                                phrases, exercises, videos and tests.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+                            <span>Levels</span>
+                            <strong id="levels-count">0</strong>
+                        </div>
+
+                        <div class="stat-card">
+                            <span>Lessons</span>
+                            <strong id="lessons-count">0</strong>
+                        </div>
+
+                        <div class="stat-card">
+                            <span>Words</span>
+                            <strong id="words-count">0</strong>
+                        </div>
+
+                        <div class="stat-card">
+                            <span>Phrases</span>
+                            <strong id="phrases-count">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LEVELS -->
+                <div class="section" id="levels">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Levels</h2>
+                            <p>Manage English learning levels.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Level
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+
+                        <h3>No levels yet</h3>
+
+                        <p>
+                            Create your first English level.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- LESSONS -->
+                <div class="section" id="lessons">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Lessons</h2>
+                            <p>Create unlimited lessons for every level.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Lesson
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📖</div>
+
+                        <h3>No lessons yet</h3>
+
+                        <p>
+                            You can create as many lessons as you need.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VOCABULARY -->
+                <div class="section" id="vocabulary">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Vocabulary</h2>
+                            <p>Manage words, images and pronunciation.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Word
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">🔤</div>
+
+                        <h3>No vocabulary yet</h3>
+
+                        <p>
+                            Add words with translation, image and audio.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PHRASES -->
+                <div class="section" id="phrases">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Phrases</h2>
+                            <p>Manage useful English phrases.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Phrase
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">💬</div>
+
+                        <h3>No phrases yet</h3>
+
+                        <p>
+                            Add phrases with translation and audio.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXERCISES -->
+                <div class="section" id="exercises">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Exercises</h2>
+                            <p>Create questions and answer options.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Exercise
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">✏️</div>
+
+                        <h3>No exercises yet</h3>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VIDEOS -->
+                <div class="section" id="videos">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Videos</h2>
+                            <p>Manage learning videos.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Video
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">🎬</div>
+
+                        <h3>No videos yet</h3>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TESTS -->
+                <div class="section" id="tests">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Tests</h2>
+                            <p>Manage level assessments and tests.</p>
+                        </div>
+
+                        <button class="primary-btn">
+                            + Add Test
+                        </button>
+
+                    </div>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">📝</div>
+
+                        <h3>No tests yet</h3>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="js/admin.js"></script>
+
+</body>
+</html>
