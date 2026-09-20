@@ -1,683 +1,4222 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-  <meta charset="UTF-8">
+    <title>SHOHIN ENGLISH — Admin</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <link rel="stylesheet" href="css/admin.css">
 
-  <meta
-    name="theme-color"
-    content="#071c16"
-  >
-
-  <title>
-    SHOHIN ENGLISH — Admin
-  </title>
-
-  <link
-    rel="stylesheet"
-    href="css/admin.css"
-  >
-
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 
 <body>
 
-  <div class="admin-layout">
-
+<div class="admin-app">
 
     <!-- =====================================================
          SIDEBAR
-         ===================================================== -->
+    ====================================================== -->
+    <aside class="sidebar" id="sidebar">
 
-    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-mark">S</div>
 
-      <div class="sidebar-brand">
-
-        <div class="brand-title">
-          SHOHIN
+            <div class="brand-text">
+                <strong>SHOHIN ENGLISH</strong>
+                <span>ADMIN PANEL</span>
+            </div>
         </div>
 
-        <div class="brand-subtitle">
-          ENGLISH
+        <nav class="sidebar-nav">
+
+            <button class="nav-item active" data-section="dashboard">
+                <span>⌂</span>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-item" data-section="levels">
+                <span>▦</span>
+                <span>Levels</span>
+            </button>
+
+            <button class="nav-item" data-section="lessons">
+                <span>☰</span>
+                <span>Lessons</span>
+            </button>
+
+            <button class="nav-item" data-section="vocabulary">
+                <span>◆</span>
+                <span>Vocabulary</span>
+            </button>
+
+            <button class="nav-item" data-section="phrases">
+                <span>◇</span>
+                <span>Phrases</span>
+            </button>
+
+            <button class="nav-item" data-section="exercises">
+                <span>✓</span>
+                <span>Exercises</span>
+            </button>
+
+            <button class="nav-item" data-section="videos">
+                <span>▶</span>
+                <span>Videos</span>
+            </button>
+
+            <button class="nav-item" data-section="tests">
+                <span>?</span>
+                <span>Tests</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="connection-box">
+
+                <div class="connection-title">
+                    Supabase
+                </div>
+
+                <div
+                    class="status-badge checking"
+                    id="supabase-status"
+                >
+                    Checking...
+                </div>
+
+            </div>
+
         </div>
-
-        <div class="brand-admin">
-          ADMIN PANEL
-        </div>
-
-      </div>
-
-
-      <nav class="admin-nav">
-
-        <button
-          type="button"
-          class="nav-item active"
-          data-section="dashboard"
-        >
-          <span>▦</span>
-          <span>Dashboard</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="levels"
-        >
-          <span>◆</span>
-          <span>Levels</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="lessons"
-        >
-          <span>▤</span>
-          <span>Lessons</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="vocabulary"
-        >
-          <span>Aa</span>
-          <span>Vocabulary</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="phrases"
-        >
-          <span>“</span>
-          <span>Phrases</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="exercises"
-        >
-          <span>✓</span>
-          <span>Exercises</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="videos"
-        >
-          <span>▶</span>
-          <span>Videos</span>
-        </button>
-
-
-        <button
-          type="button"
-          class="nav-item"
-          data-section="tests"
-        >
-          <span>?</span>
-          <span>Tests</span>
-        </button>
-
-      </nav>
-
-
-      <div class="sidebar-footer">
-
-        <div
-          id="supabase-status"
-          class="status-badge"
-        >
-          Checking...
-        </div>
-
-      </div>
 
     </aside>
 
 
-
     <!-- =====================================================
          MAIN
-         ===================================================== -->
-
+    ====================================================== -->
     <main class="main-content">
 
+        <!-- TOP BAR -->
+        <header class="topbar">
 
-      <!-- TOP BAR -->
+            <button
+                class="menu-button"
+                id="menu-button"
+                type="button"
+            >
+                ☰
+            </button>
 
-      <header class="topbar">
+            <div class="topbar-title">
+                <span id="page-title">Dashboard</span>
+            </div>
 
-        <button
-          type="button"
-          class="menu-button"
-          onclick="SHOHIN_ADMIN.toggleSidebar()"
+        </header>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+        <section
+            class="admin-section active"
+            id="section-dashboard"
         >
-          ☰
-        </button>
 
+            <div class="section-header">
 
-        <div>
-
-          <h1 id="page-title">
-            Dashboard
-          </h1>
-
-          <p class="page-subtitle">
-            SHOHIN ENGLISH content management
-          </p>
-
-        </div>
-
-      </header>
-
-
-
-      <!-- ===================================================
-           DASHBOARD
-           =================================================== -->
-
-      <section
-        id="section-dashboard"
-        class="admin-section active"
-      >
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Dashboard
-            </h2>
-
-            <p>
-              Overview of SHOHIN ENGLISH content.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="stats-grid">
-
-
-          <div class="stat-card">
-
-            <div class="stat-icon">
-              ◆
-            </div>
-
-            <div class="stat-content">
-
-              <span>
-                Levels
-              </span>
-
-              <strong id="stat-levels">
-                0
-              </strong>
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>
+                        Manage SHOHIN ENGLISH learning content.
+                    </p>
+                </div>
 
             </div>
 
-          </div>
 
+            <div class="stats-grid">
 
+                <div class="stat-card">
+                    <div class="stat-label">Levels</div>
+                    <div
+                        class="stat-value"
+                        id="stat-levels"
+                    >
+                        0
+                    </div>
+                </div>
 
-          <div class="stat-card">
+                <div class="stat-card">
+                    <div class="stat-label">Lessons</div>
+                    <div
+                        class="stat-value"
+                        id="stat-lessons"
+                    >
+                        0
+                    </div>
+                </div>
 
-            <div class="stat-icon">
-              ▤
-            </div>
+                <div class="stat-card">
+                    <div class="stat-label">Words</div>
+                    <div
+                        class="stat-value"
+                        id="stat-words"
+                    >
+                        0
+                    </div>
+                </div>
 
-            <div class="stat-content">
-
-              <span>
-                Lessons
-              </span>
-
-              <strong id="stat-lessons">
-                0
-              </strong>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="stat-card">
-
-            <div class="stat-icon">
-              Aa
-            </div>
-
-            <div class="stat-content">
-
-              <span>
-                Words
-              </span>
-
-              <strong id="stat-words">
-                0
-              </strong>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="stat-card">
-
-            <div class="stat-icon">
-              “
-            </div>
-
-            <div class="stat-content">
-
-              <span>
-                Phrases
-              </span>
-
-              <strong id="stat-phrases">
-                0
-              </strong>
+                <div class="stat-card">
+                    <div class="stat-label">Phrases</div>
+                    <div
+                        class="stat-value"
+                        id="stat-phrases"
+                    >
+                        0
+                    </div>
+                </div>
 
             </div>
 
-          </div>
 
-        </div>
+            <div class="admin-card">
 
+                <div class="card-header">
+                    <div>
+                        <h2>System Status</h2>
+                        <p>Database connection status.</p>
+                    </div>
+                </div>
 
-        <div class="admin-card">
+                <div class="system-status-row">
 
-          <h3>
-            Supabase
-          </h3>
+                    <span>Supabase Database</span>
 
-          <p>
-            Database connection status:
-          </p>
+                    <span
+                        class="status-badge checking"
+                        id="dashboard-supabase-status"
+                    >
+                        Checking...
+                    </span>
 
-          <div
-            id="dashboard-supabase-status"
-            class="status-badge"
-          >
-            Checking...
-          </div>
+                </div>
 
-        </div>
-
-      </section>
-
-
-
-      <!-- ===================================================
-           LEVELS
-           =================================================== -->
-
-      <section
-        id="section-levels"
-        class="admin-section"
-      >
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Levels
-            </h2>
-
-            <p>
-              Manage English learning levels.
-            </p>
-
-          </div>
-
-
-          <button
-            type="button"
-            class="primary-button"
-            id="add-level-button"
-          >
-            + Add Level
-          </button>
-
-        </div>
-
-
-        <div class="admin-card">
-
-          <div
-            id="levels-list"
-            class="levels-list"
-          >
-
-            <div class="empty-state">
-              Loading levels...
             </div>
 
-          </div>
-
-        </div>
-
-      </section>
+        </section>
 
 
+        <!-- =================================================
+             LEVELS
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-levels"
+        >
 
-      <!-- ===================================================
-           LESSONS
-           =================================================== -->
+            <div class="section-header">
 
-      <section
-        id="section-lessons"
-        class="admin-section"
-      >
+                <div>
+                    <h1>Levels</h1>
+                    <p>
+                        Manage English learning levels.
+                    </p>
+                </div>
 
-        <div class="section-header">
+                <button
+                    class="primary-button"
+                    id="add-level-button"
+                    type="button"
+                >
+                    + Add Level
+                </button>
 
-          <div>
-
-            <h2>
-              Lessons
-            </h2>
-
-            <p>
-              Manage lessons for each English level.
-            </p>
-
-          </div>
-
-
-          <button
-            type="button"
-            class="primary-button"
-            id="add-lesson-button"
-          >
-            + Add Lesson
-          </button>
-
-        </div>
-
-
-        <div class="admin-card">
-
-
-          <div class="lesson-toolbar">
-
-            <label
-              for="lesson-level-select"
-              class="field-label"
-            >
-              Select Level
-            </label>
-
-
-            <select
-              id="lesson-level-select"
-              class="admin-select"
-            >
-
-              <option value="">
-                Select level
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div
-            id="lessons-list"
-            class="lessons-list"
-          >
-
-            <div class="empty-state">
-              Select a level to view lessons.
             </div>
 
-          </div>
 
+            <div class="admin-card">
 
-        </div>
+                <div
+                    id="levels-list"
+                    class="content-list"
+                >
 
-      </section>
+                    <div class="empty-state">
+                        Loading levels...
+                    </div>
 
+                </div>
 
+            </div>
 
-      <!-- ===================================================
-           VOCABULARY
-           =================================================== -->
+        </section>
 
-      <section
-        id="section-vocabulary"
-        class="admin-section"
-      >
 
-        <div class="section-header">
+        <!-- =================================================
+             LESSONS
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-lessons"
+        >
 
-          <div>
+            <div class="section-header">
 
-            <h2>
-              Vocabulary
-            </h2>
+                <div>
+                    <h1>Lessons</h1>
+                    <p>
+                        Manage lessons inside each level.
+                    </p>
+                </div>
 
-            <p>
-              Manage vocabulary cards.
-            </p>
+                <button
+                    class="primary-button"
+                    id="add-lesson-button"
+                    type="button"
+                >
+                    + Add Lesson
+                </button>
 
-          </div>
+            </div>
 
-        </div>
 
+            <div class="admin-card">
 
-        <div class="admin-card">
+                <div class="form-group">
 
-          <div class="empty-state">
-            Vocabulary management will be added next.
-          </div>
+                    <label for="lesson-level-select">
+                        Select Level
+                    </label>
 
-        </div>
+                    <select
+                        id="lesson-level-select"
+                        class="admin-select"
+                    >
+                        <option value="">
+                            Select a level
+                        </option>
+                    </select>
 
-      </section>
+                </div>
 
+            </div>
 
 
-      <!-- ===================================================
-           PHRASES
-           =================================================== -->
+            <div class="admin-card">
 
-      <section
-        id="section-phrases"
-        class="admin-section"
-      >
+                <div
+                    id="lessons-list"
+                    class="content-list"
+                >
 
-        <div class="section-header">
+                    <div class="empty-state">
+                        Select a level to view lessons.
+                    </div>
 
-          <div>
+                </div>
 
-            <h2>
-              Phrases
-            </h2>
+            </div>
 
-            <p>
-              Manage English phrases.
-            </p>
+        </section>
 
-          </div>
 
-        </div>
+        <!-- =================================================
+             VOCABULARY / CARDS
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-vocabulary"
+        >
 
+            <div class="section-header">
 
-        <div class="admin-card">
+                <div>
+                    <h1>Vocabulary</h1>
+                    <p>
+                        Add and manage vocabulary cards.
+                    </p>
+                </div>
 
-          <div class="empty-state">
-            Phrase management will be added next.
-          </div>
+                <button
+                    class="primary-button"
+                    id="add-card-button"
+                    type="button"
+                >
+                    + Add Card
+                </button>
 
-        </div>
+            </div>
 
-      </section>
 
+            <!-- SELECT LEVEL + LESSON -->
+            <div class="admin-card">
 
+                <div class="selector-grid">
 
-      <!-- ===================================================
-           EXERCISES
-           =================================================== -->
+                    <div class="form-group">
 
-      <section
-        id="section-exercises"
-        class="admin-section"
-      >
+                        <label for="card-level-select">
+                            Level
+                        </label>
 
-        <div class="section-header">
+                        <select
+                            id="card-level-select"
+                            class="admin-select"
+                        >
+                            <option value="">
+                                Select level
+                            </option>
+                        </select>
 
-          <div>
+                    </div>
 
-            <h2>
-              Exercises
-            </h2>
 
-            <p>
-              Manage lesson exercises.
-            </p>
+                    <div class="form-group">
 
-          </div>
+                        <label for="card-lesson-select">
+                            Lesson
+                        </label>
 
-        </div>
+                        <select
+                            id="card-lesson-select"
+                            class="admin-select"
+                            disabled
+                        >
+                            <option value="">
+                                Select lesson
+                            </option>
+                        </select>
 
+                    </div>
 
-        <div class="admin-card">
+                </div>
 
-          <div class="empty-state">
-            Exercise management will be added next.
-          </div>
+            </div>
 
-        </div>
 
-      </section>
+            <!-- CARDS LIST -->
+            <div class="admin-card">
 
+                <div
+                    id="cards-list"
+                    class="content-list"
+                >
 
+                    <div class="empty-state">
+                        Select a level and lesson to view cards.
+                    </div>
 
-      <!-- ===================================================
-           VIDEOS
-           =================================================== -->
+                </div>
 
-      <section
-        id="section-videos"
-        class="admin-section"
-      >
+            </div>
 
-        <div class="section-header">
+        </section>
 
-          <div>
 
-            <h2>
-              Videos
-            </h2>
+        <!-- =================================================
+             PHRASES
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-phrases"
+        >
 
-            <p>
-              Manage learning videos.
-            </p>
+            <div class="section-header">
 
-          </div>
+                <div>
+                    <h1>Phrases</h1>
+                    <p>
+                        Manage learning phrases.
+                    </p>
+                </div>
 
-        </div>
+            </div>
 
+            <div class="admin-card">
 
-        <div class="admin-card">
+                <div class="empty-state">
+                    Phrase management will be connected
+                    to vocabulary cards.
+                </div>
 
-          <div class="empty-state">
-            Video management will be added next.
-          </div>
+            </div>
 
-        </div>
+        </section>
 
-      </section>
 
+        <!-- =================================================
+             EXERCISES
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-exercises"
+        >
 
+            <div class="section-header">
 
-      <!-- ===================================================
-           TESTS
-           =================================================== -->
+                <div>
+                    <h1>Exercises</h1>
+                    <p>
+                        Manage vocabulary exercises.
+                    </p>
+                </div>
 
-      <section
-        id="section-tests"
-        class="admin-section"
-      >
+            </div>
 
-        <div class="section-header">
+            <div class="admin-card">
 
-          <div>
+                <div class="empty-state">
+                    Exercises will be added next.
+                </div>
 
-            <h2>
-              Tests
-            </h2>
+            </div>
 
-            <p>
-              Manage level assessments and tests.
-            </p>
+        </section>
 
-          </div>
 
-        </div>
+        <!-- =================================================
+             VIDEOS
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-videos"
+        >
 
+            <div class="section-header">
 
-        <div class="admin-card">
+                <div>
+                    <h1>Videos</h1>
+                    <p>
+                        Manage learning videos.
+                    </p>
+                </div>
 
-          <div class="empty-state">
-            Test management will be added next.
-          </div>
+            </div>
 
-        </div>
+            <div class="admin-card">
 
-      </section>
+                <div class="empty-state">
+                    Video management will be added next.
+                </div>
 
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TESTS
+        ================================================== -->
+        <section
+            class="admin-section"
+            id="section-tests"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h1>Tests</h1>
+                    <p>
+                        Manage level assessments.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="admin-card">
+
+                <div class="empty-state">
+                    Test management will be added next.
+                </div>
+
+            </div>
+
+        </section>
 
     </main>
 
-  </div>
+</div>
 
 
+<!-- =========================================================
+     ADD / EDIT CARD MODAL
+========================================================== -->
+<div
+    class="modal-overlay"
+    id="card-modal"
+    hidden
+>
 
-  <!-- =====================================================
-       SUPABASE
-       ===================================================== -->
+    <div class="modal-card">
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+        <div class="modal-header">
+
+            <div>
+                <h2 id="card-modal-title">
+                    Add Vocabulary Card
+                </h2>
+
+                <p>
+                    Create a vocabulary learning card.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="card-modal-close"
+            >
+                ×
+            </button>
+
+        </div>
 
 
-  <!-- =====================================================
-       ADMIN JS
-       ===================================================== -->
+        <form id="card-form">
 
-  <script
-    src="js/admin.js"
-  ></script>
+            <input
+                type="hidden"
+                id="card-id"
+            >
 
+
+            <!-- WORD -->
+            <div class="form-group">
+
+                <label for="card-word">
+                    Word *
+                </label>
+
+                <input
+                    type="text"
+                    id="card-word"
+                    class="admin-input"
+                    placeholder="Example: Apple"
+                    required
+                >
+
+            </div>
+
+
+            <!-- TRANSLATION -->
+            <div class="form-group">
+
+                <label for="card-translation">
+                    Translation *
+                </label>
+
+                <input
+                    type="text"
+                    id="card-translation"
+                    class="admin-input"
+                    placeholder="Example: Яблоко"
+                    required
+                >
+
+            </div>
+
+
+            <!-- IMAGE -->
+            <div class="form-group">
+
+                <label for="card-image-url">
+                    Image URL
+                </label>
+
+                <input
+                    type="url"
+                    id="card-image-url"
+                    class="admin-input"
+                    placeholder="https://..."
+                >
+
+            </div>
+
+
+            <!-- WORD AUDIO -->
+            <div class="form-group">
+
+                <label for="card-word-audio-url">
+                    Word Audio URL
+                </label>
+
+                <input
+                    type="url"
+                    id="card-word-audio-url"
+                    class="admin-input"
+                    placeholder="https://..."
+                >
+
+            </div>
+
+
+            <div class="form-divider">
+                Phrase
+            </div>
+
+
+            <!-- PHRASE -->
+            <div class="form-group">
+
+                <label for="card-phrase">
+                    Phrase
+                </label>
+
+                <input
+                    type="text"
+                    id="card-phrase"
+                    class="admin-input"
+                    placeholder="Example: I eat an apple."
+                >
+
+            </div>
+
+
+            <!-- PHRASE TRANSLATION -->
+            <div class="form-group">
+
+                <label for="card-phrase-translation">
+                    Phrase Translation
+                </label>
+
+                <input
+                    type="text"
+                    id="card-phrase-translation"
+                    class="admin-input"
+                    placeholder="Example: Я ем яблоко."
+                >
+
+            </div>
+
+
+            <!-- PHRASE AUDIO -->
+            <div class="form-group">
+
+                <label for="card-phrase-audio-url">
+                    Phrase Audio URL
+                </label>
+
+                <input
+                    type="url"
+                    id="card-phrase-audio-url"
+                    class="admin-input"
+                    placeholder="https://..."
+                >
+
+            </div>
+
+
+            <div class="form-divider">
+                Exercise Answers
+            </div>
+
+
+            <!-- ANSWER 1 -->
+            <div class="form-group">
+
+                <label for="card-answer-1">
+                    Answer 1 *
+                </label>
+
+                <input
+                    type="text"
+                    id="card-answer-1"
+                    class="admin-input"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ANSWER 2 -->
+            <div class="form-group">
+
+                <label for="card-answer-2">
+                    Answer 2 *
+                </label>
+
+                <input
+                    type="text"
+                    id="card-answer-2"
+                    class="admin-input"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ANSWER 3 -->
+            <div class="form-group">
+
+                <label for="card-answer-3">
+                    Answer 3 *
+                </label>
+
+                <input
+                    type="text"
+                    id="card-answer-3"
+                    class="admin-input"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ANSWER 4 -->
+            <div class="form-group">
+
+                <label for="card-answer-4">
+                    Answer 4 *
+                </label>
+
+                <input
+                    type="text"
+                    id="card-answer-4"
+                    class="admin-input"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CORRECT ANSWER -->
+            <div class="form-group">
+
+                <label for="card-correct-answer">
+                    Correct Answer *
+                </label>
+
+                <select
+                    id="card-correct-answer"
+                    class="admin-select"
+                    required
+                >
+                    <option value="">
+                        Select correct answer
+                    </option>
+
+                    <option value="1">
+                        Answer 1
+                    </option>
+
+                    <option value="2">
+                        Answer 2
+                    </option>
+
+                    <option value="3">
+                        Answer 3
+                    </option>
+
+                    <option value="4">
+                        Answer 4
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SORT ORDER -->
+            <div class="form-group">
+
+                <label for="card-sort-order">
+                    Sort Order
+                </label>
+
+                <input
+                    type="number"
+                    id="card-sort-order"
+                    class="admin-input"
+                    value="1"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="card-cancel-button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Card
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="js/admin.js"></script>
 
 </body>
-
 </html>
+
+2. Теперь полностью замени "ADMIN/js/admin.js"
+
+:::writing{variant="document" id="74106" title="ADMIN/js/admin.js — полный файл"}
+
+/* =========================================================
+   SHOHIN ENGLISH ADMIN
+   js/admin.js
+
+   Supabase Admin Controller
+
+   SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
+========================================================= */
+
+
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
+
+const SUPABASE_URL =
+    "https://axialbwwmablgrbqwpkc.supabase.co";
+
+const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4aWFsYnd3bWFibGdyYnF3cGtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4ODI5MTMsImV4cCI6MjEwNTQ1ODkxM30.OZ6mkKZZxj_kGsRdD1USvumYV2PQ-5BPshnpOWBVrJs";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let levels = [];
+let lessons = [];
+let cards = [];
+
+let currentLessonId = null;
+let currentCardId = null;
+
+let currentSection =
+    localStorage.getItem("shohin_admin_section")
+    || "dashboard";
+
+
+/* =========================================================
+   DOM HELPERS
+========================================================= */
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(message) {
+    alert(message);
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function setupNavigation() {
+
+    const navItems =
+        document.querySelectorAll(".nav-item");
+
+    navItems.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const section =
+                button.dataset.section;
+
+            openSection(section);
+
+        });
+
+    });
+
+}
+
+
+function openSection(sectionName) {
+
+    const sections =
+        document.querySelectorAll(".admin-section");
+
+    const navItems =
+        document.querySelectorAll(".nav-item");
+
+
+    sections.forEach(section => {
+
+        section.classList.remove("active");
+
+    });
+
+
+    navItems.forEach(item => {
+
+        item.classList.remove("active");
+
+    });
+
+
+    const target =
+        $(`section-${sectionName}`);
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+
+    const activeNav =
+        document.querySelector(
+            `.nav-item[data-section="${sectionName}"]`
+        );
+
+    if (activeNav) {
+        activeNav.classList.add("active");
+    }
+
+
+    const pageTitle =
+        $("page-title");
+
+    if (pageTitle) {
+
+        const titles = {
+
+            dashboard: "Dashboard",
+            levels: "Levels",
+            lessons: "Lessons",
+            vocabulary: "Vocabulary",
+            phrases: "Phrases",
+            exercises: "Exercises",
+            videos: "Videos",
+            tests: "Tests"
+
+        };
+
+        pageTitle.textContent =
+            titles[sectionName] || "Dashboard";
+    }
+
+
+    currentSection =
+        sectionName;
+
+    localStorage.setItem(
+        "shohin_admin_section",
+        sectionName
+    );
+
+
+    /* Mobile sidebar */
+
+    const sidebar =
+        $("sidebar");
+
+    if (sidebar) {
+        sidebar.classList.remove("mobile-open");
+    }
+
+
+    /* Load section data */
+
+    if (sectionName === "dashboard") {
+
+        loadDashboard();
+
+    }
+
+    if (sectionName === "levels") {
+
+        loadLevels();
+
+    }
+
+    if (sectionName === "lessons") {
+
+        loadLessonLevels();
+
+    }
+
+    if (sectionName === "vocabulary") {
+
+        loadCardLevels();
+
+    }
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function toggleSidebar() {
+
+    const sidebar =
+        $("sidebar");
+
+    if (!sidebar) {
+        return;
+    }
+
+    sidebar.classList.toggle(
+        "mobile-open"
+    );
+
+}
+
+
+/* =========================================================
+   SUPABASE CONNECTION
+========================================================= */
+
+async function testSupabaseConnection() {
+
+    setConnectionStatus(
+        "checking",
+        "Checking..."
+    );
+
+
+    try {
+
+        const {
+            error
+        } = await supabaseClient
+            .from("levels")
+            .select("id")
+            .limit(1);
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        setConnectionStatus(
+            "connected",
+            "Connected"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Supabase connection error:",
+            error
+        );
+
+
+        setConnectionStatus(
+            "error",
+            "Error"
+        );
+
+    }
+
+}
+
+
+function setConnectionStatus(
+    type,
+    text
+) {
+
+    const statuses = [
+        $("supabase-status"),
+        $("dashboard-supabase-status")
+    ];
+
+
+    statuses.forEach(status => {
+
+        if (!status) {
+            return;
+        }
+
+
+        status.classList.remove(
+            "checking",
+            "connected",
+            "error"
+        );
+
+
+        status.classList.add(type);
+
+        status.textContent = text;
+
+    });
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+async function loadDashboard() {
+
+    try {
+
+        const [
+            levelsResult,
+            lessonsResult,
+            cardsResult,
+            phrasesResult
+        ] = await Promise.all([
+
+            supabaseClient
+                .from("levels")
+                .select("id", {
+                    count: "exact",
+                    head: true
+                }),
+
+            supabaseClient
+                .from("lessons")
+                .select("id", {
+                    count: "exact",
+                    head: true
+                }),
+
+            supabaseClient
+                .from("cards")
+                .select("id", {
+                    count: "exact",
+                    head: true
+                }),
+
+            supabaseClient
+                .from("cards")
+                .select("id", {
+                    count: "exact",
+                    head: true
+                })
+                .not(
+                    "phrase",
+                    "is",
+                    null
+                )
+                .neq(
+                    "phrase",
+                    ""
+                )
+
+        ]);
+
+
+        if (levelsResult.error) {
+            throw levelsResult.error;
+        }
+
+        if (lessonsResult.error) {
+            throw lessonsResult.error;
+        }
+
+        if (cardsResult.error) {
+            throw cardsResult.error;
+        }
+
+        if (phrasesResult.error) {
+            throw phrasesResult.error;
+        }
+
+
+        $("stat-levels").textContent =
+            levelsResult.count || 0;
+
+        $("stat-lessons").textContent =
+            lessonsResult.count || 0;
+
+        $("stat-words").textContent =
+            cardsResult.count || 0;
+
+        $("stat-phrases").textContent =
+            phrasesResult.count || 0;
+
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LEVELS
+========================================================= */
+
+async function loadLevels() {
+
+    const container =
+        $("levels-list");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = `
+        <div class="empty-state">
+            Loading levels...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("levels")
+        .select("*")
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Load levels error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="empty-state error-state">
+                Failed to load levels.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    levels = data || [];
+
+    renderLevels();
+
+}
+
+
+function renderLevels() {
+
+    const container =
+        $("levels-list");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (!levels.length) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No levels yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        levels.map(level => {
+
+            return `
+
+                <div class="content-row">
+
+                    <div class="content-main">
+
+                        <div class="content-title">
+                            ${escapeHtml(level.code)}
+                        </div>
+
+                        <div class="content-subtitle">
+                            ${escapeHtml(level.name)}
+                        </div>
+
+                        ${
+                            level.description
+                            ? `
+                                <div class="content-description">
+                                    ${escapeHtml(level.description)}
+                                </div>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+
+                    <div class="content-meta">
+
+                        <span>
+                            #${level.sort_order || 0}
+                        </span>
+
+                    </div>
+
+
+                    <div class="content-actions">
+
+                        <button
+                            class="small-button"
+                            type="button"
+                            onclick="SHOHIN_ADMIN.editLevel(${level.id})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="small-button danger"
+                            type="button"
+                            onclick="SHOHIN_ADMIN.deleteLevel(${level.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+async function addLevel() {
+
+    const code =
+        prompt(
+            "Level code (example: A1)"
+        );
+
+    if (!code) {
+        return;
+    }
+
+
+    const name =
+        prompt(
+            "Level name (example: Beginner)"
+        );
+
+    if (!name) {
+        return;
+    }
+
+
+    const description =
+        prompt(
+            "Description (optional)"
+        ) || "";
+
+
+    const sortOrderInput =
+        prompt(
+            "Sort order",
+            String(
+                levels.length + 1
+            )
+        );
+
+
+    const sortOrder =
+        Number(sortOrderInput)
+        || levels.length + 1;
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("levels")
+        .insert({
+
+            code:
+                code.trim().toUpperCase(),
+
+            name:
+                name.trim(),
+
+            description:
+                description.trim(),
+
+            sort_order:
+                sortOrder
+
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Failed to add level:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Level added successfully."
+    );
+
+
+    await loadLevels();
+    await loadLessonLevels();
+    await loadCardLevels();
+    await loadDashboard();
+
+}
+
+
+async function editLevel(id) {
+
+    const level =
+        levels.find(
+            item => item.id === id
+        );
+
+
+    if (!level) {
+        return;
+    }
+
+
+    const name =
+        prompt(
+            "Level name",
+            level.name
+        );
+
+
+    if (!name) {
+        return;
+    }
+
+
+    const description =
+        prompt(
+            "Description",
+            level.description || ""
+        );
+
+
+    const sortOrderInput =
+        prompt(
+            "Sort order",
+            String(
+                level.sort_order || 1
+            )
+        );
+
+
+    const sortOrder =
+        Number(sortOrderInput)
+        || level.sort_order
+        || 1;
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("levels")
+        .update({
+
+            name:
+                name.trim(),
+
+            description:
+                (description || "").trim(),
+
+            sort_order:
+                sortOrder
+
+        })
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        showMessage(
+            "Failed to update level:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadLevels();
+    await loadLessonLevels();
+    await loadCardLevels();
+
+}
+
+
+async function deleteLevel(id) {
+
+    const level =
+        levels.find(
+            item => item.id === id
+        );
+
+
+    if (!level) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete level "${level.code}"?\n\n` +
+            "All lessons and cards inside this level will also be deleted."
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("levels")
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        showMessage(
+            "Failed to delete level:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadLevels();
+    await loadLessonLevels();
+    await loadCardLevels();
+    await loadDashboard();
+
+}
+
+
+/* =========================================================
+   LESSONS
+========================================================= */
+
+async function loadLessonLevels() {
+
+    const select =
+        $("lesson-level-select");
+
+
+    if (!select) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("levels")
+        .select("*")
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+    }
+
+
+    levels = data || [];
+
+
+    const oldValue =
+        select.value;
+
+
+    select.innerHTML = `
+        <option value="">
+            Select a level
+        </option>
+    `;
+
+
+    levels.forEach(level => {
+
+        select.insertAdjacentHTML(
+            "beforeend",
+            `
+                <option value="${level.id}">
+                    ${escapeHtml(level.code)}
+                    — ${escapeHtml(level.name)}
+                </option>
+            `
+        );
+
+    });
+
+
+    if (
+        oldValue &&
+        levels.some(
+            level =>
+                String(level.id) ===
+                String(oldValue)
+        )
+    ) {
+
+        select.value =
+            oldValue;
+
+        await loadLessons(
+            Number(oldValue)
+        );
+
+    }
+
+}
+
+
+async function loadLessons(
+    levelId
+) {
+
+    const container =
+        $("lessons-list");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (!levelId) {
+
+        lessons = [];
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Select a level to view lessons.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = `
+        <div class="empty-state">
+            Loading lessons...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("lessons")
+        .select("*")
+        .eq(
+            "level_id",
+            levelId
+        )
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty-state error-state">
+                Failed to load lessons.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    lessons = data || [];
+
+    renderLessons();
+
+}
+
+
+function renderLessons() {
+
+    const container =
+        $("lessons-list");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (!lessons.length) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No lessons in this level yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        lessons.map(lesson => {
+
+            return `
+
+                <div class="content-row">
+
+                    <div class="content-main">
+
+                        <div class="content-title">
+                            ${escapeHtml(lesson.title)}
+                        </div>
+
+                        ${
+                            lesson.description
+                            ? `
+                                <div class="content-description">
+                                    ${escapeHtml(lesson.description)}
+                                </div>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+
+                    <div class="content-meta">
+                        #${lesson.sort_order || 0}
+                    </div>
+
+
+                    <div class="content-actions">
+
+                        <button
+                            class="small-button"
+                            type="button"
+                            onclick="SHOHIN_ADMIN.editLesson(${lesson.id})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="small-button danger"
+                            type="button"
+                            onclick="SHOHIN_ADMIN.deleteLesson(${lesson.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+async function addLesson() {
+
+    const levelId =
+        Number(
+            $("lesson-level-select").value
+        );
+
+
+    if (!levelId) {
+
+        showMessage(
+            "Please select a level first."
+        );
+
+        return;
+    }
+
+
+    const title =
+        prompt(
+            "Lesson title"
+        );
+
+
+    if (!title) {
+        return;
+    }
+
+
+    const description =
+        prompt(
+            "Lesson description (optional)"
+        ) || "";
+
+
+    const sortOrderInput =
+        prompt(
+            "Sort order",
+            String(
+                lessons.length + 1
+            )
+        );
+
+
+    const sortOrder =
+        Number(sortOrderInput)
+        || lessons.length + 1;
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("lessons")
+        .insert({
+
+            level_id:
+                levelId,
+
+            title:
+                title.trim(),
+
+            description:
+                description.trim(),
+
+            sort_order:
+                sortOrder
+
+        });
+
+
+    if (error) {
+
+        showMessage(
+            "Failed to add lesson:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadLessons(
+        levelId
+    );
+
+    await loadDashboard();
+
+}
+
+
+async function editLesson(id) {
+
+    const lesson =
+        lessons.find(
+            item => item.id === id
+        );
+
+
+    if (!lesson) {
+        return;
+    }
+
+
+    const title =
+        prompt(
+            "Lesson title",
+            lesson.title
+        );
+
+
+    if (!title) {
+        return;
+    }
+
+
+    const description =
+        prompt(
+            "Description",
+            lesson.description || ""
+        );
+
+
+    const sortOrderInput =
+        prompt(
+            "Sort order",
+            String(
+                lesson.sort_order || 1
+            )
+        );
+
+
+    const sortOrder =
+        Number(sortOrderInput)
+        || lesson.sort_order
+        || 1;
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("lessons")
+        .update({
+
+            title:
+                title.trim(),
+
+            description:
+                (description || "").trim(),
+
+            sort_order:
+                sortOrder
+
+        })
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        showMessage(
+            "Failed to update lesson:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadLessons(
+        Number(
+            $("lesson-level-select").value
+        )
+    );
+
+}
+
+
+async function deleteLesson(id) {
+
+    const lesson =
+        lessons.find(
+            item => item.id === id
+        );
+
+
+    if (!lesson) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete lesson "${lesson.title}"?\n\n` +
+            "All vocabulary cards inside this lesson will also be deleted."
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("lessons")
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        showMessage(
+            "Failed to delete lesson:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadLessons(
+        Number(
+            $("lesson-level-select").value
+        )
+    );
+
+    await loadDashboard();
+
+}
+
+
+/* =========================================================
+   VOCABULARY / CARDS
+========================================================= */
+
+async function loadCardLevels() {
+
+    const select =
+        $("card-level-select");
+
+
+    if (!select) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("levels")
+        .select("*")
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Card levels error:",
+            error
+        );
+
+        return;
+    }
+
+
+    levels = data || [];
+
+
+    const currentValue =
+        select.value;
+
+
+    select.innerHTML = `
+        <option value="">
+            Select level
+        </option>
+    `;
+
+
+    levels.forEach(level => {
+
+        select.insertAdjacentHTML(
+            "beforeend",
+            `
+                <option value="${level.id}">
+                    ${escapeHtml(level.code)}
+                    — ${escapeHtml(level.name)}
+                </option>
+            `
+        );
+
+    });
+
+
+    if (
+        currentValue &&
+        levels.some(
+            level =>
+                String(level.id) ===
+                String(currentValue)
+        )
+    ) {
+
+        select.value =
+            currentValue;
+
+    }
+
+
+    await loadCardLessons(
+        select.value
+    );
+
+}
+
+
+async function loadCardLessons(
+    levelId
+) {
+
+    const select =
+        $("card-lesson-select");
+
+
+    const cardsContainer =
+        $("cards-list");
+
+
+    if (!select) {
+        return;
+    }
+
+
+    select.disabled =
+        !levelId;
+
+
+    select.innerHTML = `
+        <option value="">
+            Select lesson
+        </option>
+    `;
+
+
+    cards = [];
+
+
+    if (cardsContainer) {
+
+        cardsContainer.innerHTML = `
+            <div class="empty-state">
+                Select a lesson to view vocabulary cards.
+            </div>
+        `;
+
+    }
+
+
+    if (!levelId) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("lessons")
+        .select("*")
+        .eq(
+            "level_id",
+            Number(levelId)
+        )
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Card lessons error:",
+            error
+        );
+
+        return;
+    }
+
+
+    lessons = data || [];
+
+
+    lessons.forEach(lesson => {
+
+        select.insertAdjacentHTML(
+            "beforeend",
+            `
+                <option value="${lesson.id}">
+                    ${escapeHtml(lesson.title)}
+                </option>
+            `
+        );
+
+    });
+
+}
+
+
+async function loadCards(
+    lessonId
+) {
+
+    const container =
+        $("cards-list");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (!lessonId) {
+
+        cards = [];
+
+        container.innerHTML = `
+            <div class="empty-state">
+                Select a lesson to view cards.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    currentLessonId =
+        Number(lessonId);
+
+
+    container.innerHTML = `
+        <div class="empty-state">
+            Loading vocabulary...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("cards")
+        .select("*")
+        .eq(
+            "lesson_id",
+            Number(lessonId)
+        )
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Load cards error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="empty-state error-state">
+                Failed to load vocabulary.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    cards = data || [];
+
+    renderCards();
+
+}
+
+
+function renderCards() {
+
+    const container =
+        $("cards-list");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (!cards.length) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No vocabulary cards yet.
+                Click "Add Card" to create the first one.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        cards.map(card => {
+
+            const correct =
+                getCorrectAnswerText(card);
+
+
+            return `
+
+                <div class="content-row card-row">
+
+                    <div class="content-main">
+
+                        <div class="content-title">
+                            ${escapeHtml(card.word || "")}
+                        </div>
+
+                        <div class="content-subtitle">
+                            ${escapeHtml(card.translation || "")}
+                        </div>
+
+                        ${
+                            card.phrase
+                            ? `
+                                <div class="content-description">
+                                    ${escapeHtml(card.phrase)}
+                                </div>
+                            `
+                            : ""
+                        }
+
+                        <div class="card-answer-preview">
+                            Correct: ${escapeHtml(correct)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="content-meta">
+
+                        <span>
+                            #${card.sort_order || 0}
+                        </span>
+
+                    </div>
+
+
+                    <div class="content-actions">
+
+                        <button
+                            class="small-button"
+                            type="button"
+                            onclick="SHOHIN_ADMIN.editCard(${card.id})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="small-button danger"
+                            type="button"
+                            onclick="SHOHIN_ADMIN.deleteCard(${card.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function getCorrectAnswerText(
+    card
+) {
+
+    const index =
+        String(
+            card.correct_answer || ""
+        );
+
+
+    const answers = {
+
+        "1":
+            card.answer_1 || "",
+
+        "2":
+            card.answer_2 || "",
+
+        "3":
+            card.answer_3 || "",
+
+        "4":
+            card.answer_4 || ""
+
+    };
+
+
+    return (
+        answers[index]
+        || card.correct_answer
+        || ""
+    );
+
+}
+
+
+/* =========================================================
+   CARD MODAL
+========================================================= */
+
+function openCardModal(
+    card = null
+) {
+
+    const modal =
+        $("card-modal");
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    currentCardId =
+        card
+        ? card.id
+        : null;
+
+
+    $("card-modal-title").textContent =
+        card
+        ? "Edit Vocabulary Card"
+        : "Add Vocabulary Card";
+
+
+    $("card-id").value =
+        card
+        ? card.id
+        : "";
+
+
+    $("card-word").value =
+        card?.word || "";
+
+
+    $("card-translation").value =
+        card?.translation || "";
+
+
+    $("card-image-url").value =
+        card?.image_url || "";
+
+
+    $("card-word-audio-url").value =
+        card?.word_audio_url || "";
+
+
+    $("card-phrase").value =
+        card?.phrase || "";
+
+
+    $("card-phrase-translation").value =
+        card?.phrase_translation || "";
+
+
+    $("card-phrase-audio-url").value =
+        card?.phrase_audio_url || "";
+
+
+    $("card-answer-1").value =
+        card?.answer_1 || "";
+
+
+    $("card-answer-2").value =
+        card?.answer_2 || "";
+
+
+    $("card-answer-3").value =
+        card?.answer_3 || "";
+
+
+    $("card-answer-4").value =
+        card?.answer_4 || "";
+
+
+    $("card-correct-answer").value =
+        card?.correct_answer || "";
+
+
+    $("card-sort-order").value =
+        card?.sort_order || (
+            cards.length + 1
+        );
+
+
+    modal.hidden = false;
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+function closeCardModal() {
+
+    const modal =
+        $("card-modal");
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.hidden = true;
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+
+    currentCardId =
+        null;
+
+
+    const form =
+        $("card-form");
+
+    if (form) {
+        form.reset();
+    }
+
+}
+
+
+/* =========================================================
+   ADD CARD
+========================================================= */
+
+function addCard() {
+
+    const lessonSelect =
+        $("card-lesson-select");
+
+
+    const lessonId =
+        Number(
+            lessonSelect.value
+        );
+
+
+    if (!lessonId) {
+
+        showMessage(
+            "Please select a level and lesson first."
+        );
+
+        return;
+    }
+
+
+    openCardModal();
+
+}
+
+
+/* =========================================================
+   SAVE CARD
+========================================================= */
+
+async function saveCard(
+    event
+) {
+
+    event.preventDefault();
+
+
+    const lessonId =
+        Number(
+            $("card-lesson-select").value
+        );
+
+
+    if (!lessonId) {
+
+        showMessage(
+            "Please select a lesson."
+        );
+
+        return;
+    }
+
+
+    const word =
+        $("card-word").value.trim();
+
+
+    const translation =
+        $("card-translation").value.trim();
+
+
+    const imageUrl =
+        $("card-image-url").value.trim();
+
+
+    const wordAudioUrl =
+        $("card-word-audio-url").value.trim();
+
+
+    const phrase =
+        $("card-phrase").value.trim();
+
+
+    const phraseTranslation =
+        $("card-phrase-translation")
+            .value
+            .trim();
+
+
+    const phraseAudioUrl =
+        $("card-phrase-audio-url")
+            .value
+            .trim();
+
+
+    const answer1 =
+        $("card-answer-1").value.trim();
+
+
+    const answer2 =
+        $("card-answer-2").value.trim();
+
+
+    const answer3 =
+        $("card-answer-3").value.trim();
+
+
+    const answer4 =
+        $("card-answer-4").value.trim();
+
+
+    const correctAnswer =
+        $("card-correct-answer").value;
+
+
+    const sortOrder =
+        Number(
+            $("card-sort-order").value
+        ) || 1;
+
+
+    if (!word) {
+
+        showMessage(
+            "Word is required."
+        );
+
+        return;
+    }
+
+
+    if (!translation) {
+
+        showMessage(
+            "Translation is required."
+        );
+
+        return;
+    }
+
+
+    if (
+        !answer1 ||
+        !answer2 ||
+        !answer3 ||
+        !answer4
+    ) {
+
+        showMessage(
+            "All four answers are required."
+        );
+
+        return;
+    }
+
+
+    if (!correctAnswer) {
+
+        showMessage(
+            "Please select the correct answer."
+        );
+
+        return;
+    }
+
+
+    const payload = {
+
+        lesson_id:
+            lessonId,
+
+        word:
+            word,
+
+        translation:
+            translation,
+
+        image_url:
+            imageUrl || null,
+
+        word_audio_url:
+            wordAudioUrl || null,
+
+        phrase:
+            phrase || null,
+
+        phrase_translation:
+            phraseTranslation || null,
+
+        phrase_audio_url:
+            phraseAudioUrl || null,
+
+        answer_1:
+            answer1,
+
+        answer_2:
+            answer2,
+
+        answer_3:
+            answer3,
+
+        answer_4:
+            answer4,
+
+        /*
+          We store 1 / 2 / 3 / 4.
+          This identifies which answer is correct.
+        */
+        correct_answer:
+            correctAnswer,
+
+        sort_order:
+            sortOrder
+
+    };
+
+
+    let error = null;
+
+
+    if (currentCardId) {
+
+        const result =
+            await supabaseClient
+                .from("cards")
+                .update(payload)
+                .eq(
+                    "id",
+                    currentCardId
+                );
+
+
+        error =
+            result.error;
+
+    } else {
+
+        const result =
+            await supabaseClient
+                .from("cards")
+                .insert(payload);
+
+
+        error =
+            result.error;
+
+    }
+
+
+    if (error) {
+
+        console.error(
+            "Save card error:",
+            error
+        );
+
+
+        showMessage(
+            "Failed to save card:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    closeCardModal();
+
+
+    await loadCards(
+        lessonId
+    );
+
+
+    await loadDashboard();
+
+
+    showMessage(
+        currentCardId
+        ? "Card updated successfully."
+        : "Card added successfully."
+    );
+
+}
+
+
+/* =========================================================
+   EDIT CARD
+========================================================= */
+
+function editCard(id) {
+
+    const card =
+        cards.find(
+            item => item.id === id
+        );
+
+
+    if (!card) {
+        return;
+    }
+
+
+    openCardModal(
+        card
+    );
+
+}
+
+
+/* =========================================================
+   DELETE CARD
+========================================================= */
+
+async function deleteCard(
+    id
+) {
+
+    const card =
+        cards.find(
+            item => item.id === id
+        );
+
+
+    if (!card) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete vocabulary card "${card.word}"?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("cards")
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Delete card error:",
+            error
+        );
+
+
+        showMessage(
+            "Failed to delete card:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadCards(
+        currentLessonId
+    );
+
+
+    await loadDashboard();
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   ADDITIONAL CARD STYLES
+========================================================= */
+
+function injectCardStyles() {
+
+    if (
+        document.getElementById(
+            "shohin-card-admin-styles"
+        )
+    ) {
+        return;
+    }
+
+
+    const style =
+        document.createElement("style");
+
+
+    style.id =
+        "shohin-card-admin-styles";
+
+
+    style.textContent = `
+
+        /* =========================================
+           FORM
+        ========================================== */
+
+        .selector-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap: 18px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color:
+                #d9f7eb;
+
+        }
+
+
+        .admin-input,
+        .admin-select {
+
+            width: 100%;
+
+            min-height: 46px;
+
+            border: 1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .10
+                );
+
+            border-radius: 12px;
+
+            background:
+                #071c16;
+
+            color:
+                #ffffff;
+
+            padding:
+                0 14px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            box-sizing:
+                border-box;
+
+        }
+
+
+        .admin-input:focus,
+        .admin-select:focus {
+
+            border-color:
+                #08a56c;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    8,
+                    165,
+                    108,
+                    .14
+                );
+
+        }
+
+
+        .admin-input::placeholder {
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .38
+                );
+
+        }
+
+
+        .form-divider {
+
+            margin:
+                28px 0 20px;
+
+            padding-bottom:
+                10px;
+
+            border-bottom:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            color:
+                #baf05b;
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .06em;
+
+        }
+
+
+        /* =========================================
+           CONTENT ROW
+        ========================================== */
+
+        .content-row {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(
+                    0,
+                    1fr
+                )
+                auto
+                auto;
+
+            align-items:
+                center;
+
+            gap:
+                18px;
+
+            padding:
+                18px 0;
+
+            border-bottom:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+
+        }
+
+
+        .content-row:last-child {
+
+            border-bottom:
+                none;
+
+        }
+
+
+        .content-main {
+
+            min-width:
+                0;
+
+        }
+
+
+        .content-title {
+
+            font-size:
+                17px;
+
+            font-weight:
+                800;
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .content-subtitle {
+
+            margin-top:
+                5px;
+
+            color:
+                #baf05b;
+
+            font-size:
+                14px;
+
+            font-weight:
+                600;
+
+        }
+
+
+        .content-description {
+
+            margin-top:
+                7px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .60
+                );
+
+            font-size:
+                13px;
+
+            line-height:
+                1.5;
+
+        }
+
+
+        .content-meta {
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .45
+                );
+
+            font-size:
+                13px;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .content-actions {
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
+            flex-wrap:
+                wrap;
+
+            justify-content:
+                flex-end;
+
+        }
+
+
+        .small-button {
+
+            border:
+                1px solid
+                rgba(
+                    8,
+                    165,
+                    108,
+                    .45
+                );
+
+            background:
+                rgba(
+                    8,
+                    165,
+                    108,
+                    .10
+                );
+
+            color:
+                #baf05b;
+
+            border-radius:
+                9px;
+
+            padding:
+                8px 12px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .small-button:hover {
+
+            background:
+                rgba(
+                    8,
+                    165,
+                    108,
+                    .20
+                );
+
+        }
+
+
+        .small-button.danger {
+
+            border-color:
+                rgba(
+                    255,
+                    80,
+                    80,
+                    .35
+                );
+
+            color:
+                #ff9d9d;
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    80,
+                    .08
+                );
+
+        }
+
+
+        .card-answer-preview {
+
+            margin-top:
+                10px;
+
+            font-size:
+                12px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .55
+                );
+
+        }
+
+
+        /* =========================================
+           MODAL
+        ========================================== */
+
+        .modal-overlay {
+
+            position:
+                fixed;
+
+            inset:
+                0;
+
+            z-index:
+                9999;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                20px;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .72
+                );
+
+            backdrop-filter:
+                blur(6px);
+
+        }
+
+
+        .modal-overlay[hidden] {
+
+            display:
+                none;
+
+        }
+
+
+        .modal-card {
+
+            width:
+                min(
+                    720px,
+                    100%
+                );
+
+            max-height:
+                92vh;
+
+            overflow-y:
+                auto;
+
+            background:
+                #0d3024;
+
+            border:
+                1px solid
+                rgba(
+                    8,
+                    165,
+                    108,
+                    .28
+                );
+
+            border-radius:
+                20px;
+
+            box-shadow:
+                0 30px 80px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .45
+                );
+
+            padding:
+                24px;
+
+        }
+
+
+        .modal-header {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                24px;
+
+        }
+
+
+        .modal-header h2 {
+
+            margin:
+                0;
+
+            color:
+                #ffffff;
+
+            font-size:
+                21px;
+
+        }
+
+
+        .modal-header p {
+
+            margin:
+                6px 0 0;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .55
+                );
+
+            font-size:
+                13px;
+
+        }
+
+
+        .modal-close {
+
+            width:
+                38px;
+
+            height:
+                38px;
+
+            border:
+                0;
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                25px;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .modal-actions {
+
+            display:
+                flex;
+
+            justify-content:
+                flex-end;
+
+            gap:
+                10px;
+
+            margin-top:
+                25px;
+
+            padding-top:
+                20px;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+        }
+
+
+        .primary-button,
+        .secondary-button {
+
+            min-height:
+                44px;
+
+            padding:
+                0 17px;
+
+            border-radius:
+                11px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .primary-button {
+
+            border:
+                1px solid
+                #08a56c;
+
+            background:
+                #08a56c;
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .primary-button:hover {
+
+            background:
+                #087b53;
+
+        }
+
+
+        .secondary-button {
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .13
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
+
+            color:
+                #ffffff;
+
+        }
+
+
+        body.modal-open {
+
+            overflow:
+                hidden;
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .selector-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .content-row {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    10px;
+
+            }
+
+
+            .content-actions {
+
+                justify-content:
+                    flex-start;
+
+            }
+
+
+            .content-meta {
+
+                order:
+                    2;
+
+            }
+
+
+            .modal-card {
+
+                padding:
+                    18px;
+
+                border-radius:
+                    16px;
+
+            }
+
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+function setupEventListeners() {
+
+    /* Menu */
+
+    const menuButton =
+        $("menu-button");
+
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            toggleSidebar
+        );
+
+    }
+
+
+    /* Add Level */
+
+    const addLevelButton =
+        $("add-level-button");
+
+    if (addLevelButton) {
+
+        addLevelButton.addEventListener(
+            "click",
+            addLevel
+        );
+
+    }
+
+
+    /* Lesson Level */
+
+    const lessonLevelSelect =
+        $("lesson-level-select");
+
+    if (lessonLevelSelect) {
+
+        lessonLevelSelect.addEventListener(
+            "change",
+            async event => {
+
+                const levelId =
+                    Number(
+                        event.target.value
+                    );
+
+                await loadLessons(
+                    levelId
+                );
+
+            }
+        );
+
+    }
+
+
+    /* Add Lesson */
+
+    const addLessonButton =
+        $("add-lesson-button");
+
+    if (addLessonButton) {
+
+        addLessonButton.addEventListener(
+            "click",
+            addLesson
+        );
+
+    }
+
+
+    /* Card Level */
+
+    const cardLevelSelect =
+        $("card-level-select");
+
+    if (cardLevelSelect) {
+
+        cardLevelSelect.addEventListener(
+            "change",
+            async event => {
+
+                await loadCardLessons(
+                    event.target.value
+                );
+
+            }
+        );
+
+    }
+
+
+    /* Card Lesson */
+
+    const cardLessonSelect =
+        $("card-lesson-select");
+
+    if (cardLessonSelect) {
+
+        cardLessonSelect.addEventListener(
+            "change",
+            async event => {
+
+                await loadCards(
+                    event.target.value
+                );
+
+            }
+        );
+
+    }
+
+
+    /* Add Card */
+
+    const addCardButton =
+        $("add-card-button");
+
+    if (addCardButton) {
+
+        addCardButton.addEventListener(
+            "click",
+            addCard
+        );
+
+    }
+
+
+    /* Card form */
+
+    const cardForm =
+        $("card-form");
+
+    if (cardForm) {
+
+        cardForm.addEventListener(
+            "submit",
+            saveCard
+        );
+
+    }
+
+
+    /* Close modal */
+
+    const closeButton =
+        $("card-modal-close");
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeCardModal
+        );
+
+    }
+
+
+    const cancelButton =
+        $("card-cancel-button");
+
+    if (cancelButton) {
+
+        cancelButton.addEventListener(
+            "click",
+            closeCardModal
+        );
+
+    }
+
+
+    /* Click outside modal */
+
+    const modal =
+        $("card-modal");
+
+    if (modal) {
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === modal
+                ) {
+
+                    closeCardModal();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* Escape */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeCardModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+async function initializeAdmin() {
+
+    injectCardStyles();
+
+    setupNavigation();
+
+    setupEventListeners();
+
+    openSection(
+        currentSection
+    );
+
+    await testSupabaseConnection();
+
+    await loadDashboard();
+
+    await loadLevels();
+
+    await loadLessonLevels();
+
+    await loadCardLevels();
+
+}
+
+
+/* =========================================================
+   GLOBAL API
+========================================================= */
+
+window.SHOHIN_ADMIN = {
+
+    toggleSidebar,
+
+    openSection,
+
+    loadLevels,
+    addLevel,
+    editLevel,
+    deleteLevel,
+
+    loadLessons,
+    addLesson,
+    editLesson,
+    deleteLesson,
+
+    loadCards,
+    addCard,
+    editCard,
+    deleteCard,
+
+    openCardModal,
+    closeCardModal,
+
+    loadDashboard
+
+};
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeAdmin
+);
+
+3. "admin.css" пока не трогай
+
+В этом варианте дополнительные стили для Vocabulary/Card автоматически добавляются из "admin.js". Поэтому сейчас тебе не нужно снова менять "ADMIN/css/admin.css".
+
+После замены файлов структура остаётся:
+
+SHOHIN-ENGLISH-ADMIN/
+│
+├── README.md
+├── index.html
+│
+├── css/
+│   └── admin.css
+│
+├── js/
+│   └── admin.js
+│
+└── assets/
+    └── icons/
+
+4. Что теперь проверяем
+
+Открой ADMIN → Vocabulary.
+
+Должно быть:
+
+Vocabulary
+
+Level
+[ Select level ]
+
+Lesson
+[ Select lesson ]
+
+                         [+ Add Card]
+
+Выбираешь:
+
+A1 — Beginner
+        ↓
+Lesson 1
+
+Потом:
+
++ Add Card
+
+Откроется полноценная форма:
+
+Word
+Translation
+Image URL
+Word Audio URL
+
+PHRASE
+
+Phrase
+Phrase Translation
+Phrase Audio URL
+
+EXERCISE ANSWERS
+
+Answer 1
+Answer 2
+Answer 3
+Answer 4
+
+Correct Answer
+Sort Order
+
+[Cancel] [Save Card]
+
+После Save Card карточка реально записывается в таблицу:
+
+cards
+
+через Supabase.
+
+И ещё важный момент: "correct_answer" сейчас сохраняется как "1", "2", "3" или "4". Это специально сделано, чтобы потом User App мог легко понять, какой из четырёх вариантов правильный.
+
+Следующий этап после проверки этого блока — Images + Audio через Supabase Storage, затем Phrases/Exercises, потом уже Videos и Tests.
