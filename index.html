@@ -1,345 +1,680 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
 
-    <title>SHOHIN ENGLISH — Admin Panel</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-    <link rel="stylesheet" href="css/admin.css">
+  <meta
+    name="theme-color"
+    content="#071c16"
+  >
+
+  <meta
+    name="description"
+    content="SHOHIN ENGLISH Admin Panel"
+  >
+
+  <title>SHOHIN ENGLISH — Admin</title>
+
+  <!-- =====================================================
+       SHOHIN ADMIN CSS
+       ===================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="css/admin.css"
+  >
+
 </head>
 
 <body>
 
-    <div id="app">
+  <!-- =====================================================
+       ADMIN APP
+       ===================================================== -->
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+  <div class="admin-app">
 
-            <div class="brand">
-                <div class="brand-name">SHOHIN</div>
-                <div class="brand-subtitle">ENGLISH</div>
-                <div class="brand-admin">ADMIN PANEL</div>
+    <!-- ===================================================
+         SIDEBAR
+         =================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sidebar-brand">
+
+        <div class="brand-logo">
+          SHOHIN
+        </div>
+
+        <div class="brand-title">
+          ENGLISH
+        </div>
+
+        <div class="brand-subtitle">
+          ADMIN PANEL
+        </div>
+
+      </div>
+
+      <nav class="sidebar-nav">
+
+        <button
+          class="nav-item active"
+          data-section="dashboard"
+          onclick="SHOHIN_ADMIN.openSection('dashboard')"
+        >
+          <span>Dashboard</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="levels"
+          onclick="SHOHIN_ADMIN.openSection('levels')"
+        >
+          <span>Levels</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="lessons"
+          onclick="SHOHIN_ADMIN.openSection('lessons')"
+        >
+          <span>Lessons</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="vocabulary"
+          onclick="SHOHIN_ADMIN.openSection('vocabulary')"
+        >
+          <span>Vocabulary</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="phrases"
+          onclick="SHOHIN_ADMIN.openSection('phrases')"
+        >
+          <span>Phrases</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="exercises"
+          onclick="SHOHIN_ADMIN.openSection('exercises')"
+        >
+          <span>Exercises</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="videos"
+          onclick="SHOHIN_ADMIN.openSection('videos')"
+        >
+          <span>Videos</span>
+        </button>
+
+        <button
+          class="nav-item"
+          data-section="tests"
+          onclick="SHOHIN_ADMIN.openSection('tests')"
+        >
+          <span>Tests</span>
+        </button>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- ===================================================
+         MAIN CONTENT
+         =================================================== -->
+
+    <main class="main-content">
+
+      <!-- HEADER -->
+
+      <header class="admin-header">
+
+        <button
+          class="menu-button"
+          onclick="SHOHIN_ADMIN.toggleSidebar()"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+        <div>
+
+          <h1 id="page-title">
+            Dashboard
+          </h1>
+
+          <p>
+            SHOHIN ENGLISH Administration
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <!-- =================================================
+           DASHBOARD
+           ================================================= -->
+
+      <section
+        id="section-dashboard"
+        class="admin-section active"
+      >
+
+        <div class="section-header">
+
+          <div>
+            <h2>Dashboard</h2>
+
+            <p>
+              Manage SHOHIN ENGLISH content.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+
+            <span class="stat-label">
+              Levels
+            </span>
+
+            <strong
+              id="stat-levels"
+              class="stat-value"
+            >
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <span class="stat-label">
+              Lessons
+            </span>
+
+            <strong
+              id="stat-lessons"
+              class="stat-value"
+            >
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <span class="stat-label">
+              Vocabulary
+            </span>
+
+            <strong
+              id="stat-words"
+              class="stat-value"
+            >
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <span class="stat-label">
+              Phrases
+            </span>
+
+            <strong
+              id="stat-phrases"
+              class="stat-value"
+            >
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- SUPABASE STATUS -->
+
+        <div class="admin-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h3>
+                Supabase
+              </h3>
+
+              <p>
+                Backend connection status
+              </p>
+
             </div>
 
-            <nav class="menu">
+            <span
+              id="supabase-status"
+              class="status-badge"
+            >
+              Checking...
+            </span>
 
-                <button class="menu-item active" data-section="dashboard">
-                    Dashboard
-                </button>
+          </div>
 
-                <button class="menu-item" data-section="levels">
-                    Levels
-                </button>
+        </div>
 
-                <button class="menu-item" data-section="lessons">
-                    Lessons
-                </button>
+      </section>
 
-                <button class="menu-item" data-section="vocabulary">
-                    Vocabulary
-                </button>
 
-                <button class="menu-item" data-section="phrases">
-                    Phrases
-                </button>
+      <!-- =================================================
+           LEVELS
+           ================================================= -->
 
-                <button class="menu-item" data-section="exercises">
-                    Exercises
-                </button>
+      <section
+        id="section-levels"
+        class="admin-section"
+      >
 
-                <button class="menu-item" data-section="videos">
-                    Videos
-                </button>
+        <div class="section-header">
 
-                <button class="menu-item" data-section="tests">
-                    Tests
-                </button>
+          <div>
 
-            </nav>
+            <h2>Levels</h2>
 
-        </aside>
+            <p>
+              Manage English levels.
+            </p>
 
+          </div>
 
-        <!-- MAIN -->
-        <main class="main">
+          <button
+            class="primary-button"
+            type="button"
+          >
+            + Add Level
+          </button>
 
-            <!-- HEADER -->
-            <header class="header">
+        </div>
 
-                <div>
-                    <h1 id="page-title">Dashboard</h1>
-                    <p>SHOHIN ENGLISH content management</p>
-                </div>
 
-                <button class="mobile-menu">
-                    ☰
-                </button>
+        <div class="admin-card">
 
-            </header>
+          <div id="levels-list">
 
+            <p class="empty-state">
+              Levels will appear here.
+            </p>
 
-            <!-- CONTENT -->
-            <section class="content">
+          </div>
 
+        </div>
 
-                <!-- DASHBOARD -->
-                <div class="section active" id="dashboard">
+      </section>
 
-                    <div class="welcome-card">
 
-                        <div>
-                            <span class="small-label">SHOHIN ENGLISH</span>
+      <!-- =================================================
+           LESSONS
+           ================================================= -->
 
-                            <h2>Welcome to Admin Panel</h2>
+      <section
+        id="section-lessons"
+        class="admin-section"
+      >
 
-                            <p>
-                                Manage levels, lessons, vocabulary,
-                                phrases, exercises, videos and tests.
-                            </p>
-                        </div>
+        <div class="section-header">
 
-                    </div>
+          <div>
 
+            <h2>Lessons</h2>
 
-                    <div class="stats-grid">
+            <p>
+              Manage lessons for each level.
+            </p>
 
-                        <div class="stat-card">
-                            <span>Levels</span>
-                            <strong id="levels-count">0</strong>
-                        </div>
+          </div>
 
-                        <div class="stat-card">
-                            <span>Lessons</span>
-                            <strong id="lessons-count">0</strong>
-                        </div>
+          <button
+            class="primary-button"
+            type="button"
+          >
+            + Add Lesson
+          </button>
 
-                        <div class="stat-card">
-                            <span>Words</span>
-                            <strong id="words-count">0</strong>
-                        </div>
+        </div>
 
-                        <div class="stat-card">
-                            <span>Phrases</span>
-                            <strong id="phrases-count">0</strong>
-                        </div>
 
-                    </div>
+        <div class="admin-card">
 
-                </div>
+          <p class="empty-state">
+            Lessons will appear here.
+          </p>
 
+        </div>
 
-                <!-- LEVELS -->
-                <div class="section" id="levels">
+      </section>
 
-                    <div class="section-header">
 
-                        <div>
-                            <h2>Levels</h2>
-                            <p>Manage English learning levels.</p>
-                        </div>
+      <!-- =================================================
+           VOCABULARY
+           ================================================= -->
 
-                        <button class="primary-btn">
-                            + Add Level
-                        </button>
+      <section
+        id="section-vocabulary"
+        class="admin-section"
+      >
 
-                    </div>
+        <div class="section-header">
 
-                    <div class="empty-state">
-                        <div class="empty-icon">📚</div>
+          <div>
 
-                        <h3>No levels yet</h3>
+            <h2>Vocabulary</h2>
 
-                        <p>
-                            Create your first English level.
-                        </p>
-                    </div>
+            <p>
+              Manage words, translations, images and audio.
+            </p>
 
-                </div>
+          </div>
 
+          <button
+            class="primary-button"
+            type="button"
+          >
+            + Add Word
+          </button>
 
-                <!-- LESSONS -->
-                <div class="section" id="lessons">
+        </div>
 
-                    <div class="section-header">
 
-                        <div>
-                            <h2>Lessons</h2>
-                            <p>Create unlimited lessons for every level.</p>
-                        </div>
+        <div class="admin-card">
 
-                        <button class="primary-btn">
-                            + Add Lesson
-                        </button>
+          <p class="empty-state">
+            Vocabulary will appear here.
+          </p>
 
-                    </div>
+        </div>
 
-                    <div class="empty-state">
+      </section>
 
-                        <div class="empty-icon">📖</div>
 
-                        <h3>No lessons yet</h3>
+      <!-- =================================================
+           PHRASES
+           ================================================= -->
 
-                        <p>
-                            You can create as many lessons as you need.
-                        </p>
+      <section
+        id="section-phrases"
+        class="admin-section"
+      >
 
-                    </div>
+        <div class="section-header">
 
-                </div>
+          <div>
 
+            <h2>Phrases</h2>
 
-                <!-- VOCABULARY -->
-                <div class="section" id="vocabulary">
+            <p>
+              Manage English phrases and translations.
+            </p>
 
-                    <div class="section-header">
+          </div>
 
-                        <div>
-                            <h2>Vocabulary</h2>
-                            <p>Manage words, images and pronunciation.</p>
-                        </div>
+          <button
+            class="primary-button"
+            type="button"
+          >
+            + Add Phrase
+          </button>
 
-                        <button class="primary-btn">
-                            + Add Word
-                        </button>
+        </div>
 
-                    </div>
 
-                    <div class="empty-state">
+        <div class="admin-card">
 
-                        <div class="empty-icon">🔤</div>
+          <p class="empty-state">
+            Phrases will appear here.
+          </p>
 
-                        <h3>No vocabulary yet</h3>
+        </div>
 
-                        <p>
-                            Add words with translation, image and audio.
-                        </p>
+      </section>
 
-                    </div>
 
-                </div>
+      <!-- =================================================
+           EXERCISES
+           ================================================= -->
 
+      <section
+        id="section-exercises"
+        class="admin-section"
+      >
 
-                <!-- PHRASES -->
-                <div class="section" id="phrases">
+        <div class="section-header">
 
-                    <div class="section-header">
+          <div>
 
-                        <div>
-                            <h2>Phrases</h2>
-                            <p>Manage useful English phrases.</p>
-                        </div>
+            <h2>Exercises</h2>
 
-                        <button class="primary-btn">
-                            + Add Phrase
-                        </button>
+            <p>
+              Manage learning exercises.
+            </p>
 
-                    </div>
+          </div>
 
-                    <div class="empty-state">
+        </div>
 
-                        <div class="empty-icon">💬</div>
 
-                        <h3>No phrases yet</h3>
+        <div class="admin-card">
 
-                        <p>
-                            Add phrases with translation and audio.
-                        </p>
+          <p class="empty-state">
+            Exercises will appear here.
+          </p>
 
-                    </div>
+        </div>
 
-                </div>
+      </section>
 
 
-                <!-- EXERCISES -->
-                <div class="section" id="exercises">
+      <!-- =================================================
+           VIDEOS
+           ================================================= -->
 
-                    <div class="section-header">
+      <section
+        id="section-videos"
+        class="admin-section"
+      >
 
-                        <div>
-                            <h2>Exercises</h2>
-                            <p>Create questions and answer options.</p>
-                        </div>
+        <div class="section-header">
 
-                        <button class="primary-btn">
-                            + Add Exercise
-                        </button>
+          <div>
 
-                    </div>
+            <h2>Videos</h2>
 
-                    <div class="empty-state">
+            <p>
+              Manage learning videos.
+            </p>
 
-                        <div class="empty-icon">✏️</div>
+          </div>
 
-                        <h3>No exercises yet</h3>
+          <button
+            class="primary-button"
+            type="button"
+          >
+            + Add Video
+          </button>
 
-                    </div>
+        </div>
 
-                </div>
 
+        <div class="admin-card">
 
-                <!-- VIDEOS -->
-                <div class="section" id="videos">
+          <p class="empty-state">
+            Videos will appear here.
+          </p>
 
-                    <div class="section-header">
+        </div>
 
-                        <div>
-                            <h2>Videos</h2>
-                            <p>Manage learning videos.</p>
-                        </div>
+      </section>
 
-                        <button class="primary-btn">
-                            + Add Video
-                        </button>
 
-                    </div>
+      <!-- =================================================
+           TESTS
+           ================================================= -->
 
-                    <div class="empty-state">
+      <section
+        id="section-tests"
+        class="admin-section"
+      >
 
-                        <div class="empty-icon">🎬</div>
+        <div class="section-header">
 
-                        <h3>No videos yet</h3>
+          <div>
 
-                    </div>
+            <h2>Tests</h2>
 
-                </div>
+            <p>
+              Manage level assessments and tests.
+            </p>
 
+          </div>
 
-                <!-- TESTS -->
-                <div class="section" id="tests">
+          <button
+            class="primary-button"
+            type="button"
+          >
+            + Add Test
+          </button>
 
-                    <div class="section-header">
+        </div>
 
-                        <div>
-                            <h2>Tests</h2>
-                            <p>Manage level assessments and tests.</p>
-                        </div>
 
-                        <button class="primary-btn">
-                            + Add Test
-                        </button>
+        <div class="admin-card">
 
-                    </div>
+          <p class="empty-state">
+            Tests will appear here.
+          </p>
 
-                    <div class="empty-state">
+        </div>
 
-                        <div class="empty-icon">📝</div>
+      </section>
 
-                        <h3>No tests yet</h3>
+    </main>
 
-                    </div>
+  </div>
 
-                </div>
 
+  <!-- =====================================================
+       SUPABASE JAVASCRIPT LIBRARY
+       ===================================================== -->
 
-            </section>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
 
-        </main>
 
-    </div>
+  <!-- =====================================================
+       SHOHIN ADMIN JAVASCRIPT
+       ===================================================== -->
 
+  <script
+    src="js/admin.js"
+  ></script>
 
-    <script src="js/admin.js"></script>
+
+  <!-- =====================================================
+       SUPABASE STATUS
+       ===================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      async function () {
+
+        const status =
+          document.getElementById(
+            "supabase-status"
+          );
+
+        try {
+
+          const client =
+            window.SHOHIN_ADMIN.getSupabaseClient();
+
+          if (!client) {
+
+            status.textContent =
+              "Not connected";
+
+            return;
+          }
+
+          const { error } =
+            await client
+              .from("levels")
+              .select("id")
+              .limit(1);
+
+          if (error) {
+
+            console.error(
+              "Supabase:",
+              error
+            );
+
+            status.textContent =
+              "Connection error";
+
+            status.classList.add(
+              "error"
+            );
+
+            return;
+          }
+
+          status.textContent =
+            "Connected";
+
+          status.classList.add(
+            "success"
+          );
+
+        } catch (error) {
+
+          console.error(error);
+
+          status.textContent =
+            "Connection error";
+
+          status.classList.add(
+            "error"
+          );
+
+        }
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
