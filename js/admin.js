@@ -1,291 +1,269 @@
 /* =========================================================
    SHOHIN ENGLISH — ADMIN PANEL
-   js/admin.js
-
+   Supabase connection
    SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+// =========================================================
+// SUPABASE SETTINGS
+// =========================================================
 
-    const menuItems = document.querySelectorAll(".menu-item");
-    const sections = document.querySelectorAll(".section");
-    const pageTitle = document.getElementById("page-title");
+const SUPABASE_URL = "https://axialbwwmablgrbqwpkc.supabase.co";
 
-    const mobileMenu = document.querySelector(".mobile-menu");
-    const sidebar = document.querySelector(".sidebar");
+const SUPABASE_PUBLISHABLE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4aWFsYnd3bWFibGdyYnF3cGtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4ODI5MTMsImV4cCI6MjEwNTQ1ODkxM30.OZ6mkKZZxj_kGsRdD1USvumYV2PQ-5BPshnpOWBVrJs";
 
+// =========================================================
+// SUPABASE CLIENT
+// =========================================================
 
-    /* =====================================================
-       SECTION TITLES
-       ===================================================== */
+let supabaseClient = null;
 
-    const sectionTitles = {
-        dashboard: "Dashboard",
-        levels: "Levels",
-        lessons: "Lessons",
-        vocabulary: "Vocabulary",
-        phrases: "Phrases",
-        exercises: "Exercises",
-        videos: "Videos",
-        tests: "Tests"
-    };
+function initializeSupabase() {
+  if (typeof window.supabase === "undefined") {
+    console.error(
+      "Supabase library не загружена. Проверь index.html."
+    );
+    return false;
+  }
 
+  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+    console.error("Supabase URL или Publishable Key отсутствует.");
+    return false;
+  }
 
-    /* =====================================================
-       OPEN SECTION
-       ===================================================== */
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
-    function openSection(sectionId) {
+  console.log("SHOHIN ENGLISH — Supabase initialized.");
 
-        sections.forEach(section => {
-            section.classList.remove("active");
-        });
+  return true;
+}
 
-        menuItems.forEach(item => {
-            item.classList.remove("active");
-        });
+// =========================================================
+// ADMIN PANEL NAVIGATION
+// =========================================================
 
+const sectionTitles = {
+  dashboard: "Dashboard",
+  levels: "Levels",
+  lessons: "Lessons",
+  vocabulary: "Vocabulary",
+  phrases: "Phrases",
+  exercises: "Exercises",
+  videos: "Videos",
+  tests: "Tests"
+};
 
-        const targetSection =
-            document.getElementById(sectionId);
+function openSection(sectionName) {
+  const sections = document.querySelectorAll(".admin-section");
 
-        const targetMenu =
-            document.querySelector(
-                `.menu-item[data-section="${sectionId}"]`
-            );
+  sections.forEach((section) => {
+    section.classList.remove("active");
+  });
 
+  const target = document.getElementById(
+    `section-${sectionName}`
+  );
 
-        if (targetSection) {
-            targetSection.classList.add("active");
-        }
+  if (target) {
+    target.classList.add("active");
+  }
 
-        if (targetMenu) {
-            targetMenu.classList.add("active");
-        }
+  const title = document.getElementById("page-title");
 
+  if (title) {
+    title.textContent =
+      sectionTitles[sectionName] || "SHOHIN ENGLISH";
+  }
 
-        if (pageTitle) {
-            pageTitle.textContent =
-                sectionTitles[sectionId] || "Dashboard";
-        }
+  localStorage.setItem(
+    "shohin_admin_last_section",
+    sectionName
+  );
 
+  updateDashboard();
+}
 
-        /* Close mobile sidebar */
+// =========================================================
+// MOBILE SIDEBAR
+// =========================================================
 
-        if (window.innerWidth <= 700) {
-            sidebar.classList.remove("open");
-        }
+function toggleSidebar() {
+  const sidebar = document.querySelector(".sidebar");
 
+  if (sidebar) {
+    sidebar.classList.toggle("open");
+  }
+}
 
-        /* Save current section */
+// =========================================================
+// LOCAL DATA
+// =========================================================
 
-        localStorage.setItem(
-            "shohin_admin_section",
-            sectionId
-        );
+function getData(key) {
+  try {
+    return JSON.parse(
+      localStorage.getItem(key) || "[]"
+    );
+  } catch (error) {
+    console.error("Local data error:", error);
+    return [];
+  }
+}
+
+function saveData(key, data) {
+  localStorage.setItem(
+    key,
+    JSON.stringify(data)
+  );
+
+  updateDashboard();
+}
+
+// =========================================================
+// DASHBOARD
+// =========================================================
+
+function updateDashboard() {
+  const levels = getData("shohin_admin_levels");
+  const lessons = getData("shohin_admin_lessons");
+  const words = getData("shohin_admin_words");
+  const phrases = getData("shohin_admin_phrases");
+
+  const levelCount = document.getElementById("stat-levels");
+  const lessonCount = document.getElementById("stat-lessons");
+  const wordCount = document.getElementById("stat-words");
+  const phraseCount = document.getElementById("stat-phrases");
+
+  if (levelCount) {
+    levelCount.textContent = levels.length;
+  }
+
+  if (lessonCount) {
+    lessonCount.textContent = lessons.length;
+  }
+
+  if (wordCount) {
+    wordCount.textContent = words.length;
+  }
+
+  if (phraseCount) {
+    phraseCount.textContent = phrases.length;
+  }
+}
+
+// =========================================================
+// TEST SUPABASE CONNECTION
+// =========================================================
+
+async function testSupabaseConnection() {
+  if (!supabaseClient) {
+    console.warn("Supabase client не подключён.");
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("levels")
+      .select("*")
+      .order("sort_order");
+
+    if (error) {
+      console.error(
+        "Supabase connection error:",
+        error
+      );
+      return;
     }
 
+    console.log(
+      "✅ SHOHIN ENGLISH — Supabase connected!"
+    );
 
-    /* =====================================================
-       MENU CLICK
-       ===================================================== */
+    console.log(
+      "Levels from Supabase:",
+      data
+    );
 
-    menuItems.forEach(item => {
+  } catch (error) {
+    console.error(
+      "Supabase request failed:",
+      error
+    );
+  }
+}
 
-        item.addEventListener("click", () => {
+// =========================================================
+// LOAD LEVELS
+// =========================================================
 
-            const sectionId =
-                item.dataset.section;
+async function loadLevelsFromSupabase() {
+  if (!supabaseClient) {
+    console.warn("Supabase client не подключён.");
+    return [];
+  }
 
-            openSection(sectionId);
+  const { data, error } =
+    await supabaseClient
+      .from("levels")
+      .select("*")
+      .order("sort_order");
 
-        });
+  if (error) {
+    console.error(
+      "Cannot load levels:",
+      error
+    );
 
-    });
+    return [];
+  }
 
+  return data || [];
+}
 
-    /* =====================================================
-       MOBILE MENU
-       ===================================================== */
+// =========================================================
+// INITIALIZATION
+// =========================================================
 
-    if (mobileMenu) {
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
 
-        mobileMenu.addEventListener("click", () => {
-
-            sidebar.classList.toggle("open");
-
-        });
-
-    }
-
-
-    /* =====================================================
-       CLOSE SIDEBAR WHEN CLICKING OUTSIDE
-       ===================================================== */
-
-    document.addEventListener("click", event => {
-
-        if (window.innerWidth > 700) {
-            return;
-        }
-
-        const clickedInsideSidebar =
-            sidebar.contains(event.target);
-
-        const clickedMenuButton =
-            mobileMenu &&
-            mobileMenu.contains(event.target);
-
-        if (
-            !clickedInsideSidebar &&
-            !clickedMenuButton
-        ) {
-            sidebar.classList.remove("open");
-        }
-
-    });
-
-
-    /* =====================================================
-       RESTORE LAST SECTION
-       ===================================================== */
+    initializeSupabase();
 
     const savedSection =
-        localStorage.getItem(
-            "shohin_admin_section"
-        );
+      localStorage.getItem(
+        "shohin_admin_last_section"
+      ) || "dashboard";
 
-    if (
-        savedSection &&
-        document.getElementById(savedSection)
-    ) {
-
-        openSection(savedSection);
-
-    } else {
-
-        openSection("dashboard");
-
-    }
-
-
-    /* =====================================================
-       INITIAL DASHBOARD DATA
-       ===================================================== */
+    openSection(savedSection);
 
     updateDashboard();
 
+    await testSupabaseConnection();
 
-    /* =====================================================
-       DASHBOARD COUNTERS
-       ===================================================== */
+  }
+);
 
-    function updateDashboard() {
+// =========================================================
+// GLOBAL ADMIN API
+// =========================================================
 
-        const levels =
-            JSON.parse(
-                localStorage.getItem(
-                    "shohin_admin_levels"
-                ) || "[]"
-            );
+window.SHOHIN_ADMIN = {
 
-        const lessons =
-            JSON.parse(
-                localStorage.getItem(
-                    "shohin_admin_lessons"
-                ) || "[]"
-            );
+  openSection,
+  toggleSidebar,
+  updateDashboard,
+  getData,
+  saveData,
+  testSupabaseConnection,
+  loadLevelsFromSupabase,
 
-        const words =
-            JSON.parse(
-                localStorage.getItem(
-                    "shohin_admin_words"
-                ) || "[]"
-            );
+  getSupabaseClient: () => {
+    return supabaseClient;
+  }
 
-        const phrases =
-            JSON.parse(
-                localStorage.getItem(
-                    "shohin_admin_phrases"
-                ) || "[]"
-            );
-
-
-        const levelsCount =
-            document.getElementById(
-                "levels-count"
-            );
-
-        const lessonsCount =
-            document.getElementById(
-                "lessons-count"
-            );
-
-        const wordsCount =
-            document.getElementById(
-                "words-count"
-            );
-
-        const phrasesCount =
-            document.getElementById(
-                "phrases-count"
-            );
-
-
-        if (levelsCount) {
-            levelsCount.textContent =
-                levels.length;
-        }
-
-        if (lessonsCount) {
-            lessonsCount.textContent =
-                lessons.length;
-        }
-
-        if (wordsCount) {
-            wordsCount.textContent =
-                words.length;
-        }
-
-        if (phrasesCount) {
-            phrasesCount.textContent =
-                phrases.length;
-        }
-
-    }
-
-
-    /* =====================================================
-       GLOBAL ADMIN API
-       Future modules can use this.
-       ===================================================== */
-
-    window.SHOHIN_ADMIN = {
-
-        openSection,
-
-        updateDashboard,
-
-        getData(key) {
-
-            return JSON.parse(
-                localStorage.getItem(key) || "[]"
-            );
-
-        },
-
-        saveData(key, data) {
-
-            localStorage.setItem(
-                key,
-                JSON.stringify(data)
-            );
-
-            updateDashboard();
-
-        }
-
-    };
-
-
-});
+};
