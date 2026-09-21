@@ -1,7 +1,7 @@
 /* =========================================================
    SHOHIN ENGLISH — ADMIN
-   LESSONS MANAGEMENT
-   Supabase
+   Lessons Management
+   Supabase + Levels
    SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
    ========================================================= */
 
@@ -16,55 +16,80 @@ let selectedLessonLevelId = null;
 
 
 /* =========================================================
-   INITIALIZE
+   INITIALIZATION
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    console.log("SHOHIN ENGLISH — Lessons loaded.");
+    console.log("LESSONS.JS: initialized");
 
-    await loadLessonLevels();
+    loadLessonLevels();
 
 });
 
 
 /* =========================================================
-   LOAD LEVELS
+   LOAD LEVELS FOR LESSON SELECT
    ========================================================= */
 
 async function loadLessonLevels() {
 
-    const select =
-        document.getElementById("lesson-level-select");
+    console.log("LESSONS: loading levels...");
+
+    const select = document.getElementById("lesson-level-select");
 
     if (!select) {
-        console.warn("lesson-level-select not found.");
+        console.error(
+            "LESSONS: #lesson-level-select not found"
+        );
+        return;
+    }
+
+    if (!window.supabaseClient) {
+        console.error(
+            "LESSONS: Supabase client not found"
+        );
+
+        select.innerHTML = `
+            <option value="">
+                Supabase connection error
+            </option>
+        `;
+
         return;
     }
 
 
     try {
 
-        const { data, error } =
-            await supabaseClient
-                .from("levels")
-                .select("*")
-                .order("sort_order", {
-                    ascending: true
-                });
+        const {
+            data,
+            error
+        } = await window.supabaseClient
+            .from("levels")
+            .select("*")
+            .order("sort_order", {
+                ascending: true
+            });
 
 
         if (error) {
 
             console.error(
-                "Error loading levels:",
+                "LESSONS: failed to load levels:",
                 error
             );
 
-            select.innerHTML =
-                `<option value="">
+            select.innerHTML = `
+                <option value="">
                     Error loading levels
-                </option>`;
+                </option>
+            `;
+
+            showAdminMessage(
+                "Failed to load levels: " + error.message,
+                "error"
+            );
 
             return;
         }
@@ -72,60 +97,92 @@ async function loadLessonLevels() {
 
         adminLevels = data || [];
 
+        console.log(
+            "LESSONS: levels loaded:",
+            adminLevels
+        );
 
-        select.innerHTML =
-            `<option value="">
+
+        /* ---------------------------------------------
+           EMPTY
+           --------------------------------------------- */
+
+        if (adminLevels.length === 0) {
+
+            select.innerHTML = `
+                <option value="">
+                    No levels found
+                </option>
+            `;
+
+            return;
+        }
+
+
+        /* ---------------------------------------------
+           BUILD SELECT
+           --------------------------------------------- */
+
+        select.innerHTML = `
+            <option value="">
                 Select a level...
-            </option>`;
+            </option>
+        `;
 
 
-        adminLevels.forEach(level => {
+        adminLevels.forEach(function (level) {
 
             const option =
                 document.createElement("option");
 
-
             option.value = level.id;
 
-
             option.textContent =
-                `${level.code} — ${level.name}`;
-
+                level.code +
+                " — " +
+                level.name;
 
             select.appendChild(option);
 
         });
 
 
-        /*
-         * When user selects A1, A2, B1...
-         */
-
-        select.onchange = async function () {
-
-            selectedLessonLevelId =
-                this.value
-                    ? Number(this.value)
-                    : null;
+        console.log(
+            "LESSONS: level selector populated"
+        );
 
 
-            if (!selectedLessonLevelId) {
+        /* ---------------------------------------------
+           SELECT CHANGE
+           --------------------------------------------- */
+
+        select.onchange = function () {
+
+            const levelId = this.value;
+
+            console.log(
+                "LESSONS: selected level:",
+                levelId
+            );
+
+
+            if (!levelId) {
+
+                selectedLessonLevelId = null;
 
                 currentLessons = [];
 
-
-                document.getElementById(
-                    "lessons-list"
-                ).innerHTML =
-                    `<div class="empty-state">
-                        Select a level to see lessons.
-                    </div>`;
+                renderLessons();
 
                 return;
             }
 
 
-            await loadLessons(
+            selectedLessonLevelId =
+                Number(levelId);
+
+
+            loadLessons(
                 selectedLessonLevelId
             );
 
@@ -135,11 +192,33 @@ async function loadLessonLevels() {
     } catch (error) {
 
         console.error(
-            "Unexpected error loading levels:",
+            "LESSONS: unexpected error:",
             error
         );
 
+        select.innerHTML = `
+            <option value="">
+                Error loading levels
+            </option>
+        `;
+
     }
+
+}
+
+
+/* =========================================================
+   INITIALIZE LESSONS
+   Called by admin.js when Lessons section opens
+   ========================================================= */
+
+async function initializeLessons() {
+
+    console.log(
+        "LESSONS: initializeLessons()"
+    );
+
+    await loadLessonLevels();
 
 }
 
@@ -150,47 +229,65 @@ async function loadLessonLevels() {
 
 async function loadLessons(levelId) {
 
-    const container =
+    console.log(
+        "LESSONS: loading lessons for level:",
+        levelId
+    );
+
+
+    const lessonsList =
         document.getElementById("lessons-list");
 
 
-    if (!container) {
+    if (!lessonsList) {
+
+        console.error(
+            "LESSONS: #lessons-list not found"
+        );
+
         return;
     }
 
 
-    container.innerHTML =
-        `<div class="empty-state">
+    lessonsList.innerHTML = `
+        <div class="empty-state">
             Loading lessons...
-        </div>`;
+        </div>
+    `;
 
 
     try {
 
-        const { data, error } =
-            await supabaseClient
-                .from("lessons")
-                .select("*")
-                .eq("level_id", levelId)
-                .order("sort_order", {
-                    ascending: true
-                });
+        const {
+            data,
+            error
+        } = await window.supabaseClient
+            .from("lessons")
+            .select("*")
+            .eq("level_id", levelId)
+            .order("sort_order", {
+                ascending: true
+            });
 
 
         if (error) {
 
             console.error(
-                "Error loading lessons:",
+                "LESSONS: failed to load lessons:",
                 error
             );
 
+            lessonsList.innerHTML = `
+                <div class="empty-state">
+                    Failed to load lessons.
+                </div>
+            `;
 
-            container.innerHTML =
-                `<div class="empty-state">
-                    Failed to load lessons.<br>
-                    ${escapeLessonHTML(error.message)}
-                </div>`;
-
+            showAdminMessage(
+                "Failed to load lessons: " +
+                error.message,
+                "error"
+            );
 
             return;
         }
@@ -198,22 +295,26 @@ async function loadLessons(levelId) {
 
         currentLessons = data || [];
 
+        console.log(
+            "LESSONS: loaded:",
+            currentLessons
+        );
+
 
         renderLessons();
-
 
     } catch (error) {
 
         console.error(
-            "Unexpected error:",
+            "LESSONS: unexpected error:",
             error
         );
 
-
-        container.innerHTML =
-            `<div class="empty-state">
-                Unexpected error.
-            </div>`;
+        lessonsList.innerHTML = `
+            <div class="empty-state">
+                Error loading lessons.
+            </div>
+        `;
 
     }
 
@@ -226,113 +327,105 @@ async function loadLessons(levelId) {
 
 function renderLessons() {
 
-    const container =
+    const lessonsList =
         document.getElementById("lessons-list");
 
 
-    if (!container) {
+    if (!lessonsList) {
         return;
     }
 
 
-    if (currentLessons.length === 0) {
+    if (
+        !selectedLessonLevelId
+    ) {
 
-        container.innerHTML =
-            `<div class="empty-state">
-                No lessons yet.<br>
-                Click <strong>+ Add Lesson</strong>
-                to create the first lesson.
-            </div>`;
+        lessonsList.innerHTML = `
+            <div class="empty-state">
+                Select a level to see lessons.
+            </div>
+        `;
 
         return;
     }
 
 
-    container.innerHTML = "";
+    if (
+        currentLessons.length === 0
+    ) {
+
+        lessonsList.innerHTML = `
+            <div class="empty-state">
+                No lessons for this level yet.
+            </div>
+        `;
+
+        return;
+    }
 
 
-    currentLessons.forEach(
-        (lesson, index) => {
-
-            const item =
-                document.createElement("div");
+    lessonsList.innerHTML = "";
 
 
-            item.className =
-                "admin-list-item";
+    currentLessons.forEach(function (lesson) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "lesson-item";
 
 
-            const title =
-                escapeLessonHTML(
-                    lesson.title ||
-                    `Lesson ${index + 1}`
-                );
+        item.innerHTML = `
+            <div class="lesson-info">
 
+                <div class="lesson-order">
+                    ${lesson.sort_order}
+                </div>
 
-            const description =
-                escapeLessonHTML(
-                    lesson.description || ""
-                );
+                <div>
 
+                    <h3>
+                        ${escapeHtml(
+                            lesson.title || ""
+                        )}
+                    </h3>
 
-            const sortOrder =
-                Number(lesson.sort_order) ||
-                index + 1;
-
-
-            item.innerHTML = `
-
-                <div class="admin-list-main">
-
-                    <div class="admin-list-number">
-                        ${sortOrder}
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            ${title}
-                        </h3>
-
-                        ${
-                            description
-                                ? `<p>${description}</p>`
-                                : ""
-                        }
-
-                    </div>
+                    <p>
+                        ${escapeHtml(
+                            lesson.description || ""
+                        )}
+                    </p>
 
                 </div>
 
+            </div>
 
-                <div class="admin-list-actions">
+            <div class="lesson-actions">
 
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        onclick="openEditLessonModal(${lesson.id})"
-                    >
-                        Edit
-                    </button>
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="openEditLessonModal(${lesson.id})"
+                >
+                    Edit
+                </button>
 
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="deleteLesson(${lesson.id})"
+                >
+                    Delete
+                </button>
 
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        onclick="deleteLesson(${lesson.id})"
-                    >
-                        Delete
-                    </button>
-
-                </div>
-
-            `;
+            </div>
+        `;
 
 
-            container.appendChild(item);
+        lessonsList.appendChild(item);
 
-        }
-    );
+    });
 
 }
 
@@ -347,7 +440,7 @@ function openAddLessonModal() {
 
         showAdminMessage(
             "Please select a level first.",
-            "warning"
+            "error"
         );
 
         return;
@@ -383,21 +476,28 @@ function openAddLessonModal() {
     }
 
 
-    titleInput.value = "";
-
-    descriptionInput.value = "";
-
-
-    const nextOrder =
-        currentLessons.length + 1;
+    if (titleInput) {
+        titleInput.value = "";
+    }
 
 
-    orderInput.value =
-        nextOrder;
+    if (descriptionInput) {
+        descriptionInput.value = "";
+    }
 
 
-    modal.style.display =
-        "flex";
+    if (orderInput) {
+
+        const nextOrder =
+            currentLessons.length + 1;
+
+        orderInput.value =
+            nextOrder;
+
+    }
+
+
+    modal.classList.add("active");
 
 }
 
@@ -415,10 +515,7 @@ function closeAddLessonModal() {
 
 
     if (modal) {
-
-        modal.style.display =
-            "none";
-
+        modal.classList.remove("active");
     }
 
 }
@@ -434,67 +531,50 @@ async function addLesson() {
 
         showAdminMessage(
             "Please select a level first.",
-            "warning"
+            "error"
         );
 
         return;
     }
 
 
-    const titleInput =
+    const title =
         document.getElementById(
             "lesson-title-input"
-        );
-
-
-    const descriptionInput =
-        document.getElementById(
-            "lesson-description-input"
-        );
-
-
-    const orderInput =
-        document.getElementById(
-            "lesson-sort-order-input"
-        );
-
-
-    const title =
-        titleInput.value.trim();
+        ).value.trim();
 
 
     const description =
-        descriptionInput.value.trim();
+        document.getElementById(
+            "lesson-description-input"
+        ).value.trim();
 
 
     const sortOrder =
-        Number(orderInput.value);
+        Number(
+            document.getElementById(
+                "lesson-sort-order-input"
+            ).value
+        );
 
 
     if (!title) {
 
         showAdminMessage(
             "Please enter a lesson title.",
-            "warning"
+            "error"
         );
-
-        titleInput.focus();
 
         return;
     }
 
 
-    if (
-        !Number.isInteger(sortOrder) ||
-        sortOrder < 1
-    ) {
+    if (!sortOrder || sortOrder < 1) {
 
         showAdminMessage(
-            "Sort Order must be 1 or higher.",
-            "warning"
+            "Please enter a valid sort order.",
+            "error"
         );
-
-        orderInput.focus();
 
         return;
     }
@@ -502,37 +582,39 @@ async function addLesson() {
 
     try {
 
-        const { data, error } =
-            await supabaseClient
-                .from("lessons")
-                .insert([
-                    {
-                        level_id:
-                            selectedLessonLevelId,
+        const {
+            data,
+            error
+        } = await window.supabaseClient
+            .from("lessons")
+            .insert([
+                {
+                    level_id:
+                        selectedLessonLevelId,
 
-                        title:
-                            title,
+                    title:
+                        title,
 
-                        description:
-                            description || null,
+                    description:
+                        description,
 
-                        sort_order:
-                            sortOrder
-                    }
-                ])
-                .select()
-                .single();
+                    sort_order:
+                        sortOrder
+                }
+            ])
+            .select()
+            .single();
 
 
         if (error) {
 
             console.error(
-                "Error adding lesson:",
+                "LESSONS: insert error:",
                 error
             );
 
-
             showAdminMessage(
+                "Failed to add lesson: " +
                 error.message,
                 "error"
             );
@@ -541,18 +623,24 @@ async function addLesson() {
         }
 
 
+        console.log(
+            "LESSONS: lesson created:",
+            data
+        );
+
+
         currentLessons.push(data);
 
 
         currentLessons.sort(
-            (a, b) =>
-                Number(a.sort_order) -
-                Number(b.sort_order)
+            function (a, b) {
+                return a.sort_order -
+                    b.sort_order;
+            }
         );
 
 
         renderLessons();
-
 
         closeAddLessonModal();
 
@@ -563,17 +651,14 @@ async function addLesson() {
         );
 
 
+        updateDashboardLessonCount();
+
+
     } catch (error) {
 
         console.error(
-            "Unexpected error:",
+            "LESSONS: unexpected insert error:",
             error
-        );
-
-
-        showAdminMessage(
-            "Unexpected error while adding lesson.",
-            "error"
         );
 
     }
@@ -585,25 +670,32 @@ async function addLesson() {
    OPEN EDIT LESSON MODAL
    ========================================================= */
 
-function openEditLessonModal(lessonId) {
+function openEditLessonModal(
+    lessonId
+) {
 
     const lesson =
         currentLessons.find(
-            item =>
-                Number(item.id) ===
-                Number(lessonId)
+            function (item) {
+                return item.id === lessonId;
+            }
         );
 
 
     if (!lesson) {
+
+        console.error(
+            "LESSONS: lesson not found:",
+            lessonId
+        );
+
         return;
     }
 
 
     document.getElementById(
         "edit-lesson-id"
-    ).value =
-        lesson.id;
+    ).value = lesson.id;
 
 
     document.getElementById(
@@ -621,7 +713,7 @@ function openEditLessonModal(lessonId) {
     document.getElementById(
         "edit-lesson-sort-order"
     ).value =
-        Number(lesson.sort_order) || 1;
+        lesson.sort_order || 1;
 
 
     const modal =
@@ -631,10 +723,7 @@ function openEditLessonModal(lessonId) {
 
 
     if (modal) {
-
-        modal.style.display =
-            "flex";
-
+        modal.classList.add("active");
     }
 
 }
@@ -653,10 +742,7 @@ function closeEditLessonModal() {
 
 
     if (modal) {
-
-        modal.style.display =
-            "none";
-
+        modal.classList.remove("active");
     }
 
 }
@@ -696,30 +782,11 @@ async function updateLesson() {
         );
 
 
-    if (!id) {
-        return;
-    }
-
-
     if (!title) {
 
         showAdminMessage(
             "Please enter a lesson title.",
-            "warning"
-        );
-
-        return;
-    }
-
-
-    if (
-        !Number.isInteger(sortOrder) ||
-        sortOrder < 1
-    ) {
-
-        showAdminMessage(
-            "Sort Order must be 1 or higher.",
-            "warning"
+            "error"
         );
 
         return;
@@ -728,38 +795,37 @@ async function updateLesson() {
 
     try {
 
-        /*
-         * IMPORTANT:
-         * lessons table has NO updated_at column.
-         */
+        const {
+            data,
+            error
+        } = await window.supabaseClient
+            .from("lessons")
+            .update({
 
-        const { data, error } =
-            await supabaseClient
-                .from("lessons")
-                .update({
-                    title:
-                        title,
+                title:
+                    title,
 
-                    description:
-                        description || null,
+                description:
+                    description,
 
-                    sort_order:
-                        sortOrder
-                })
-                .eq("id", id)
-                .select()
-                .single();
+                sort_order:
+                    sortOrder
+
+            })
+            .eq("id", id)
+            .select()
+            .single();
 
 
         if (error) {
 
             console.error(
-                "Error updating lesson:",
+                "LESSONS: update error:",
                 error
             );
 
-
             showAdminMessage(
+                "Failed to update lesson: " +
                 error.message,
                 "error"
             );
@@ -770,29 +836,27 @@ async function updateLesson() {
 
         const index =
             currentLessons.findIndex(
-                item =>
-                    Number(item.id) ===
-                    Number(id)
+                function (item) {
+                    return item.id === id;
+                }
             );
 
 
         if (index !== -1) {
-
             currentLessons[index] =
                 data;
-
         }
 
 
         currentLessons.sort(
-            (a, b) =>
-                Number(a.sort_order) -
-                Number(b.sort_order)
+            function (a, b) {
+                return a.sort_order -
+                    b.sort_order;
+            }
         );
 
 
         renderLessons();
-
 
         closeEditLessonModal();
 
@@ -806,14 +870,8 @@ async function updateLesson() {
     } catch (error) {
 
         console.error(
-            "Unexpected error:",
+            "LESSONS: unexpected update error:",
             error
-        );
-
-
-        showAdminMessage(
-            "Unexpected error while updating lesson.",
-            "error"
         );
 
     }
@@ -825,24 +883,13 @@ async function updateLesson() {
    DELETE LESSON
    ========================================================= */
 
-async function deleteLesson(lessonId) {
-
-    const lesson =
-        currentLessons.find(
-            item =>
-                Number(item.id) ===
-                Number(lessonId)
-        );
-
-
-    if (!lesson) {
-        return;
-    }
-
+async function deleteLesson(
+    lessonId
+) {
 
     const confirmed =
         confirm(
-            `Delete "${lesson.title}"?`
+            "Delete this lesson?"
         );
 
 
@@ -853,25 +900,23 @@ async function deleteLesson(lessonId) {
 
     try {
 
-        const { error } =
-            await supabaseClient
-                .from("lessons")
-                .delete()
-                .eq(
-                    "id",
-                    Number(lessonId)
-                );
+        const {
+            error
+        } = await window.supabaseClient
+            .from("lessons")
+            .delete()
+            .eq("id", lessonId);
 
 
         if (error) {
 
             console.error(
-                "Error deleting lesson:",
+                "LESSONS: delete error:",
                 error
             );
 
-
             showAdminMessage(
+                "Failed to delete lesson: " +
                 error.message,
                 "error"
             );
@@ -882,9 +927,9 @@ async function deleteLesson(lessonId) {
 
         currentLessons =
             currentLessons.filter(
-                item =>
-                    Number(item.id) !==
-                    Number(lessonId)
+                function (item) {
+                    return item.id !== lessonId;
+                }
             );
 
 
@@ -892,22 +937,19 @@ async function deleteLesson(lessonId) {
 
 
         showAdminMessage(
-            "Lesson deleted successfully.",
+            "Lesson deleted.",
             "success"
         );
+
+
+        updateDashboardLessonCount();
 
 
     } catch (error) {
 
         console.error(
-            "Unexpected error:",
+            "LESSONS: unexpected delete error:",
             error
-        );
-
-
-        showAdminMessage(
-            "Unexpected error while deleting lesson.",
-            "error"
         );
 
     }
@@ -916,10 +958,70 @@ async function deleteLesson(lessonId) {
 
 
 /* =========================================================
-   ESCAPE HTML
+   DASHBOARD LESSON COUNT
    ========================================================= */
 
-function escapeLessonHTML(value) {
+async function updateDashboardLessonCount() {
+
+    const countElement =
+        document.getElementById(
+            "dashboard-lessons-count"
+        );
+
+
+    if (!countElement) {
+        return;
+    }
+
+
+    try {
+
+        const {
+            count,
+            error
+        } = await window.supabaseClient
+            .from("lessons")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "LESSONS: dashboard count error:",
+                error
+            );
+
+            return;
+        }
+
+
+        countElement.textContent =
+            count || 0;
+
+
+    } catch (error) {
+
+        console.error(
+            "LESSONS: dashboard count error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+   ========================================================= */
+
+function escapeHtml(value) {
 
     return String(value)
         .replace(/&/g, "&amp;")
@@ -932,52 +1034,20 @@ function escapeLessonHTML(value) {
 
 
 /* =========================================================
-   CLOSE MODALS BY CLICKING OUTSIDE
-   ========================================================= */
-
-window.addEventListener(
-    "click",
-    function (event) {
-
-        const addModal =
-            document.getElementById(
-                "add-lesson-modal"
-            );
-
-
-        const editModal =
-            document.getElementById(
-                "edit-lesson-modal"
-            );
-
-
-        if (
-            event.target === addModal
-        ) {
-
-            closeAddLessonModal();
-
-        }
-
-
-        if (
-            event.target === editModal
-        ) {
-
-            closeEditLessonModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
    GLOBAL FUNCTIONS
    ========================================================= */
 
+window.loadLessonLevels =
+    loadLessonLevels;
+
+window.initializeLessons =
+    initializeLessons;
+
 window.loadLessons =
     loadLessons;
+
+window.renderLessons =
+    renderLessons;
 
 window.openAddLessonModal =
     openAddLessonModal;
@@ -999,3 +1069,6 @@ window.updateLesson =
 
 window.deleteLesson =
     deleteLesson;
+
+window.updateDashboardLessonCount =
+    updateDashboardLessonCount;
