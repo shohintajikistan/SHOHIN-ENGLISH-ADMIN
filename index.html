@@ -39,6 +39,20 @@
 
 
     <!-- =====================================================
+         MOBILE MENU BUTTON
+         ===================================================== -->
+
+    <button
+        id="mobile-menu-btn"
+        class="mobile-menu-btn"
+        type="button"
+        aria-label="Open menu"
+    >
+        ☰
+    </button>
+
+
+    <!-- =====================================================
          APP
          ===================================================== -->
 
@@ -49,7 +63,10 @@
              SIDEBAR
              ================================================= -->
 
-        <aside class="sidebar">
+        <aside
+            id="admin-sidebar"
+            class="sidebar"
+        >
 
 
             <!-- BRAND -->
@@ -72,10 +89,12 @@
             <nav class="sidebar-nav">
 
 
+                <!-- DASHBOARD -->
+
                 <button
                     type="button"
                     class="nav-item active"
-                    data-section="dashboard"
+                    data-section="dashboard-section"
                 >
 
                     <span class="icon">
@@ -89,10 +108,12 @@
                 </button>
 
 
+                <!-- LEVELS -->
+
                 <button
                     type="button"
                     class="nav-item"
-                    data-section="levels"
+                    data-section="levels-section"
                 >
 
                     <span class="icon">
@@ -106,10 +127,12 @@
                 </button>
 
 
+                <!-- LESSONS -->
+
                 <button
                     type="button"
                     class="nav-item"
-                    data-section="lessons"
+                    data-section="lessons-section"
                 >
 
                     <span class="icon">
@@ -123,10 +146,12 @@
                 </button>
 
 
+                <!-- VOCABULARY -->
+
                 <button
                     type="button"
                     class="nav-item"
-                    data-section="vocabulary"
+                    data-section="vocabulary-section"
                 >
 
                     <span class="icon">
@@ -140,10 +165,12 @@
                 </button>
 
 
+                <!-- PHRASES -->
+
                 <button
                     type="button"
                     class="nav-item"
-                    data-section="phrases"
+                    data-section="phrases-section"
                 >
 
                     <span class="icon">
@@ -157,10 +184,12 @@
                 </button>
 
 
+                <!-- VIDEOS -->
+
                 <button
                     type="button"
                     class="nav-item"
-                    data-section="videos"
+                    data-section="videos-section"
                 >
 
                     <span class="icon">
@@ -174,10 +203,12 @@
                 </button>
 
 
+                <!-- SETTINGS -->
+
                 <button
                     type="button"
                     class="nav-item"
-                    data-section="settings"
+                    data-section="settings-section"
                 >
 
                     <span class="icon">
@@ -233,6 +264,8 @@
                 <div class="dashboard-grid">
 
 
+                    <!-- LEVELS -->
+
                     <div class="stat-card">
 
                         <div class="stat-icon">
@@ -245,13 +278,15 @@
 
                         <div
                             class="stat-value"
-                            id="dashboard-level-count"
+                            id="dashboard-levels-count"
                         >
                             0
                         </div>
 
                     </div>
 
+
+                    <!-- LESSONS -->
 
                     <div class="stat-card">
 
@@ -265,13 +300,15 @@
 
                         <div
                             class="stat-value"
-                            id="dashboard-lesson-count"
+                            id="dashboard-lessons-count"
                         >
                             0
                         </div>
 
                     </div>
 
+
+                    <!-- VOCABULARY -->
 
                     <div class="stat-card">
 
@@ -293,6 +330,8 @@
                     </div>
 
 
+                    <!-- VIDEOS -->
+
                     <div class="stat-card">
 
                         <div class="stat-icon">
@@ -305,7 +344,7 @@
 
                         <div
                             class="stat-value"
-                            id="dashboard-video-count"
+                            id="dashboard-videos-count"
                         >
                             0
                         </div>
@@ -315,6 +354,8 @@
 
                 </div>
 
+
+                <!-- CONNECTION STATUS -->
 
                 <div class="card">
 
@@ -333,6 +374,23 @@
                         </div>
 
                     </div>
+
+
+                    <p id="dashboard-connection-text">
+                        Checking Supabase connection...
+                    </p>
+
+
+                    <div
+                        id="supabase-status"
+                        style="display: none;"
+                    ></div>
+
+
+                    <span
+                        id="connection-dot"
+                        style="display: none;"
+                    ></span>
 
 
                     <p>
@@ -410,7 +468,6 @@
                 class="admin-section"
             >
 
-
                 <div class="page-header">
 
                     <div>
@@ -426,10 +483,6 @@
 
                     </div>
 
-
-                    <!-- IMPORTANT:
-                         This is a real button.
-                    -->
 
                     <button
                         type="button"
@@ -477,9 +530,7 @@
 
                     <!-- LESSONS LIST -->
 
-                    <div
-                        id="lessons-list"
-                    >
+                    <div id="lessons-list">
 
                         <div class="empty-state">
 
@@ -701,13 +752,11 @@
 
         <div class="modal-content">
 
-
             <div class="modal-header">
 
                 <h3>
                     Add Level
                 </h3>
-
 
                 <button
                     type="button"
@@ -726,9 +775,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="level-code-input"
-                    >
+                    <label for="level-code-input">
                         Level Code
                     </label>
 
@@ -744,9 +791,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="level-name-input"
-                    >
+                    <label for="level-name-input">
                         Level Name
                     </label>
 
@@ -762,9 +807,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="level-description-input"
-                    >
+                    <label for="level-description-input">
                         Description
                     </label>
 
@@ -779,9 +822,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="level-sort-order-input"
-                    >
+                    <label for="level-sort-order-input">
                         Sort Order
                     </label>
 
@@ -820,7 +861,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -837,13 +877,11 @@
 
         <div class="modal-content">
 
-
             <div class="modal-header">
 
                 <h3>
                     Edit Level
                 </h3>
-
 
                 <button
                     type="button"
@@ -868,9 +906,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-level-code"
-                    >
+                    <label for="edit-level-code">
                         Level Code
                     </label>
 
@@ -885,9 +921,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-level-name"
-                    >
+                    <label for="edit-level-name">
                         Level Name
                     </label>
 
@@ -902,9 +936,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-level-description"
-                    >
+                    <label for="edit-level-description">
                         Description
                     </label>
 
@@ -918,9 +950,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-level-sort-order"
-                    >
+                    <label for="edit-level-sort-order">
                         Sort Order
                     </label>
 
@@ -958,7 +988,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -975,13 +1004,11 @@
 
         <div class="modal-content">
 
-
             <div class="modal-header">
 
                 <h3>
                     Add Lesson
                 </h3>
-
 
                 <button
                     type="button"
@@ -1000,9 +1027,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="lesson-title-input"
-                    >
+                    <label for="lesson-title-input">
                         Lesson Title
                     </label>
 
@@ -1018,9 +1043,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="lesson-description-input"
-                    >
+                    <label for="lesson-description-input">
                         Description
                     </label>
 
@@ -1035,9 +1058,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="lesson-sort-order-input"
-                    >
+                    <label for="lesson-sort-order-input">
                         Sort Order
                     </label>
 
@@ -1076,7 +1097,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -1093,13 +1113,11 @@
 
         <div class="modal-content">
 
-
             <div class="modal-header">
 
                 <h3>
                     Edit Lesson
                 </h3>
-
 
                 <button
                     type="button"
@@ -1124,9 +1142,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-lesson-title"
-                    >
+                    <label for="edit-lesson-title">
                         Lesson Title
                     </label>
 
@@ -1141,9 +1157,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-lesson-description"
-                    >
+                    <label for="edit-lesson-description">
                         Description
                     </label>
 
@@ -1157,9 +1171,7 @@
 
                 <div class="form-group">
 
-                    <label
-                        for="edit-lesson-sort-order"
-                    >
+                    <label for="edit-lesson-sort-order">
                         Sort Order
                     </label>
 
@@ -1197,7 +1209,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -1215,7 +1226,7 @@
 
 
     <!-- =====================================================
-         SUPABASE
+         SUPABASE LIBRARY
          ===================================================== -->
 
     <script
