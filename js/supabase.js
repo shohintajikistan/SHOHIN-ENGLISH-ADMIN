@@ -5,24 +5,51 @@
    ========================================================= */
 
 const SUPABASE_URL =
-    "https://axialbwwmablgrbawpckc.supabase.co";
+    "https://axialbwwmablgrbqwpkc.supabase.co";
 
-const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZXMiLCJyZWYiOiJheGlhbGJ3d21hYmxncmJhd3BrYyIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg5ODgyOTEzLCJleHAiOjIxMDU0NTg5MTN9.OZ6mkKZZxj_kGsRdD1USvumYV2PQ-5BPshnpOWBVrJs";
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_OrW3SgmDmSmVN2QxtrCh6g_NoQga0Ug";
+
+
+/* =========================================================
+   CHECK SUPABASE LIBRARY
+   ========================================================= */
 
 if (
     typeof window.supabase === "undefined" ||
     typeof window.supabase.createClient !== "function"
 ) {
     console.error("Supabase library was not loaded.");
-    throw new Error("Supabase library was not loaded.");
+
+    throw new Error(
+        "Supabase library was not loaded."
+    );
 }
 
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
+
+/* =========================================================
+   CREATE SUPABASE CLIENT
+   ========================================================= */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================================
+   GLOBAL CLIENT
+   ========================================================= */
 
 window.supabaseClient = supabaseClient;
 
-console.log("SHOHIN ENGLISH ADMIN: Supabase connected.");
+
+console.log(
+    "SHOHIN ENGLISH ADMIN: Supabase connected."
+);
+
+console.log(
+    "Supabase URL:",
+    SUPABASE_URL
+);
