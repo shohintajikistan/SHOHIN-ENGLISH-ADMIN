@@ -22,11 +22,6 @@
 
     <title>SHOHIN ENGLISH — Admin Panel</title>
 
-
-    <!-- =====================================================
-         ADMIN CSS
-         ===================================================== -->
-
     <link
         rel="stylesheet"
         href="css/admin.css"
@@ -39,7 +34,7 @@
 
 
     <!-- =====================================================
-         MOBILE MENU BUTTON
+         MOBILE MENU
          ===================================================== -->
 
     <button
@@ -53,7 +48,7 @@
 
 
     <!-- =====================================================
-         APP
+         ADMIN APP
          ===================================================== -->
 
     <div class="admin-app">
@@ -68,9 +63,6 @@
             class="sidebar"
         >
 
-
-            <!-- BRAND -->
-
             <div class="sidebar-brand">
 
                 <h1>
@@ -84,12 +76,8 @@
             </div>
 
 
-            <!-- NAVIGATION -->
-
             <nav class="sidebar-nav">
 
-
-                <!-- DASHBOARD -->
 
                 <button
                     type="button"
@@ -108,8 +96,6 @@
                 </button>
 
 
-                <!-- LEVELS -->
-
                 <button
                     type="button"
                     class="nav-item"
@@ -126,8 +112,6 @@
 
                 </button>
 
-
-                <!-- LESSONS -->
 
                 <button
                     type="button"
@@ -146,8 +130,6 @@
                 </button>
 
 
-                <!-- VOCABULARY -->
-
                 <button
                     type="button"
                     class="nav-item"
@@ -164,8 +146,6 @@
 
                 </button>
 
-
-                <!-- PHRASES -->
 
                 <button
                     type="button"
@@ -184,8 +164,6 @@
                 </button>
 
 
-                <!-- VIDEOS -->
-
                 <button
                     type="button"
                     class="nav-item"
@@ -202,8 +180,6 @@
 
                 </button>
 
-
-                <!-- SETTINGS -->
 
                 <button
                     type="button"
@@ -224,12 +200,11 @@
 
             </nav>
 
-
         </aside>
 
 
         <!-- =================================================
-             MAIN CONTENT
+             MAIN
              ================================================= -->
 
         <main class="main-content">
@@ -264,8 +239,6 @@
                 <div class="dashboard-grid">
 
 
-                    <!-- LEVELS -->
-
                     <div class="stat-card">
 
                         <div class="stat-icon">
@@ -277,16 +250,14 @@
                         </div>
 
                         <div
-                            class="stat-value"
                             id="dashboard-levels-count"
+                            class="stat-value"
                         >
                             0
                         </div>
 
                     </div>
 
-
-                    <!-- LESSONS -->
 
                     <div class="stat-card">
 
@@ -299,16 +270,14 @@
                         </div>
 
                         <div
-                            class="stat-value"
                             id="dashboard-lessons-count"
+                            class="stat-value"
                         >
                             0
                         </div>
 
                     </div>
 
-
-                    <!-- VOCABULARY -->
 
                     <div class="stat-card">
 
@@ -321,16 +290,14 @@
                         </div>
 
                         <div
-                            class="stat-value"
                             id="dashboard-vocabulary-count"
+                            class="stat-value"
                         >
                             0
                         </div>
 
                     </div>
 
-
-                    <!-- VIDEOS -->
 
                     <div class="stat-card">
 
@@ -343,8 +310,8 @@
                         </div>
 
                         <div
-                            class="stat-value"
                             id="dashboard-videos-count"
+                            class="stat-value"
                         >
                             0
                         </div>
@@ -354,8 +321,6 @@
 
                 </div>
 
-
-                <!-- CONNECTION STATUS -->
 
                 <div class="card">
 
@@ -379,18 +344,6 @@
                     <p id="dashboard-connection-text">
                         Checking Supabase connection...
                     </p>
-
-
-                    <div
-                        id="supabase-status"
-                        style="display: none;"
-                    ></div>
-
-
-                    <span
-                        id="connection-dot"
-                        style="display: none;"
-                    ></span>
 
 
                     <p>
@@ -455,7 +408,6 @@
 
                 </div>
 
-
             </section>
 
 
@@ -492,14 +444,11 @@
                         + Add Lesson
                     </button>
 
-
                 </div>
 
 
                 <div class="card">
 
-
-                    <!-- LEVEL SELECTOR -->
 
                     <div class="lesson-level-selector">
 
@@ -528,22 +477,16 @@
                     </div>
 
 
-                    <!-- LESSONS LIST -->
-
                     <div id="lessons-list">
 
                         <div class="empty-state">
-
-                            Select a level to see
-                            lessons.
-
+                            Select a level to see lessons.
                         </div>
 
                     </div>
 
 
                 </div>
-
 
             </section>
 
@@ -585,14 +528,11 @@
                 <div class="card">
 
                     <div class="empty-state">
-
                         Vocabulary management
                         will be added next.
-
                     </div>
 
                 </div>
-
 
             </section>
 
@@ -634,14 +574,11 @@
                 <div class="card">
 
                     <div class="empty-state">
-
                         Phrase management
                         will be added next.
-
                     </div>
 
                 </div>
-
 
             </section>
 
@@ -683,14 +620,11 @@
                 <div class="card">
 
                     <div class="empty-state">
-
                         Video management
                         will be added next.
-
                     </div>
 
                 </div>
-
 
             </section>
 
@@ -724,19 +658,15 @@
                 <div class="card">
 
                     <div class="empty-state">
-
                         Settings will be added later.
-
                     </div>
 
                 </div>
-
 
             </section>
 
 
         </main>
-
 
     </div>
 
@@ -1226,7 +1156,7 @@
 
 
     <!-- =====================================================
-         SUPABASE LIBRARY
+         SUPABASE
          ===================================================== -->
 
     <script
@@ -1235,7 +1165,7 @@
 
 
     <!-- =====================================================
-         ADMIN SCRIPTS
+         ADMIN JS
          ===================================================== -->
 
     <script src="js/supabase.js"></script>
