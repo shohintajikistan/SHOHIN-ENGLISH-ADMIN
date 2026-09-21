@@ -1,7 +1,7 @@
 /* =========================================================
-   SHOHIN ENGLISH — ADMIN
-   Levels Management
-   Supabase
+   SHOHIN ENGLISH — ADMIN PANEL
+   LEVELS MANAGEMENT
+   Supabase + Levels CRUD
    SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
    ========================================================= */
 
@@ -10,22 +10,20 @@
    STATE
    ========================================================= */
 
-let adminLevels =
-    [];
+let adminLevels = [];
 
 
 /* =========================================================
-   INITIALIZATION
+   INITIALIZE
    ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        loadLevels();
+    console.log("LEVELS: initializing...");
 
-    }
-);
+    loadLevels();
+
+});
 
 
 /* =========================================================
@@ -35,65 +33,54 @@ document.addEventListener(
 async function loadLevels() {
 
     const list =
-        document.getElementById(
-            "levels-list"
-        );
-
+        document.getElementById("levels-list");
 
     if (!list) {
-        return;
-    }
 
-
-    if (!window.supabaseClient) {
-
-        list.innerHTML = `
-            <div class="empty-state">
-                Supabase connection error.
-            </div>
-        `;
+        console.error(
+            "LEVELS: #levels-list not found."
+        );
 
         return;
     }
+
+
+    list.innerHTML =
+        '<div class="loading">' +
+        '<div class="spinner"></div>' +
+        '<span>Loading levels...</span>' +
+        '</div>';
 
 
     try {
 
-        const {
-            data,
-            error
-        } =
-            await window.supabaseClient
+        const { data, error } =
+            await supabaseClient
                 .from("levels")
                 .select("*")
-                .order(
-                    "sort_order",
-                    {
-                        ascending: true
-                    }
-                );
+                .order("sort_order", {
+                    ascending: true
+                });
 
 
         if (error) {
 
             console.error(
-                "LEVELS ERROR:",
+                "LEVELS: load error:",
                 error
             );
 
-            list.innerHTML = `
-                <div class="empty-state">
-                    Failed to load levels.
-                </div>
-            `;
+            list.innerHTML =
+                '<div class="empty-state">' +
+                '<strong>Error loading levels</strong><br>' +
+                escapeLevelHtml(error.message) +
+                '</div>';
 
             return;
         }
 
 
-        adminLevels =
-            data || [];
-
+        adminLevels = data || [];
 
         renderLevels();
 
@@ -101,9 +88,15 @@ async function loadLevels() {
     } catch (error) {
 
         console.error(
-            "LEVELS ERROR:",
+            "LEVELS: unexpected error:",
             error
         );
+
+        list.innerHTML =
+            '<div class="empty-state">' +
+            '<strong>Error</strong><br>' +
+            escapeLevelHtml(error.message) +
+            '</div>';
 
     }
 
@@ -117,25 +110,18 @@ async function loadLevels() {
 function renderLevels() {
 
     const list =
-        document.getElementById(
-            "levels-list"
-        );
+        document.getElementById("levels-list");
+
+    if (!list) return;
 
 
-    if (!list) {
-        return;
-    }
+    if (!adminLevels.length) {
 
-
-    if (
-        adminLevels.length === 0
-    ) {
-
-        list.innerHTML = `
-            <div class="empty-state">
-                No levels found.
-            </div>
-        `;
+        list.innerHTML =
+            '<div class="empty-state">' +
+            '<strong>No levels found</strong><br>' +
+            'Click "+ Add Level" to create a level.' +
+            '</div>';
 
         return;
     }
@@ -147,96 +133,94 @@ function renderLevels() {
     adminLevels.forEach(
         function (level) {
 
-            const item =
-                document.createElement(
-                    "div"
-                );
+            const card =
+                document.createElement("div");
 
-
-            item.className =
+            card.className =
                 "level-card";
 
 
-            item.innerHTML = `
+            card.innerHTML =
 
-                <div class="level-card-header">
+                '<div class="level-card-header">' +
 
-                    <div class="level-code">
-                        ${escapeHtml(
-                            level.code || ""
-                        )}
-                    </div>
+                    '<div>' +
 
-                    <div class="level-order">
-                        #${level.sort_order}
-                    </div>
+                        '<div class="level-code">' +
+                            escapeLevelHtml(
+                                level.code
+                            ) +
+                        '</div>' +
 
-                </div>
+                        '<h3>' +
+                            escapeLevelHtml(
+                                level.name
+                            ) +
+                        '</h3>' +
 
-                <h3>
-                    ${escapeHtml(
-                        level.name || ""
-                    )}
-                </h3>
+                    '</div>' +
 
-                <p>
-                    ${escapeHtml(
-                        level.description || ""
-                    )}
-                </p>
+                    '<span class="badge badge-lime">' +
+                        'Order ' +
+                        (
+                            level.sort_order ||
+                            "-"
+                        ) +
+                    '</span>' +
 
-                <div class="level-actions">
-
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        onclick="openEditLevelModal(${level.id})"
-                    >
-                        Edit
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        onclick="deleteLevel(${level.id})"
-                    >
-                        Delete
-                    </button>
-
-                </div>
-
-            `;
+                '</div>' +
 
 
-            list.appendChild(
-                item
-            );
+                '<p>' +
+                    escapeLevelHtml(
+                        level.description ||
+                        "No description"
+                    ) +
+                '</p>' +
+
+
+                '<div class="level-card-actions">' +
+
+                    '<button ' +
+                        'type="button" ' +
+                        'class="btn btn-secondary btn-sm" ' +
+                        'onclick="openEditLevelModal(' +
+                            level.id +
+                        ')">' +
+                        'Edit' +
+                    '</button>' +
+
+
+                    '<button ' +
+                        'type="button" ' +
+                        'class="btn btn-danger btn-sm" ' +
+                        'onclick="deleteLevel(' +
+                            level.id +
+                        ')">' +
+                        'Delete' +
+                    '</button>' +
+
+                '</div>';
+
+
+            list.appendChild(card);
 
         }
     );
-
-
-    const dashboardCount =
-        document.getElementById(
-            "dashboard-levels-count"
-        );
-
-
-    if (dashboardCount) {
-
-        dashboardCount.textContent =
-            adminLevels.length;
-
-    }
 
 }
 
 
 /* =========================================================
-   ADD LEVEL MODAL
+   OPEN ADD LEVEL MODAL
    ========================================================= */
 
 function openAddLevelModal() {
+
+    console.log(
+        "LEVELS: openAddLevelModal()"
+    );
+
 
     const modal =
         document.getElementById(
@@ -245,40 +229,91 @@ function openAddLevelModal() {
 
 
     if (!modal) {
+
+        console.error(
+            "LEVELS: #add-level-modal not found."
+        );
+
+        showAdminMessage(
+            "Add Level window was not found.",
+            "error"
+        );
+
         return;
     }
 
 
-    document.getElementById(
-        "level-code-input"
-    ).value = "";
+    const codeInput =
+        document.getElementById(
+            "level-code-input"
+        );
+
+    const nameInput =
+        document.getElementById(
+            "level-name-input"
+        );
+
+    const descriptionInput =
+        document.getElementById(
+            "level-description-input"
+        );
+
+    const sortInput =
+        document.getElementById(
+            "level-sort-order-input"
+        );
 
 
-    document.getElementById(
-        "level-name-input"
-    ).value = "";
+    if (codeInput) {
+        codeInput.value = "";
+    }
+
+    if (nameInput) {
+        nameInput.value = "";
+    }
+
+    if (descriptionInput) {
+        descriptionInput.value = "";
+    }
+
+    if (sortInput) {
+
+        sortInput.value =
+            getNextLevelSortOrder();
+
+    }
 
 
-    document.getElementById(
-        "level-description-input"
-    ).value = "";
+    modal.classList.add("active");
 
+    modal.style.display = "flex";
 
-    document.getElementById(
-        "level-sort-order-input"
-    ).value =
-        adminLevels.length + 1;
+    modal.style.visibility = "visible";
 
+    modal.style.opacity = "1";
 
-    modal.classList.add(
-        "active"
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
     );
+
+
+    if (codeInput) {
+
+        setTimeout(
+            function () {
+                codeInput.focus();
+            },
+            100
+        );
+
+    }
 
 }
 
 
 /* =========================================================
-   CLOSE ADD LEVEL
+   CLOSE ADD LEVEL MODAL
    ========================================================= */
 
 function closeAddLevelModal() {
@@ -289,13 +324,49 @@ function closeAddLevelModal() {
         );
 
 
-    if (modal) {
+    if (!modal) return;
 
-        modal.classList.remove(
-            "active"
+
+    modal.classList.remove("active");
+
+    modal.style.display = "none";
+
+    modal.style.visibility = "hidden";
+
+    modal.style.opacity = "0";
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+/* =========================================================
+   GET NEXT SORT ORDER
+   ========================================================= */
+
+function getNextLevelSortOrder() {
+
+    if (!adminLevels.length) {
+        return 1;
+    }
+
+
+    const numbers =
+        adminLevels.map(
+            function (level) {
+
+                return Number(
+                    level.sort_order
+                ) || 0;
+
+            }
         );
 
-    }
+
+    return Math.max(...numbers) + 1;
 
 }
 
@@ -306,38 +377,76 @@ function closeAddLevelModal() {
 
 async function addLevel() {
 
-    const code =
+    const codeInput =
         document.getElementById(
             "level-code-input"
-        ).value.trim();
+        );
+
+    const nameInput =
+        document.getElementById(
+            "level-name-input"
+        );
+
+    const descriptionInput =
+        document.getElementById(
+            "level-description-input"
+        );
+
+    const sortInput =
+        document.getElementById(
+            "level-sort-order-input"
+        );
+
+
+    const code =
+        codeInput
+            ? codeInput.value.trim().toUpperCase()
+            : "";
 
 
     const name =
-        document.getElementById(
-            "level-name-input"
-        ).value.trim();
+        nameInput
+            ? nameInput.value.trim()
+            : "";
 
 
     const description =
-        document.getElementById(
-            "level-description-input"
-        ).value.trim();
+        descriptionInput
+            ? descriptionInput.value.trim()
+            : "";
 
 
     const sortOrder =
-        Number(
-            document.getElementById(
-                "level-sort-order-input"
-            ).value
-        );
+        sortInput
+            ? Number(sortInput.value)
+            : getNextLevelSortOrder();
 
 
-    if (!code || !name) {
+    if (!code) {
 
         showAdminMessage(
-            "Level code and name are required.",
-            "error"
+            "Level code is required.",
+            "warning"
         );
+
+        if (codeInput) {
+            codeInput.focus();
+        }
+
+        return;
+    }
+
+
+    if (!name) {
+
+        showAdminMessage(
+            "Level name is required.",
+            "warning"
+        );
+
+        if (nameInput) {
+            nameInput.focus();
+        }
 
         return;
     }
@@ -345,20 +454,62 @@ async function addLevel() {
 
     try {
 
+        /*
+           Check duplicate code first.
+        */
+
         const {
-            data,
-            error
+            data: existingLevel,
+            error: checkError
         } =
-            await window.supabaseClient
+            await supabaseClient
+                .from("levels")
+                .select("id")
+                .eq("code", code)
+                .maybeSingle();
+
+
+        if (checkError) {
+
+            console.error(
+                "LEVELS: duplicate check error:",
+                checkError
+            );
+
+            showAdminMessage(
+                "Could not check level: " +
+                checkError.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (existingLevel) {
+
+            showAdminMessage(
+                "This level code already exists.",
+                "warning"
+            );
+
+            return;
+        }
+
+
+        /*
+           Insert level.
+        */
+
+        const { data, error } =
+            await supabaseClient
                 .from("levels")
                 .insert([
                     {
                         code: code,
                         name: name,
-                        description:
-                            description,
-                        sort_order:
-                            sortOrder
+                        description: description,
+                        sort_order: sortOrder
                     }
                 ])
                 .select()
@@ -367,7 +518,13 @@ async function addLevel() {
 
         if (error) {
 
+            console.error(
+                "LEVELS: add error:",
+                error
+            );
+
             showAdminMessage(
+                "Could not add level: " +
                 error.message,
                 "error"
             );
@@ -376,20 +533,11 @@ async function addLevel() {
         }
 
 
-        adminLevels.push(
+        console.log(
+            "LEVELS: level added:",
             data
         );
 
-
-        adminLevels.sort(
-            function (a, b) {
-                return a.sort_order -
-                    b.sort_order;
-            }
-        );
-
-
-        renderLevels();
 
         closeAddLevelModal();
 
@@ -400,10 +548,39 @@ async function addLevel() {
         );
 
 
+        await loadLevels();
+
+
+        if (typeof updateDashboard === "function") {
+            updateDashboard();
+        }
+
+
+        /*
+           Also refresh lesson level selector.
+        */
+
+        if (
+            typeof loadLessonLevels ===
+            "function"
+        ) {
+
+            await loadLessonLevels();
+
+        }
+
+
     } catch (error) {
 
         console.error(
+            "LEVELS: unexpected add error:",
             error
+        );
+
+        showAdminMessage(
+            "Unexpected error: " +
+            error.message,
+            "error"
         );
 
     }
@@ -412,54 +589,31 @@ async function addLevel() {
 
 
 /* =========================================================
-   EDIT LEVEL
+   OPEN EDIT LEVEL MODAL
    ========================================================= */
 
-function openEditLevelModal(
-    id
-) {
+function openEditLevelModal(levelId) {
 
     const level =
         adminLevels.find(
             function (item) {
-                return item.id === id;
+
+                return Number(item.id) ===
+                    Number(levelId);
+
             }
         );
 
 
     if (!level) {
+
+        showAdminMessage(
+            "Level not found.",
+            "error"
+        );
+
         return;
     }
-
-
-    document.getElementById(
-        "edit-level-id"
-    ).value =
-        level.id;
-
-
-    document.getElementById(
-        "edit-level-code"
-    ).value =
-        level.code || "";
-
-
-    document.getElementById(
-        "edit-level-name"
-    ).value =
-        level.name || "";
-
-
-    document.getElementById(
-        "edit-level-description"
-    ).value =
-        level.description || "";
-
-
-    document.getElementById(
-        "edit-level-sort-order"
-    ).value =
-        level.sort_order || 1;
 
 
     const modal =
@@ -468,10 +622,93 @@ function openEditLevelModal(
         );
 
 
-    if (modal) {
+    if (!modal) {
 
-        modal.classList.add(
-            "active"
+        console.error(
+            "LEVELS: #edit-level-modal not found."
+        );
+
+        showAdminMessage(
+            "Edit Level window was not found.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const idInput =
+        document.getElementById(
+            "edit-level-id"
+        );
+
+    const codeInput =
+        document.getElementById(
+            "edit-level-code"
+        );
+
+    const nameInput =
+        document.getElementById(
+            "edit-level-name"
+        );
+
+    const descriptionInput =
+        document.getElementById(
+            "edit-level-description"
+        );
+
+    const sortInput =
+        document.getElementById(
+            "edit-level-sort-order"
+        );
+
+
+    if (idInput) {
+        idInput.value = level.id;
+    }
+
+    if (codeInput) {
+        codeInput.value =
+            level.code || "";
+    }
+
+    if (nameInput) {
+        nameInput.value =
+            level.name || "";
+    }
+
+    if (descriptionInput) {
+        descriptionInput.value =
+            level.description || "";
+    }
+
+    if (sortInput) {
+        sortInput.value =
+            level.sort_order || 1;
+    }
+
+
+    modal.classList.add("active");
+
+    modal.style.display = "flex";
+
+    modal.style.visibility = "visible";
+
+    modal.style.opacity = "1";
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    if (codeInput) {
+
+        setTimeout(
+            function () {
+                codeInput.focus();
+            },
+            100
         );
 
     }
@@ -480,7 +717,7 @@ function openEditLevelModal(
 
 
 /* =========================================================
-   CLOSE EDIT LEVEL
+   CLOSE EDIT LEVEL MODAL
    ========================================================= */
 
 function closeEditLevelModal() {
@@ -491,13 +728,21 @@ function closeEditLevelModal() {
         );
 
 
-    if (modal) {
+    if (!modal) return;
 
-        modal.classList.remove(
-            "active"
-        );
 
-    }
+    modal.classList.remove("active");
+
+    modal.style.display = "none";
+
+    modal.style.visibility = "hidden";
+
+    modal.style.opacity = "0";
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
 
 }
 
@@ -508,64 +753,165 @@ function closeEditLevelModal() {
 
 async function updateLevel() {
 
-    const id =
-        Number(
-            document.getElementById(
-                "edit-level-id"
-            ).value
+    const idInput =
+        document.getElementById(
+            "edit-level-id"
         );
+
+    const codeInput =
+        document.getElementById(
+            "edit-level-code"
+        );
+
+    const nameInput =
+        document.getElementById(
+            "edit-level-name"
+        );
+
+    const descriptionInput =
+        document.getElementById(
+            "edit-level-description"
+        );
+
+    const sortInput =
+        document.getElementById(
+            "edit-level-sort-order"
+        );
+
+
+    const levelId =
+        idInput
+            ? Number(idInput.value)
+            : null;
 
 
     const code =
-        document.getElementById(
-            "edit-level-code"
-        ).value.trim();
+        codeInput
+            ? codeInput.value.trim().toUpperCase()
+            : "";
 
 
     const name =
-        document.getElementById(
-            "edit-level-name"
-        ).value.trim();
+        nameInput
+            ? nameInput.value.trim()
+            : "";
 
 
     const description =
-        document.getElementById(
-            "edit-level-description"
-        ).value.trim();
+        descriptionInput
+            ? descriptionInput.value.trim()
+            : "";
 
 
     const sortOrder =
-        Number(
-            document.getElementById(
-                "edit-level-sort-order"
-            ).value
+        sortInput
+            ? Number(sortInput.value)
+            : 1;
+
+
+    if (!levelId) {
+
+        showAdminMessage(
+            "Level ID is missing.",
+            "error"
         );
+
+        return;
+    }
+
+
+    if (!code) {
+
+        showAdminMessage(
+            "Level code is required.",
+            "warning"
+        );
+
+        return;
+    }
+
+
+    if (!name) {
+
+        showAdminMessage(
+            "Level name is required.",
+            "warning"
+        );
+
+        return;
+    }
 
 
     try {
 
+        /*
+           Check whether another level
+           already uses this code.
+        */
+
         const {
-            data,
-            error
+            data: duplicate,
+            error: duplicateError
         } =
-            await window.supabaseClient
+            await supabaseClient
+                .from("levels")
+                .select("id")
+                .eq("code", code)
+                .neq("id", levelId)
+                .maybeSingle();
+
+
+        if (duplicateError) {
+
+            console.error(
+                "LEVELS: duplicate check error:",
+                duplicateError
+            );
+
+            showAdminMessage(
+                "Could not check level code: " +
+                duplicateError.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (duplicate) {
+
+            showAdminMessage(
+                "Another level already uses this code.",
+                "warning"
+            );
+
+            return;
+        }
+
+
+        const { data, error } =
+            await supabaseClient
                 .from("levels")
                 .update({
                     code: code,
                     name: name,
-                    description:
-                        description,
-                    sort_order:
-                        sortOrder
+                    description: description,
+                    sort_order: sortOrder
                 })
-                .eq("id", id)
+                .eq("id", levelId)
                 .select()
                 .single();
 
 
         if (error) {
 
+            console.error(
+                "LEVELS: update error:",
+                error
+            );
+
             showAdminMessage(
+                "Could not update level: " +
                 error.message,
                 "error"
             );
@@ -574,31 +920,11 @@ async function updateLevel() {
         }
 
 
-        const index =
-            adminLevels.findIndex(
-                function (item) {
-                    return item.id === id;
-                }
-            );
-
-
-        if (index !== -1) {
-
-            adminLevels[index] =
-                data;
-
-        }
-
-
-        adminLevels.sort(
-            function (a, b) {
-                return a.sort_order -
-                    b.sort_order;
-            }
+        console.log(
+            "LEVELS: level updated:",
+            data
         );
 
-
-        renderLevels();
 
         closeEditLevelModal();
 
@@ -609,10 +935,35 @@ async function updateLevel() {
         );
 
 
+        await loadLevels();
+
+
+        if (typeof updateDashboard === "function") {
+            updateDashboard();
+        }
+
+
+        if (
+            typeof loadLessonLevels ===
+            "function"
+        ) {
+
+            await loadLessonLevels();
+
+        }
+
+
     } catch (error) {
 
         console.error(
+            "LEVELS: unexpected update error:",
             error
+        );
+
+        showAdminMessage(
+            "Unexpected error: " +
+            error.message,
+            "error"
         );
 
     }
@@ -624,35 +975,116 @@ async function updateLevel() {
    DELETE LEVEL
    ========================================================= */
 
-async function deleteLevel(
-    id
-) {
+async function deleteLevel(levelId) {
 
-    if (
-        !confirm(
-            "Delete this level?"
-        )
-    ) {
+    const level =
+        adminLevels.find(
+            function (item) {
+
+                return Number(item.id) ===
+                    Number(levelId);
+
+            }
+        );
+
+
+    if (!level) {
+
+        showAdminMessage(
+            "Level not found.",
+            "error"
+        );
 
         return;
-
     }
 
+
+    /*
+       Check whether level has lessons.
+    */
 
     try {
 
         const {
-            error
+            count,
+            error: countError
         } =
-            await window.supabaseClient
+            await supabaseClient
+                .from("lessons")
+                .select(
+                    "id",
+                    {
+                        count: "exact",
+                        head: true
+                    }
+                )
+                .eq(
+                    "level_id",
+                    levelId
+                );
+
+
+        if (countError) {
+
+            console.error(
+                "LEVELS: lesson check error:",
+                countError
+            );
+
+            showAdminMessage(
+                "Could not check level lessons: " +
+                countError.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (count && count > 0) {
+
+            showAdminMessage(
+                "This level has " +
+                count +
+                " lesson(s). Delete its lessons first.",
+                "warning"
+            );
+
+            return;
+        }
+
+
+        const confirmed =
+            window.confirm(
+                'Delete level "' +
+                level.code +
+                ' — ' +
+                level.name +
+                '"?'
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const { error } =
+            await supabaseClient
                 .from("levels")
                 .delete()
-                .eq("id", id);
+                .eq("id", levelId);
 
 
         if (error) {
 
+            console.error(
+                "LEVELS: delete error:",
+                error
+            );
+
             showAdminMessage(
+                "Could not delete level: " +
                 error.message,
                 "error"
             );
@@ -661,27 +1093,41 @@ async function deleteLevel(
         }
 
 
-        adminLevels =
-            adminLevels.filter(
-                function (item) {
-                    return item.id !== id;
-                }
-            );
-
-
-        renderLevels();
-
-
         showAdminMessage(
-            "Level deleted.",
+            "Level deleted successfully.",
             "success"
         );
+
+
+        await loadLevels();
+
+
+        if (typeof updateDashboard === "function") {
+            updateDashboard();
+        }
+
+
+        if (
+            typeof loadLessonLevels ===
+            "function"
+        ) {
+
+            await loadLessonLevels();
+
+        }
 
 
     } catch (error) {
 
         console.error(
+            "LEVELS: unexpected delete error:",
             error
+        );
+
+        showAdminMessage(
+            "Unexpected error: " +
+            error.message,
+            "error"
         );
 
     }
@@ -693,42 +1139,95 @@ async function deleteLevel(
    ESCAPE HTML
    ========================================================= */
 
-function escapeHtml(value) {
+function escapeLevelHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
 
     return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
 /* =========================================================
-   GLOBAL
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const addModal =
+            document.getElementById(
+                "add-level-modal"
+            );
+
+        const editModal =
+            document.getElementById(
+                "edit-level-modal"
+            );
+
+
+        if (
+            addModal &&
+            event.target === addModal
+        ) {
+
+            closeAddLevelModal();
+
+        }
+
+
+        if (
+            editModal &&
+            event.target === editModal
+        ) {
+
+            closeEditLevelModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESC KEY
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key !== "Escape") {
+            return;
+        }
+
+
+        closeAddLevelModal();
+
+        closeEditLevelModal();
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL FUNCTIONS
    ========================================================= */
 
 window.loadLevels =
     loadLevels;
-
-window.renderLevels =
-    renderLevels;
 
 window.openAddLevelModal =
     openAddLevelModal;
@@ -750,3 +1249,8 @@ window.updateLevel =
 
 window.deleteLevel =
     deleteLevel;
+
+
+/* =========================================================
+   END
+   ========================================================= */
