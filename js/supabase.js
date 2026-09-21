@@ -1,6 +1,6 @@
 /* =========================================================
    SHOHIN ENGLISH — ADMIN
-   Supabase connection
+   Supabase Connection
    SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
    ========================================================= */
 
@@ -19,16 +19,20 @@ if (
     typeof window.supabase === "undefined" ||
     typeof window.supabase.createClient !== "function"
 ) {
-    console.error("Supabase library was not loaded.");
+
+    console.error(
+        "Supabase library was not loaded."
+    );
 
     throw new Error(
         "Supabase library was not loaded."
     );
+
 }
 
 
 /* =========================================================
-   CREATE SUPABASE CLIENT
+   CREATE CLIENT
    ========================================================= */
 
 const supabaseClient =
@@ -42,14 +46,10 @@ const supabaseClient =
    GLOBAL CLIENT
    ========================================================= */
 
-window.supabaseClient = supabaseClient;
+window.supabaseClient =
+    supabaseClient;
 
 
 console.log(
     "SHOHIN ENGLISH ADMIN: Supabase connected."
-);
-
-console.log(
-    "Supabase URL:",
-    SUPABASE_URL
 );
