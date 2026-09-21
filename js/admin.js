@@ -1,9 +1,6 @@
 /* =========================================================
-   SHOHIN ENGLISH — ADMIN PANEL
+   SHOHIN ENGLISH — ADMIN
    Main Admin Controller
-   Navigation + Dashboard + Mobile Menu
-   Supabase connection comes from supabase.js
-
    SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
    ========================================================= */
 
@@ -14,30 +11,91 @@
 
 const sectionTitles = {
 
-    "dashboard-section": "Dashboard",
+    "dashboard-section":
+        "Dashboard",
 
-    "levels-section": "Levels",
+    "levels-section":
+        "Levels",
 
-    "lessons-section": "Lessons",
+    "lessons-section":
+        "Lessons",
 
-    "vocabulary-section": "Vocabulary",
+    "vocabulary-section":
+        "Vocabulary",
 
-    "phrases-section": "Phrases",
+    "phrases-section":
+        "Phrases",
 
-    "videos-section": "Videos",
+    "videos-section":
+        "Videos",
 
-    "settings-section": "Settings"
+    "settings-section":
+        "Settings"
 
 };
 
 
 /* =========================================================
-   GET SECTION NAME
+   INITIALIZATION
    ========================================================= */
 
-function getSectionName(sectionId) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    return sectionTitles[sectionId] || "SHOHIN ENGLISH";
+        console.log(
+            "SHOHIN ADMIN: initialized"
+        );
+
+
+        initializeNavigation();
+
+        initializeMobileMenu();
+
+        updateDashboard();
+
+    }
+);
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function initializeNavigation() {
+
+    const navItems =
+        document.querySelectorAll(
+            ".nav-item"
+        );
+
+
+    navItems.forEach(
+        function (item) {
+
+            item.addEventListener(
+                "click",
+                function () {
+
+                    const sectionId =
+                        item.dataset.section;
+
+
+                    console.log(
+                        "NAVIGATION:",
+                        sectionId
+                    );
+
+
+                    openSection(
+                        sectionId
+                    );
+
+                }
+            );
+
+        }
+    );
 
 }
 
@@ -46,17 +104,15 @@ function getSectionName(sectionId) {
    OPEN SECTION
    ========================================================= */
 
-function openSection(sectionId) {
+function openSection(
+    sectionId
+) {
 
     console.log(
-        "Opening admin section:",
+        "OPEN SECTION:",
         sectionId
     );
 
-
-    /* -----------------------------------------
-       Hide all sections
-       ----------------------------------------- */
 
     const sections =
         document.querySelectorAll(
@@ -65,7 +121,7 @@ function openSection(sectionId) {
 
 
     sections.forEach(
-        (section) => {
+        function (section) {
 
             section.classList.remove(
                 "active"
@@ -75,56 +131,31 @@ function openSection(sectionId) {
     );
 
 
-    /* -----------------------------------------
-       Show requested section
-       ----------------------------------------- */
-
-    const target =
+    const targetSection =
         document.getElementById(
             sectionId
         );
 
 
-    if (!target) {
+    if (!targetSection) {
 
         console.error(
-            "Admin section not found:",
+            "SECTION NOT FOUND:",
             sectionId
         );
 
         return;
-
     }
 
 
-    target.classList.add(
+    targetSection.classList.add(
         "active"
     );
 
 
-    /* -----------------------------------------
-       Update page title
-       ----------------------------------------- */
-
-    const pageTitle =
-        document.getElementById(
-            "page-title"
-        );
-
-
-    if (pageTitle) {
-
-        pageTitle.textContent =
-            getSectionName(
-                sectionId
-            );
-
-    }
-
-
-    /* -----------------------------------------
-       Update navigation buttons
-       ----------------------------------------- */
+    /* ---------------------------------------------
+       ACTIVE NAV ITEM
+       --------------------------------------------- */
 
     const navItems =
         document.querySelectorAll(
@@ -133,7 +164,7 @@ function openSection(sectionId) {
 
 
     navItems.forEach(
-        (item) => {
+        function (item) {
 
             item.classList.remove(
                 "active"
@@ -155,19 +186,9 @@ function openSection(sectionId) {
     );
 
 
-    /* -----------------------------------------
-       Save last opened section
-       ----------------------------------------- */
-
-    localStorage.setItem(
-        "shohin_admin_last_section",
-        sectionId
-    );
-
-
-    /* -----------------------------------------
-       Section-specific initialization
-       ----------------------------------------- */
+    /* ---------------------------------------------
+       LEVELS
+       --------------------------------------------- */
 
     if (
         sectionId ===
@@ -186,6 +207,10 @@ function openSection(sectionId) {
     }
 
 
+    /* ---------------------------------------------
+       LESSONS
+       --------------------------------------------- */
+
     if (
         sectionId ===
         "lessons-section"
@@ -203,20 +228,26 @@ function openSection(sectionId) {
     }
 
 
-    /* -----------------------------------------
-       Close mobile sidebar
-       ----------------------------------------- */
+    /* ---------------------------------------------
+       CLOSE MOBILE MENU
+       --------------------------------------------- */
 
-    closeMobileSidebar();
+    closeMobileMenu();
 
 }
 
 
 /* =========================================================
-   MOBILE SIDEBAR
+   MOBILE MENU
    ========================================================= */
 
-function toggleSidebar() {
+function initializeMobileMenu() {
+
+    const button =
+        document.getElementById(
+            "mobile-menu-btn"
+        );
+
 
     const sidebar =
         document.getElementById(
@@ -224,23 +255,30 @@ function toggleSidebar() {
         );
 
 
-    if (!sidebar) {
+    if (
+        !button ||
+        !sidebar
+    ) {
+
         return;
     }
 
 
-    sidebar.classList.toggle(
-        "open"
+    button.addEventListener(
+        "click",
+        function () {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+        }
     );
 
 }
 
 
-/* =========================================================
-   CLOSE MOBILE SIDEBAR
-   ========================================================= */
-
-function closeMobileSidebar() {
+function closeMobileMenu() {
 
     const sidebar =
         document.getElementById(
@@ -248,14 +286,7 @@ function closeMobileSidebar() {
         );
 
 
-    if (!sidebar) {
-        return;
-    }
-
-
-    if (
-        window.innerWidth <= 900
-    ) {
+    if (sidebar) {
 
         sidebar.classList.remove(
             "open"
@@ -267,72 +298,31 @@ function closeMobileSidebar() {
 
 
 /* =========================================================
-   ESCAPE HTML
-   ========================================================= */
-
-function escapeHtml(value) {
-
-    return String(
-        value ?? ""
-    )
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =========================================================
-   UPDATE DASHBOARD
+   DASHBOARD
    ========================================================= */
 
 async function updateDashboard() {
 
-    const client =
-        window.supabaseClient;
+    if (
+        !window.supabaseClient
+    ) {
 
-
-    if (!client) {
-
-        console.warn(
-            "Supabase client is not available."
+        console.error(
+            "Dashboard: Supabase client missing."
         );
 
         return;
-
     }
 
 
     try {
 
-        /* -------------------------------------
-           Levels count
-           ------------------------------------- */
+        /* -----------------------------------------
+           LEVEL COUNT
+           ----------------------------------------- */
 
         const levelsResult =
-            await client
+            await window.supabaseClient
                 .from("levels")
                 .select(
                     "id",
@@ -343,12 +333,32 @@ async function updateDashboard() {
                 );
 
 
-        /* -------------------------------------
-           Lessons count
-           ------------------------------------- */
+        if (
+            !levelsResult.error
+        ) {
+
+            const element =
+                document.getElementById(
+                    "dashboard-levels-count"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    levelsResult.count || 0;
+
+            }
+
+        }
+
+
+        /* -----------------------------------------
+           LESSON COUNT
+           ----------------------------------------- */
 
         const lessonsResult =
-            await client
+            await window.supabaseClient
                 .from("lessons")
                 .select(
                     "id",
@@ -359,258 +369,69 @@ async function updateDashboard() {
                 );
 
 
-        /* -------------------------------------
-           Dashboard elements
-           ------------------------------------- */
+        if (
+            !lessonsResult.error
+        ) {
 
-        const levelsCount =
+            const element =
+                document.getElementById(
+                    "dashboard-lessons-count"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    lessonsResult.count || 0;
+
+            }
+
+        }
+
+
+        /* -----------------------------------------
+           CONNECTION
+           ----------------------------------------- */
+
+        const connectionText =
             document.getElementById(
-                "dashboard-levels-count"
+                "dashboard-connection-text"
             );
 
 
-        const lessonsCount =
-            document.getElementById(
-                "dashboard-lessons-count"
-            );
+        if (connectionText) {
 
-
-        if (levelsCount) {
-
-            levelsCount.textContent =
-                levelsResult.error
-                    ? "0"
-                    : (
-                        levelsResult.count ||
-                        0
-                    );
-
-        }
-
-
-        if (lessonsCount) {
-
-            lessonsCount.textContent =
-                lessonsResult.error
-                    ? "0"
-                    : (
-                        lessonsResult.count ||
-                        0
-                    );
-
-        }
-
-
-        if (levelsResult.error) {
-
-            console.error(
-                "Dashboard levels error:",
-                levelsResult.error
-            );
-
-        }
-
-
-        if (lessonsResult.error) {
-
-            console.error(
-                "Dashboard lessons error:",
-                lessonsResult.error
-            );
-
-        }
-
-
-        /* -------------------------------------
-           Vocabulary / Videos
-           Currently static
-           ------------------------------------- */
-
-        console.log(
-            "Dashboard updated."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Dashboard update error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   SUPABASE CONNECTION STATUS
-   ========================================================= */
-
-async function testSupabaseConnection() {
-
-    const client =
-        window.supabaseClient;
-
-
-    const status =
-        document.getElementById(
-            "supabase-status"
-        );
-
-
-    const connectionText =
-        document.getElementById(
-            "dashboard-connection-text"
-        );
-
-
-    const dot =
-        document.getElementById(
-            "connection-dot"
-        );
-
-
-    if (!client) {
-
-        updateConnectionUI(
-            false,
-            "Supabase not connected",
-            status,
-            connectionText,
-            dot
-        );
-
-
-        return false;
-
-    }
-
-
-    try {
-
-        const {
-            error
-        } = await client
-            .from("levels")
-            .select("id")
-            .limit(1);
-
-
-        if (error) {
-
-            console.error(
-                "Supabase connection error:",
-                error
-            );
-
-
-            updateConnectionUI(
-                false,
-                "Connection error",
-                status,
-                connectionText,
-                dot
-            );
-
-
-            return false;
+            connectionText.textContent =
+                "Supabase connected successfully.";
 
         }
 
 
         console.log(
-            "SHOHIN ENGLISH — Supabase connected."
+            "SHOHIN ADMIN: dashboard loaded"
         );
 
-
-        updateConnectionUI(
-            true,
-            "Connected",
-            status,
-            connectionText,
-            dot
-        );
-
-
-        return true;
 
     } catch (error) {
 
         console.error(
-            "Supabase test failed:",
+            "Dashboard error:",
             error
         );
 
 
-        updateConnectionUI(
-            false,
-            "Connection error",
-            status,
-            connectionText,
-            dot
-        );
+        const connectionText =
+            document.getElementById(
+                "dashboard-connection-text"
+            );
 
 
-        return false;
+        if (connectionText) {
 
-    }
+            connectionText.textContent =
+                "Supabase connection error.";
 
-}
-
-
-/* =========================================================
-   CONNECTION UI
-   ========================================================= */
-
-function updateConnectionUI(
-    connected,
-    message,
-    status,
-    connectionText,
-    dot
-) {
-
-    if (status) {
-
-        status.textContent =
-            message;
-
-        status.classList.remove(
-            "success",
-            "error"
-        );
-
-        status.classList.add(
-            connected
-                ? "success"
-                : "error"
-        );
-
-    }
-
-
-    if (connectionText) {
-
-        connectionText.textContent =
-            connected
-                ? "Supabase connection is active."
-                : message;
-
-    }
-
-
-    if (dot) {
-
-        dot.classList.remove(
-            "success",
-            "error"
-        );
-
-        dot.classList.add(
-            connected
-                ? "success"
-                : "error"
-        );
+        }
 
     }
 
@@ -626,273 +447,57 @@ function showAdminMessage(
     type = "info"
 ) {
 
-    console.log(
-        `[${type}]`,
-        message
-    );
+    const element =
+        document.getElementById(
+            "admin-message"
+        );
 
 
-    /*
-     * Simple fallback.
-     * Later we can replace this with
-     * a professional toast notification.
-     */
+    if (!element) {
 
-    if (
-        type === "error"
-    ) {
-
-        alert(
+        console.log(
             message
         );
 
-    }
-
-}
-
-
-/* =========================================================
-   NAVIGATION INITIALIZATION
-   ========================================================= */
-
-function initializeNavigation() {
-
-    const navItems =
-        document.querySelectorAll(
-            ".nav-item"
-        );
-
-
-    navItems.forEach(
-        (item) => {
-
-            item.addEventListener(
-                "click",
-                function () {
-
-                    const sectionId =
-                        this.dataset.section;
-
-
-                    if (!sectionId) {
-
-                        console.warn(
-                            "Navigation item has no data-section."
-                        );
-
-                        return;
-
-                    }
-
-
-                    openSection(
-                        sectionId
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-    console.log(
-        "Admin navigation initialized."
-    );
-
-}
-
-
-/* =========================================================
-   MOBILE MENU INITIALIZATION
-   ========================================================= */
-
-function initializeMobileMenu() {
-
-    const button =
-        document.getElementById(
-            "mobile-menu-btn"
-        );
-
-
-    if (!button) {
         return;
     }
 
 
-    button.addEventListener(
-        "click",
+    element.textContent =
+        message;
+
+
+    element.className =
+        "admin-message " +
+        type;
+
+
+    element.style.display =
+        "block";
+
+
+    setTimeout(
         function () {
 
-            toggleSidebar();
+            element.style.display =
+                "none";
 
-        }
+        },
+        3000
     );
 
 }
 
 
 /* =========================================================
-   GLOBAL CLICK HANDLER
-   ========================================================= */
-
-function initializeGlobalClicks() {
-
-    document.addEventListener(
-        "click",
-        function (event) {
-
-            /*
-             * Nothing here for now.
-             * Reserved for future admin controls.
-             */
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   INITIALIZATION
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
-
-        console.log(
-            "SHOHIN ENGLISH ADMIN — initializing..."
-        );
-
-
-        /* -------------------------------------
-           Navigation
-           ------------------------------------- */
-
-        initializeNavigation();
-
-
-        /* -------------------------------------
-           Mobile menu
-           ------------------------------------- */
-
-        initializeMobileMenu();
-
-
-        /* -------------------------------------
-           Global clicks
-           ------------------------------------- */
-
-        initializeGlobalClicks();
-
-
-        /* -------------------------------------
-           Supabase connection
-           ------------------------------------- */
-
-        await testSupabaseConnection();
-
-
-        /* -------------------------------------
-           Dashboard
-           ------------------------------------- */
-
-        await updateDashboard();
-
-
-        /* -------------------------------------
-           Restore last section
-           ------------------------------------- */
-
-        const savedSection =
-            localStorage.getItem(
-                "shohin_admin_last_section"
-            );
-
-
-        const validSections = [
-            "dashboard-section",
-            "levels-section",
-            "lessons-section",
-            "vocabulary-section",
-            "phrases-section",
-            "videos-section",
-            "settings-section"
-        ];
-
-
-        const sectionToOpen =
-            validSections.includes(
-                savedSection
-            )
-                ? savedSection
-                : "dashboard-section";
-
-
-        openSection(
-            sectionToOpen
-        );
-
-
-        console.log(
-            "SHOHIN ENGLISH ADMIN — ready."
-        );
-
-    }
-);
-
-
-/* =========================================================
-   GLOBAL API
+   GLOBAL
    ========================================================= */
 
 window.openSection =
     openSection;
 
-
-window.toggleSidebar =
-    toggleSidebar;
-
-
-window.closeMobileSidebar =
-    closeMobileSidebar;
-
-
 window.updateDashboard =
     updateDashboard;
 
-
-window.testSupabaseConnection =
-    testSupabaseConnection;
-
-
 window.showAdminMessage =
     showAdminMessage;
-
-
-window.escapeHtml =
-    escapeHtml;
-
-
-/* =========================================================
-   SHOHIN ADMIN API
-   ========================================================= */
-
-window.SHOHIN_ADMIN = {
-
-    openSection,
-
-    toggleSidebar,
-
-    closeMobileSidebar,
-
-    updateDashboard,
-
-    testSupabaseConnection,
-
-    showAdminMessage,
-
-    escapeHtml
-
-};
