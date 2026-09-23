@@ -1,56 +1,64 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
-```
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta
-    name="theme-color"
-    content="#071c16"
->
+    <meta
+        name="theme-color"
+        content="#071c16"
+    >
 
-<title>SHOHIN ENGLISH — Admin</title>
+    <title>
+        SHOHIN ENGLISH — Admin
+    </title>
 
-<!-- =====================================================
-     SHOHIN ENGLISH — ADMIN PANEL
-     SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
-     ===================================================== -->
-
-<link rel="stylesheet" href="css/admin.css">
-```
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
 
 </head>
 
+
 <body>
 
-```
+
 <!-- =====================================================
      MOBILE HEADER
      ===================================================== -->
 
 <header class="mobile-header">
 
+    <div class="mobile-brand">
+
+        <strong>
+            SHOHIN ENGLISH
+        </strong>
+
+        <span>
+            ADMIN
+        </span>
+
+    </div>
+
+
     <button
-        id="mobile-menu-btn"
-        class="mobile-menu-btn"
         type="button"
-        aria-label="Open menu"
+        class="mobile-menu-btn"
+        id="mobile-menu-btn"
     >
         ☰
     </button>
 
-    <div class="mobile-brand">
-        <strong>SHOHIN</strong>
-        <span>ENGLISH</span>
-    </div>
-
 </header>
+
 
 
 <!-- =====================================================
@@ -58,109 +66,157 @@
      ===================================================== -->
 
 <aside
-    id="admin-sidebar"
     class="sidebar"
+    id="sidebar"
 >
-
-    <!-- BRAND -->
 
     <div class="sidebar-brand">
 
-        <div class="brand-logo">
-            S
+        <div class="brand-title">
+            SHOHIN ENGLISH
         </div>
 
-        <div class="brand-text">
-            <strong>SHOHIN</strong>
-            <span>ENGLISH</span>
-            <small>ADMIN PANEL</small>
+        <div class="brand-subtitle">
+            ADMIN PANEL
         </div>
 
     </div>
 
 
-    <!-- NAVIGATION -->
-
     <nav class="sidebar-nav">
+
+
+        <!-- DASHBOARD -->
 
         <button
             type="button"
             class="nav-item active"
             data-section="dashboard-section"
         >
-            <span class="nav-icon">⌂</span>
-            <span>Dashboard</span>
+
+            <span class="nav-icon">
+                📊
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
         </button>
 
+
+        <!-- LEVELS -->
 
         <button
             type="button"
             class="nav-item"
             data-section="levels-section"
         >
-            <span class="nav-icon">▣</span>
-            <span>Levels</span>
+
+            <span class="nav-icon">
+                🎓
+            </span>
+
+            <span>
+                Levels
+            </span>
+
         </button>
 
+
+        <!-- LESSONS -->
 
         <button
             type="button"
             class="nav-item"
             data-section="lessons-section"
         >
-            <span class="nav-icon">▤</span>
-            <span>Lessons</span>
+
+            <span class="nav-icon">
+                📚
+            </span>
+
+            <span>
+                Lessons
+            </span>
+
         </button>
 
+
+        <!-- WORDS -->
 
         <button
             type="button"
             class="nav-item"
             data-section="words-section"
         >
-            <span class="nav-icon">🧠</span>
-            <span>Words</span>
+
+            <span class="nav-icon">
+                🧠
+            </span>
+
+            <span>
+                Words
+            </span>
+
         </button>
 
+
+        <!-- PHRASES -->
 
         <button
             type="button"
             class="nav-item"
             data-section="phrases-section"
         >
-            <span class="nav-icon">💬</span>
-            <span>Phrases</span>
+
+            <span class="nav-icon">
+                💬
+            </span>
+
+            <span>
+                Phrases
+            </span>
+
         </button>
 
+
+        <!-- SETTINGS -->
 
         <button
             type="button"
             class="nav-item"
             data-section="settings-section"
         >
-            <span class="nav-icon">⚙</span>
-            <span>Settings</span>
+
+            <span class="nav-icon">
+                ⚙️
+            </span>
+
+            <span>
+                Settings
+            </span>
+
         </button>
+
 
     </nav>
 
 
-    <!-- SIDEBAR FOOTER -->
-
     <div class="sidebar-footer">
 
-        <div class="admin-status">
-            <span class="status-dot"></span>
-            <span>Admin Panel</span>
-        </div>
+        <span>
+            SHOHIN ENGLISH
+        </span>
 
-        <div class="admin-version">
-            SHOHIN ENGLISH v1.0
-        </div>
+        <small>
+            Admin Panel
+        </small>
 
     </div>
 
 </aside>
+
 
 
 <!-- =====================================================
@@ -168,6 +224,7 @@
      ===================================================== -->
 
 <main class="main-content">
+
 
     <!-- =================================================
          DASHBOARD
@@ -178,36 +235,45 @@
         class="content-section active"
     >
 
-        <div class="page-header">
+        <div class="section-header">
 
             <div>
-                <h1>Dashboard</h1>
+
+                <h1>
+                    Dashboard
+                </h1>
 
                 <p>
                     Manage SHOHIN ENGLISH content.
                 </p>
+
             </div>
 
         </div>
 
 
-        <!-- STAT CARDS -->
+        <!-- STATS -->
 
         <div class="stats-grid">
+
 
             <!-- LEVELS -->
 
             <div class="stat-card">
 
                 <div class="stat-icon">
-                    ▣
+                    🎓
                 </div>
 
                 <div class="stat-info">
 
-                    <span>Levels</span>
+                    <span>
+                        Levels
+                    </span>
 
-                    <strong id="dashboard-levels-count">
+                    <strong
+                        id="dashboard-levels-count"
+                    >
                         0
                     </strong>
 
@@ -221,14 +287,18 @@
             <div class="stat-card">
 
                 <div class="stat-icon">
-                    ▤
+                    📚
                 </div>
 
                 <div class="stat-info">
 
-                    <span>Lessons</span>
+                    <span>
+                        Lessons
+                    </span>
 
-                    <strong id="dashboard-lessons-count">
+                    <strong
+                        id="dashboard-lessons-count"
+                    >
                         0
                     </strong>
 
@@ -247,9 +317,13 @@
 
                 <div class="stat-info">
 
-                    <span>Words</span>
+                    <span>
+                        Words
+                    </span>
 
-                    <strong id="dashboard-words-count">
+                    <strong
+                        id="dashboard-words-count"
+                    >
                         0
                     </strong>
 
@@ -268,9 +342,13 @@
 
                 <div class="stat-info">
 
-                    <span>Phrases</span>
+                    <span>
+                        Phrases
+                    </span>
 
-                    <strong id="dashboard-phrases-count">
+                    <strong
+                        id="dashboard-phrases-count"
+                    >
                         0
                     </strong>
 
@@ -278,74 +356,102 @@
 
             </div>
 
+
         </div>
+
 
 
         <!-- QUICK ACTIONS -->
 
-        <div class="content-card">
+        <div class="panel">
 
-            <div class="card-header">
+            <div class="panel-header">
 
-                <div>
-
-                    <h2>Quick Actions</h2>
-
-                    <p>
-                        Quickly open the main content sections.
-                    </p>
-
-                </div>
+                <h2>
+                    Quick Actions
+                </h2>
 
             </div>
 
 
             <div class="quick-actions">
 
+
                 <button
                     type="button"
-                    class="action-button"
+                    class="quick-action"
                     onclick="openSection('levels-section')"
                 >
-                    <span>▣</span>
-                    Manage Levels
+
+                    <span>
+                        🎓
+                    </span>
+
+                    <strong>
+                        Manage Levels
+                    </strong>
+
                 </button>
 
 
                 <button
                     type="button"
-                    class="action-button"
+                    class="quick-action"
                     onclick="openSection('lessons-section')"
                 >
-                    <span>▤</span>
-                    Manage Lessons
+
+                    <span>
+                        📚
+                    </span>
+
+                    <strong>
+                        Manage Lessons
+                    </strong>
+
                 </button>
 
 
                 <button
                     type="button"
-                    class="action-button"
+                    class="quick-action"
                     onclick="openSection('words-section')"
                 >
-                    <span>🧠</span>
-                    Manage Words
+
+                    <span>
+                        🧠
+                    </span>
+
+                    <strong>
+                        Manage Words
+                    </strong>
+
                 </button>
 
 
                 <button
                     type="button"
-                    class="action-button"
+                    class="quick-action"
                     onclick="openSection('phrases-section')"
                 >
-                    <span>💬</span>
-                    Manage Phrases
+
+                    <span>
+                        💬
+                    </span>
+
+                    <strong>
+                        Manage Phrases
+                    </strong>
+
                 </button>
+
 
             </div>
 
         </div>
 
+
     </section>
+
 
 
     <!-- =================================================
@@ -357,14 +463,16 @@
         class="content-section"
     >
 
-        <div class="page-header">
+        <div class="section-header">
 
             <div>
 
-                <h1>Levels</h1>
+                <h1>
+                    Levels
+                </h1>
 
                 <p>
-                    Manage CEFR English levels.
+                    Manage English learning levels.
                 </p>
 
             </div>
@@ -372,46 +480,30 @@
 
             <button
                 type="button"
-                class="primary-button"
+                class="btn btn-primary"
                 onclick="openAddLevelModal()"
             >
+
                 + Add Level
+
             </button>
 
         </div>
 
 
-        <div class="content-card">
+        <div
+            id="levels-list"
+            class="content-list"
+        >
 
-            <div class="card-header">
-
-                <div>
-
-                    <h2>All Levels</h2>
-
-                    <p>
-                        A1, A2, B1, B2, C1 and C2
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="levels-list"
-                class="admin-list"
-            >
-
-                <div class="empty-state">
-                    Loading levels...
-                </div>
-
+            <div class="loading">
+                Loading levels...
             </div>
 
         </div>
 
     </section>
+
 
 
     <!-- =================================================
@@ -423,70 +515,74 @@
         class="content-section"
     >
 
-        <div class="page-header">
+        <div class="section-header">
 
             <div>
 
-                <h1>Lessons</h1>
+                <h1>
+                    Lessons
+                </h1>
 
                 <p>
-                    Create and manage lessons by level.
+                    Manage lessons for each level.
                 </p>
 
             </div>
 
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="openAddLessonModal()"
+            >
+
+                + Add Lesson
+
+            </button>
+
         </div>
 
 
-        <div class="content-card">
-
-            <div class="lesson-toolbar">
-
-                <div class="form-group">
-
-                    <label for="lesson-level-select">
-                        Select Level
-                    </label>
-
-                    <select
-                        id="lesson-level-select"
-                        class="form-control"
-                    >
-
-                        <option value="">
-                            Loading levels...
-                        </option>
-
-                    </select>
-
-                </div>
+        <div class="filter-row">
 
 
-                <button
-                    type="button"
-                    class="primary-button"
-                    onclick="openAddLessonModal()"
+            <div class="form-group">
+
+                <label
+                    for="lesson-level-select"
                 >
-                    + Add Lesson
-                </button>
+                    Level
+                </label>
+
+                <select
+                    id="lesson-level-select"
+                >
+
+                    <option value="">
+                        Select Level
+                    </option>
+
+                </select>
 
             </div>
 
 
-            <div
-                id="lessons-list"
-                class="admin-list"
-            >
+        </div>
 
-                <div class="empty-state">
-                    Select a level to view lessons.
-                </div>
 
+        <div
+            id="lessons-list"
+            class="content-list"
+        >
+
+            <div class="empty-state">
+                Select a level to view lessons.
             </div>
 
         </div>
 
     </section>
+
 
 
     <!-- =================================================
@@ -498,91 +594,96 @@
         class="content-section"
     >
 
-        <div class="page-header">
+        <div class="section-header">
 
             <div>
 
-                <h1>Words</h1>
+                <h1>
+                    Words
+                </h1>
 
                 <p>
-                    Manage vocabulary words by lesson.
+                    Manage vocabulary words for each lesson.
                 </p>
 
             </div>
 
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="openAddWordModal()"
+            >
+
+                + Add Word
+
+            </button>
+
         </div>
 
 
-        <div class="content-card">
-
-            <div class="lesson-toolbar">
-
-                <div class="form-group">
-
-                    <label for="word-level-select">
-                        Select Level
-                    </label>
-
-                    <select
-                        id="word-level-select"
-                        class="form-control"
-                    >
-
-                        <option value="">
-                            Loading levels...
-                        </option>
-
-                    </select>
-
-                </div>
+        <div class="filter-row">
 
 
-                <div class="form-group">
+            <div class="form-group">
 
-                    <label for="word-lesson-select">
-                        Select Lesson
-                    </label>
-
-                    <select
-                        id="word-lesson-select"
-                        class="form-control"
-                        disabled
-                    >
-
-                        <option value="">
-                            Select a level first
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="primary-button"
-                    onclick="openAddWordModal()"
+                <label
+                    for="word-level-select"
                 >
-                    + Add Word
-                </button>
+                    Level
+                </label>
+
+                <select
+                    id="word-level-select"
+                >
+
+                    <option value="">
+                        Select Level
+                    </option>
+
+                </select>
 
             </div>
 
 
-            <div
-                id="words-list"
-                class="admin-list"
-            >
+            <div class="form-group">
 
-                <div class="empty-state">
-                    Select a level and lesson to view words.
-                </div>
+                <label
+                    for="word-lesson-select"
+                >
+                    Lesson
+                </label>
 
+                <select
+                    id="word-lesson-select"
+                    disabled
+                >
+
+                    <option value="">
+                        Select Lesson
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            id="words-list"
+            class="content-list"
+        >
+
+            <div class="empty-state">
+                Select a lesson to view words.
             </div>
 
         </div>
 
     </section>
+
 
 
     <!-- =================================================
@@ -594,14 +695,16 @@
         class="content-section"
     >
 
-        <div class="page-header">
+        <div class="section-header">
 
             <div>
 
-                <h1>Phrases</h1>
+                <h1>
+                    Phrases
+                </h1>
 
                 <p>
-                    Manage English phrases by level.
+                    Manage English phrases for each lesson.
                 </p>
 
             </div>
@@ -609,46 +712,79 @@
 
             <button
                 type="button"
-                class="primary-button"
+                class="btn btn-primary"
                 onclick="openAddPhraseModal()"
             >
+
                 + Add Phrase
+
             </button>
 
         </div>
 
 
-        <div class="content-card">
+        <div class="filter-row">
 
-            <div class="card-header">
 
-                <div>
+            <div class="form-group">
 
-                    <h2>All Phrases</h2>
+                <label
+                    for="phrase-level-select"
+                >
+                    Level
+                </label>
 
-                    <p>
-                        Phrase content will be connected to Supabase.
-                    </p>
+                <select
+                    id="phrase-level-select"
+                >
 
-                </div>
+                    <option value="">
+                        Select Level
+                    </option>
+
+                </select>
 
             </div>
 
 
-            <div
-                id="phrases-list"
-                class="admin-list"
-            >
+            <div class="form-group">
 
-                <div class="empty-state">
-                    Phrases module is ready.
-                </div>
+                <label
+                    for="phrase-lesson-select"
+                >
+                    Lesson
+                </label>
 
+                <select
+                    id="phrase-lesson-select"
+                    disabled
+                >
+
+                    <option value="">
+                        Select Lesson
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            id="phrases-list"
+            class="content-list"
+        >
+
+            <div class="empty-state">
+                Select a lesson to view phrases.
             </div>
 
         </div>
 
     </section>
+
 
 
     <!-- =================================================
@@ -660,14 +796,16 @@
         class="content-section"
     >
 
-        <div class="page-header">
+        <div class="section-header">
 
             <div>
 
-                <h1>Settings</h1>
+                <h1>
+                    Settings
+                </h1>
 
                 <p>
-                    SHOHIN ENGLISH administration settings.
+                    SHOHIN ENGLISH Admin settings.
                 </p>
 
             </div>
@@ -675,76 +813,28 @@
         </div>
 
 
-        <div class="content-card">
+        <div class="panel">
 
-            <div class="card-header">
+            <div class="panel-header">
 
-                <div>
-
-                    <h2>System</h2>
-
-                    <p>
-                        Current administration configuration.
-                    </p>
-
-                </div>
+                <h2>
+                    System
+                </h2>
 
             </div>
 
 
-            <div class="settings-list">
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <strong>Application</strong>
-
-                        <span>
-                            SHOHIN ENGLISH
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <strong>Database</strong>
-
-                        <span>
-                            Supabase
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <strong>User Authentication</strong>
-
-                        <span>
-                            Not required for public app
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <p>
+                Admin panel is connected to Supabase.
+            </p>
 
         </div>
 
     </section>
 
+
 </main>
+
 
 
 <!-- =====================================================
@@ -754,20 +844,18 @@
 <div
     id="add-level-modal"
     class="modal"
-    aria-hidden="true"
 >
 
     <div class="modal-content">
+
 
         <div class="modal-header">
 
             <div>
 
-                <h2>Add Level</h2>
-
-                <p>
-                    Create a new CEFR level.
-                </p>
+                <h2>
+                    Add Level
+                </h2>
 
             </div>
 
@@ -776,7 +864,6 @@
                 type="button"
                 class="modal-close"
                 onclick="closeAddLevelModal()"
-                aria-label="Close"
             >
                 ×
             </button>
@@ -784,25 +871,21 @@
         </div>
 
 
-        <form
-            id="add-level-form"
-            onsubmit="event.preventDefault(); addLevel();"
-        >
+        <div class="modal-body">
+
 
             <div class="form-group">
 
-                <label for="level-code-input">
-                    Level Code
+                <label
+                    for="level-code-input"
+                >
+                    Code
                 </label>
 
                 <input
+                    type="text"
                     id="level-code-input"
-                    type="text"
-                    class="form-control"
                     placeholder="A1"
-                    maxlength="10"
-                    autocomplete="off"
-                    required
                 >
 
             </div>
@@ -810,17 +893,16 @@
 
             <div class="form-group">
 
-                <label for="level-name-input">
-                    Level Name
+                <label
+                    for="level-name-input"
+                >
+                    Name
                 </label>
 
                 <input
-                    id="level-name-input"
                     type="text"
-                    class="form-control"
+                    id="level-name-input"
                     placeholder="Beginner"
-                    autocomplete="off"
-                    required
                 >
 
             </div>
@@ -828,15 +910,16 @@
 
             <div class="form-group">
 
-                <label for="level-description-input">
+                <label
+                    for="level-description-input"
+                >
                     Description
                 </label>
 
                 <textarea
                     id="level-description-input"
-                    class="form-control"
-                    rows="4"
-                    placeholder="Level description..."
+                    rows="3"
+                    placeholder="Basic English for beginners"
                 ></textarea>
 
             </div>
@@ -844,46 +927,51 @@
 
             <div class="form-group">
 
-                <label for="level-sort-order-input">
+                <label
+                    for="level-sort-order-input"
+                >
                     Sort Order
                 </label>
 
                 <input
-                    id="level-sort-order-input"
                     type="number"
-                    class="form-control"
-                    min="1"
+                    id="level-sort-order-input"
                     value="1"
+                    min="1"
                 >
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="secondary-button"
-                    onclick="closeAddLevelModal()"
-                >
-                    Cancel
-                </button>
+        </div>
 
 
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Save Level
-                </button>
+        <div class="modal-footer">
 
-            </div>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeAddLevelModal()"
+            >
+                Cancel
+            </button>
 
-        </form>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="addLevel()"
+            >
+                Save Level
+            </button>
+
+        </div>
+
 
     </div>
 
 </div>
+
 
 
 <!-- =====================================================
@@ -893,29 +981,22 @@
 <div
     id="edit-level-modal"
     class="modal"
-    aria-hidden="true"
 >
 
     <div class="modal-content">
 
+
         <div class="modal-header">
 
-            <div>
-
-                <h2>Edit Level</h2>
-
-                <p>
-                    Update level information.
-                </p>
-
-            </div>
+            <h2>
+                Edit Level
+            </h2>
 
 
             <button
                 type="button"
                 class="modal-close"
                 onclick="closeEditLevelModal()"
-                aria-label="Close"
             >
                 ×
             </button>
@@ -923,29 +1004,26 @@
         </div>
 
 
-        <form
-            id="edit-level-form"
-            onsubmit="event.preventDefault(); updateLevel();"
-        >
+        <div class="modal-body">
+
 
             <input
-                id="edit-level-id"
                 type="hidden"
+                id="edit-level-id"
             >
 
 
             <div class="form-group">
 
-                <label for="edit-level-code">
-                    Level Code
+                <label
+                    for="edit-level-code-input"
+                >
+                    Code
                 </label>
 
                 <input
-                    id="edit-level-code"
                     type="text"
-                    class="form-control"
-                    maxlength="10"
-                    required
+                    id="edit-level-code-input"
                 >
 
             </div>
@@ -953,15 +1031,15 @@
 
             <div class="form-group">
 
-                <label for="edit-level-name">
-                    Level Name
+                <label
+                    for="edit-level-name-input"
+                >
+                    Name
                 </label>
 
                 <input
-                    id="edit-level-name"
                     type="text"
-                    class="form-control"
-                    required
+                    id="edit-level-name-input"
                 >
 
             </div>
@@ -969,14 +1047,15 @@
 
             <div class="form-group">
 
-                <label for="edit-level-description">
+                <label
+                    for="edit-level-description-input"
+                >
                     Description
                 </label>
 
                 <textarea
-                    id="edit-level-description"
-                    class="form-control"
-                    rows="4"
+                    id="edit-level-description-input"
+                    rows="3"
                 ></textarea>
 
             </div>
@@ -984,45 +1063,50 @@
 
             <div class="form-group">
 
-                <label for="edit-level-sort-order">
+                <label
+                    for="edit-level-sort-order-input"
+                >
                     Sort Order
                 </label>
 
                 <input
-                    id="edit-level-sort-order"
                     type="number"
-                    class="form-control"
+                    id="edit-level-sort-order-input"
                     min="1"
                 >
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="secondary-button"
-                    onclick="closeEditLevelModal()"
-                >
-                    Cancel
-                </button>
+        </div>
 
 
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Save Changes
-                </button>
+        <div class="modal-footer">
 
-            </div>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeEditLevelModal()"
+            >
+                Cancel
+            </button>
 
-        </form>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="updateLevel()"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
 
     </div>
 
 </div>
+
 
 
 <!-- =====================================================
@@ -1032,19 +1116,21 @@
 <div
     id="add-lesson-modal"
     class="modal"
-    aria-hidden="true"
 >
 
     <div class="modal-content">
+
 
         <div class="modal-header">
 
             <div>
 
-                <h2>Add Lesson</h2>
+                <h2>
+                    Add Lesson
+                </h2>
 
                 <p>
-                    Create a new lesson.
+                    Add a lesson to the selected level.
                 </p>
 
             </div>
@@ -1054,7 +1140,6 @@
                 type="button"
                 class="modal-close"
                 onclick="closeAddLessonModal()"
-                aria-label="Close"
             >
                 ×
             </button>
@@ -1062,40 +1147,42 @@
         </div>
 
 
-        <form
-            id="add-lesson-form"
-            onsubmit="event.preventDefault(); addLesson();"
-        >
+        <div class="modal-body">
+
 
             <div class="form-group">
 
-                <label>
-                    Selected Level
+                <label
+                    for="add-lesson-level-select"
+                >
+                    Level
                 </label>
 
-                <div
-                    id="add-lesson-selected-level"
-                    class="selected-level-box"
+                <select
+                    id="add-lesson-level-select"
                 >
-                    Selected from Lessons
-                </div>
+
+                    <option value="">
+                        Select Level
+                    </option>
+
+                </select>
 
             </div>
 
 
             <div class="form-group">
 
-                <label for="lesson-title-input">
+                <label
+                    for="lesson-title-input"
+                >
                     Lesson Title
                 </label>
 
                 <input
-                    id="lesson-title-input"
                     type="text"
-                    class="form-control"
+                    id="lesson-title-input"
                     placeholder="Introduction"
-                    autocomplete="off"
-                    required
                 >
 
             </div>
@@ -1103,15 +1190,16 @@
 
             <div class="form-group">
 
-                <label for="lesson-description-input">
+                <label
+                    for="lesson-description-input"
+                >
                     Description
                 </label>
 
                 <textarea
                     id="lesson-description-input"
-                    class="form-control"
-                    rows="4"
-                    placeholder="Lesson description..."
+                    rows="3"
+                    placeholder="First English lesson"
                 ></textarea>
 
             </div>
@@ -1119,46 +1207,51 @@
 
             <div class="form-group">
 
-                <label for="lesson-sort-order-input">
+                <label
+                    for="lesson-sort-order-input"
+                >
                     Sort Order
                 </label>
 
                 <input
-                    id="lesson-sort-order-input"
                     type="number"
-                    class="form-control"
-                    min="1"
+                    id="lesson-sort-order-input"
                     value="1"
+                    min="1"
                 >
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="secondary-button"
-                    onclick="closeAddLessonModal()"
-                >
-                    Cancel
-                </button>
+        </div>
 
 
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Save Lesson
-                </button>
+        <div class="modal-footer">
 
-            </div>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeAddLessonModal()"
+            >
+                Cancel
+            </button>
 
-        </form>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="addLesson()"
+            >
+                Save Lesson
+            </button>
+
+        </div>
+
 
     </div>
 
 </div>
+
 
 
 <!-- =====================================================
@@ -1168,29 +1261,22 @@
 <div
     id="edit-lesson-modal"
     class="modal"
-    aria-hidden="true"
 >
 
     <div class="modal-content">
 
+
         <div class="modal-header">
 
-            <div>
-
-                <h2>Edit Lesson</h2>
-
-                <p>
-                    Update lesson information.
-                </p>
-
-            </div>
+            <h2>
+                Edit Lesson
+            </h2>
 
 
             <button
                 type="button"
                 class="modal-close"
                 onclick="closeEditLessonModal()"
-                aria-label="Close"
             >
                 ×
             </button>
@@ -1198,28 +1284,26 @@
         </div>
 
 
-        <form
-            id="edit-lesson-form"
-            onsubmit="event.preventDefault(); updateLesson();"
-        >
+        <div class="modal-body">
+
 
             <input
-                id="edit-lesson-id"
                 type="hidden"
+                id="edit-lesson-id"
             >
 
 
             <div class="form-group">
 
-                <label for="edit-lesson-title">
+                <label
+                    for="edit-lesson-title-input"
+                >
                     Lesson Title
                 </label>
 
                 <input
-                    id="edit-lesson-title"
                     type="text"
-                    class="form-control"
-                    required
+                    id="edit-lesson-title-input"
                 >
 
             </div>
@@ -1227,14 +1311,15 @@
 
             <div class="form-group">
 
-                <label for="edit-lesson-description">
+                <label
+                    for="edit-lesson-description-input"
+                >
                     Description
                 </label>
 
                 <textarea
-                    id="edit-lesson-description"
-                    class="form-control"
-                    rows="4"
+                    id="edit-lesson-description-input"
+                    rows="3"
                 ></textarea>
 
             </div>
@@ -1242,45 +1327,50 @@
 
             <div class="form-group">
 
-                <label for="edit-lesson-sort-order">
+                <label
+                    for="edit-lesson-sort-order-input"
+                >
                     Sort Order
                 </label>
 
                 <input
-                    id="edit-lesson-sort-order"
                     type="number"
-                    class="form-control"
+                    id="edit-lesson-sort-order-input"
                     min="1"
                 >
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="secondary-button"
-                    onclick="closeEditLessonModal()"
-                >
-                    Cancel
-                </button>
+        </div>
 
 
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Save Changes
-                </button>
+        <div class="modal-footer">
 
-            </div>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeEditLessonModal()"
+            >
+                Cancel
+            </button>
 
-        </form>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="updateLesson()"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
 
     </div>
 
 </div>
+
 
 
 <!-- =====================================================
@@ -1290,19 +1380,28 @@
 <div
     id="add-word-modal"
     class="modal"
-    aria-hidden="true"
 >
 
     <div class="modal-content">
+
 
         <div class="modal-header">
 
             <div>
 
-                <h2>Add Word</h2>
+                <h2>
+                    Add Word
+                </h2>
 
                 <p>
-                    Add a vocabulary word to the selected lesson.
+
+                    Lesson:
+                    <strong
+                        id="add-word-selected-lesson"
+                    >
+                        —
+                    </strong>
+
                 </p>
 
             </div>
@@ -1312,7 +1411,6 @@
                 type="button"
                 class="modal-close"
                 onclick="closeAddWordModal()"
-                aria-label="Close"
             >
                 ×
             </button>
@@ -1320,40 +1418,21 @@
         </div>
 
 
-        <form
-            id="add-word-form"
-            onsubmit="event.preventDefault(); addWord();"
-        >
+        <div class="modal-body">
+
 
             <div class="form-group">
 
-                <label>
-                    Selected Lesson
-                </label>
-
-                <div
-                    id="add-word-selected-lesson"
-                    class="selected-level-box"
+                <label
+                    for="word-english-input"
                 >
-                    Select a lesson first
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="word-english-input">
-                    English Word
+                    English Word *
                 </label>
 
                 <input
-                    id="word-english-input"
                     type="text"
-                    class="form-control"
+                    id="word-english-input"
                     placeholder="hello"
-                    autocomplete="off"
-                    required
                 >
 
             </div>
@@ -1361,16 +1440,16 @@
 
             <div class="form-group">
 
-                <label for="word-russian-input">
+                <label
+                    for="word-russian-input"
+                >
                     Russian Translation
                 </label>
 
                 <input
-                    id="word-russian-input"
                     type="text"
-                    class="form-control"
+                    id="word-russian-input"
                     placeholder="привет"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1378,16 +1457,16 @@
 
             <div class="form-group">
 
-                <label for="word-tajik-input">
+                <label
+                    for="word-tajik-input"
+                >
                     Tajik Translation
                 </label>
 
                 <input
-                    id="word-tajik-input"
                     type="text"
-                    class="form-control"
+                    id="word-tajik-input"
                     placeholder="салом"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1395,16 +1474,16 @@
 
             <div class="form-group">
 
-                <label for="word-pronunciation-input">
+                <label
+                    for="word-pronunciation-input"
+                >
                     Pronunciation
                 </label>
 
                 <input
-                    id="word-pronunciation-input"
                     type="text"
-                    class="form-control"
+                    id="word-pronunciation-input"
                     placeholder="həˈləʊ"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1412,16 +1491,16 @@
 
             <div class="form-group">
 
-                <label for="word-audio-input">
+                <label
+                    for="word-audio-input"
+                >
                     Audio URL
                 </label>
 
                 <input
-                    id="word-audio-input"
                     type="url"
-                    class="form-control"
+                    id="word-audio-input"
                     placeholder="https://..."
-                    autocomplete="off"
                 >
 
             </div>
@@ -1429,16 +1508,16 @@
 
             <div class="form-group">
 
-                <label for="word-image-input">
+                <label
+                    for="word-image-input"
+                >
                     Image URL
                 </label>
 
                 <input
-                    id="word-image-input"
                     type="url"
-                    class="form-control"
+                    id="word-image-input"
                     placeholder="https://..."
-                    autocomplete="off"
                 >
 
             </div>
@@ -1446,15 +1525,16 @@
 
             <div class="form-group">
 
-                <label for="word-example-input">
+                <label
+                    for="word-example-input"
+                >
                     Example Sentence
                 </label>
 
                 <textarea
                     id="word-example-input"
-                    class="form-control"
-                    rows="4"
-                    placeholder="Hello, my friend!"
+                    rows="3"
+                    placeholder="Hello, my friend."
                 ></textarea>
 
             </div>
@@ -1462,46 +1542,250 @@
 
             <div class="form-group">
 
-                <label for="word-sort-order-input">
+                <label
+                    for="word-sort-order-input"
+                >
                     Sort Order
                 </label>
 
                 <input
-                    id="word-sort-order-input"
                     type="number"
-                    class="form-control"
-                    min="1"
+                    id="word-sort-order-input"
                     value="1"
+                    min="1"
                 >
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="secondary-button"
-                    onclick="closeAddWordModal()"
-                >
-                    Cancel
-                </button>
+        </div>
 
 
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Save Word
-                </button>
+        <div class="modal-footer">
 
-            </div>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeAddWordModal()"
+            >
+                Cancel
+            </button>
 
-        </form>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="addWord()"
+            >
+                Save Word
+            </button>
+
+        </div>
+
 
     </div>
 
 </div>
+
+
+
+<!-- =====================================================
+     ADD PHRASE MODAL
+     ===================================================== -->
+
+<div
+    id="add-phrase-modal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Add Phrase
+                </h2>
+
+                <p>
+
+                    Lesson:
+                    <strong
+                        id="add-phrase-selected-lesson"
+                    >
+                        —
+                    </strong>
+
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeAddPhraseModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-english-input"
+                >
+                    English Phrase *
+                </label>
+
+                <input
+                    type="text"
+                    id="phrase-english-input"
+                    placeholder="Hello, how are you?"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-russian-input"
+                >
+                    Russian Translation
+                </label>
+
+                <input
+                    type="text"
+                    id="phrase-russian-input"
+                    placeholder="Привет, как дела?"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-tajik-input"
+                >
+                    Tajik Translation
+                </label>
+
+                <input
+                    type="text"
+                    id="phrase-tajik-input"
+                    placeholder="Салом, аҳволатон чӣ хел?"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-pronunciation-input"
+                >
+                    Pronunciation
+                </label>
+
+                <input
+                    type="text"
+                    id="phrase-pronunciation-input"
+                    placeholder="həˈləʊ haʊ ɑː juː"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-audio-input"
+                >
+                    Audio URL
+                </label>
+
+                <input
+                    type="url"
+                    id="phrase-audio-input"
+                    placeholder="https://..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-example-input"
+                >
+                    Example / Note
+                </label>
+
+                <textarea
+                    id="phrase-example-input"
+                    rows="3"
+                    placeholder="A common greeting."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="phrase-sort-order-input"
+                >
+                    Sort Order
+                </label>
+
+                <input
+                    type="number"
+                    id="phrase-sort-order-input"
+                    value="1"
+                    min="1"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeAddPhraseModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="addPhrase()"
+            >
+                Save Phrase
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
 
 
 <!-- =====================================================
@@ -1511,33 +1795,43 @@
 <div
     id="admin-message"
     class="admin-message"
-    aria-live="polite"
 ></div>
 
 
+
 <!-- =====================================================
-     SUPABASE
+     SCRIPTS
      ===================================================== -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
 ></script>
 
+<script
+    src="js/supabase.js"
+></script>
 
-<!-- =====================================================
-     ADMIN JS
-     ===================================================== -->
+<script
+    src="js/admin.js"
+></script>
 
-<script src="js/supabase.js"></script>
+<script
+    src="js/levels.js"
+></script>
 
-<script src="js/admin.js"></script>
+<script
+    src="js/lessons.js"
+></script>
 
-<script src="js/levels.js"></script>
+<script
+    src="js/words.js"
+></script>
 
-<script src="js/lessons.js"></script>
+<script
+    src="js/phrases.js"
+></script>
 
-<script src="js/words.js"></script>
-```
 
 </body>
+
 </html>
