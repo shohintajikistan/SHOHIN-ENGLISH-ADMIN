@@ -16,8 +16,14 @@ let selectedPhraseLessonId = null;
    INITIALIZATION
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log(
+        "SHOHIN PHRASES: initialized"
+    );
+
     loadPhraseLevels();
+
 });
 
 
@@ -28,43 +34,104 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadPhraseLevels() {
 
     const levelSelect =
-        document.getElementById("phrase-level-select");
+        document.getElementById(
+            "phrase-level-select"
+        );
 
     if (!levelSelect) {
+        console.error(
+            "phrase-level-select not found."
+        );
         return;
     }
+
+    if (!window.supabaseClient) {
+
+        console.error(
+            "Supabase client not found."
+        );
+
+        showPhraseMessage(
+            "Supabase connection is not ready.",
+            "error"
+        );
+
+        return;
+    }
+
 
     levelSelect.innerHTML =
         '<option value="">Select Level</option>';
 
+
     try {
 
-        const { data, error } = await supabaseClient
-            .from("levels")
-            .select("id, code, name, sort_order")
-            .order("sort_order", { ascending: true });
+        const { data, error } =
+            await window.supabaseClient
+                .from("levels")
+                .select(
+                    "id, code, name, sort_order"
+                )
+                .order(
+                    "sort_order",
+                    {
+                        ascending: true
+                    }
+                );
+
 
         if (error) {
-            console.error(error);
+
+            console.error(
+                "Error loading levels:",
+                error
+            );
+
+            showPhraseMessage(
+                "Could not load levels: " +
+                error.message,
+                "error"
+            );
+
             return;
         }
 
+
         phraseLevels = data || [];
 
-        phraseLevels.forEach(level => {
 
-            const option =
-                document.createElement("option");
+        phraseLevels.forEach(
+            function (level) {
 
-            option.value = level.id;
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
-            option.textContent =
-                `${level.code} — ${level.name}`;
+                option.value =
+                    level.id;
 
-            levelSelect.appendChild(option);
-        });
+                option.textContent =
+                    level.code +
+                    " — " +
+                    level.name;
+
+                levelSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
 
         updatePhrasesDashboard();
+
+
+        console.log(
+            "PHRASE LEVELS:",
+            phraseLevels
+        );
+
 
     } catch (error) {
 
@@ -72,7 +139,14 @@ async function loadPhraseLevels() {
             "Could not load phrase levels:",
             error
         );
+
+        showPhraseMessage(
+            "Could not load levels.",
+            "error"
+        );
+
     }
+
 }
 
 
@@ -80,127 +154,220 @@ async function loadPhraseLevels() {
    LEVEL CHANGE
    ========================================================= */
 
-document.addEventListener("change", event => {
+document.addEventListener(
+    "change",
+    function (event) {
 
-    if (event.target.id !== "phrase-level-select") {
-        return;
-    }
+        if (
+            event.target.id !==
+            "phrase-level-select"
+        ) {
+            return;
+        }
 
-    selectedPhraseLevelId =
-        event.target.value
-            ? Number(event.target.value)
-            : null;
 
-    selectedPhraseLessonId = null;
+        selectedPhraseLevelId =
+            event.target.value
+                ? Number(
+                    event.target.value
+                )
+                : null;
 
-    const lessonSelect =
-        document.getElementById(
-            "phrase-lesson-select"
+
+        selectedPhraseLessonId =
+            null;
+
+
+        const lessonSelect =
+            document.getElementById(
+                "phrase-lesson-select"
+            );
+
+
+        if (!lessonSelect) {
+
+            console.error(
+                "phrase-lesson-select not found."
+            );
+
+            return;
+        }
+
+
+        lessonSelect.innerHTML =
+            '<option value="">Select Lesson</option>';
+
+        lessonSelect.disabled =
+            true;
+
+
+        clearPhrasesList();
+
+
+        if (
+            !selectedPhraseLevelId
+        ) {
+            return;
+        }
+
+
+        console.log(
+            "Selected phrase level:",
+            selectedPhraseLevelId
         );
 
-    if (!lessonSelect) {
-        return;
+
+        loadPhraseLessons(
+            selectedPhraseLevelId
+        );
+
     }
-
-    lessonSelect.innerHTML =
-        '<option value="">Select Lesson</option>';
-
-    lessonSelect.disabled = true;
-
-    clearPhrasesList();
-
-    if (!selectedPhraseLevelId) {
-        return;
-    }
-
-    loadPhraseLessons(
-        selectedPhraseLevelId
-    );
-});
+);
 
 
 /* =========================================================
    LOAD LESSONS
    ========================================================= */
 
-async function loadPhraseLessons(levelId) {
+async function loadPhraseLessons(
+    levelId
+) {
 
     const lessonSelect =
         document.getElementById(
             "phrase-lesson-select"
         );
 
+
     if (!lessonSelect) {
         return;
     }
 
+
     lessonSelect.innerHTML =
         '<option value="">Loading lessons...</option>';
+
+    lessonSelect.disabled =
+        true;
+
 
     try {
 
         const { data, error } =
-            await supabaseClient
+            await window.supabaseClient
                 .from("lessons")
                 .select(
                     "id, title, description, sort_order"
                 )
-                .eq("level_id", levelId)
+                .eq(
+                    "level_id",
+                    levelId
+                )
                 .order(
                     "sort_order",
-                    { ascending: true }
+                    {
+                        ascending: true
+                    }
                 );
+
 
         if (error) {
 
             console.error(
-                "Error loading phrase lessons:",
+                "Error loading lessons:",
                 error
             );
+
 
             lessonSelect.innerHTML =
                 '<option value="">Could not load lessons</option>';
 
+
+            showPhraseMessage(
+                "Could not load lessons: " +
+                error.message,
+                "error"
+            );
+
+
             return;
         }
 
-        phraseLessons = data || [];
+
+        phraseLessons =
+            data || [];
+
 
         lessonSelect.innerHTML =
             '<option value="">Select Lesson</option>';
 
-        if (phraseLessons.length === 0) {
+
+        if (
+            phraseLessons.length === 0
+        ) {
 
             lessonSelect.innerHTML =
                 '<option value="">No lessons found</option>';
 
-            lessonSelect.disabled = true;
+            lessonSelect.disabled =
+                true;
 
             return;
         }
 
-        phraseLessons.forEach(lesson => {
 
-            const option =
-                document.createElement("option");
+        phraseLessons.forEach(
+            function (lesson) {
 
-            option.value = lesson.id;
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
-            option.textContent =
-                `${lesson.sort_order}. ${lesson.title}`;
+                option.value =
+                    lesson.id;
 
-            lessonSelect.appendChild(option);
-        });
+                option.textContent =
+                    lesson.sort_order +
+                    ". " +
+                    lesson.title;
 
-        lessonSelect.disabled = false;
+                lessonSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        lessonSelect.disabled =
+            false;
+
+
+        console.log(
+            "Phrase lessons:",
+            phraseLessons
+        );
+
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         lessonSelect.innerHTML =
             '<option value="">Could not load lessons</option>';
+
+
+        showPhraseMessage(
+            "Could not load lessons.",
+            "error"
+        );
+
     }
+
 }
 
 
@@ -208,58 +375,90 @@ async function loadPhraseLessons(levelId) {
    LESSON CHANGE
    ========================================================= */
 
-document.addEventListener("change", event => {
+document.addEventListener(
+    "change",
+    function (event) {
 
-    if (event.target.id !== "phrase-lesson-select") {
-        return;
+        if (
+            event.target.id !==
+            "phrase-lesson-select"
+        ) {
+            return;
+        }
+
+
+        selectedPhraseLessonId =
+            event.target.value
+                ? Number(
+                    event.target.value
+                )
+                : null;
+
+
+        clearPhrasesList();
+
+
+        if (
+            !selectedPhraseLessonId
+        ) {
+            return;
+        }
+
+
+        console.log(
+            "Selected phrase lesson:",
+            selectedPhraseLessonId
+        );
+
+
+        loadPhrases(
+            selectedPhraseLessonId
+        );
+
     }
-
-    selectedPhraseLessonId =
-        event.target.value
-            ? Number(event.target.value)
-            : null;
-
-    clearPhrasesList();
-
-    if (!selectedPhraseLessonId) {
-        return;
-    }
-
-    loadPhrases(
-        selectedPhraseLessonId
-    );
-});
+);
 
 
 /* =========================================================
    LOAD PHRASES
    ========================================================= */
 
-async function loadPhrases(lessonId) {
+async function loadPhrases(
+    lessonId
+) {
 
     const phrasesList =
         document.getElementById(
             "phrases-list"
         );
 
+
     if (!phrasesList) {
         return;
     }
 
+
     phrasesList.innerHTML =
-        '<div class="loading">Loading phrases...</div>';
+        '<div class="loading-state">Loading phrases...</div>';
+
 
     try {
 
         const { data, error } =
-            await supabaseClient
+            await window.supabaseClient
                 .from("phrases")
                 .select("*")
-                .eq("lesson_id", lessonId)
+                .eq(
+                    "lesson_id",
+                    lessonId
+                )
                 .order(
                     "sort_order",
-                    { ascending: true }
+                    {
+                        ascending: true
+                    }
                 );
+
 
         if (error) {
 
@@ -268,25 +467,50 @@ async function loadPhrases(lessonId) {
                 error
             );
 
+
             phrasesList.innerHTML =
                 '<div class="empty-state">Could not load phrases.</div>';
+
+
+            showPhraseMessage(
+                "Could not load phrases: " +
+                error.message,
+                "error"
+            );
+
 
             return;
         }
 
-        currentPhrases = data || [];
+
+        currentPhrases =
+            data || [];
+
 
         renderPhrases();
 
+
         updatePhrasesDashboard();
+
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         phrasesList.innerHTML =
             '<div class="empty-state">Could not load phrases.</div>';
+
+
+        showPhraseMessage(
+            "Could not load phrases.",
+            "error"
+        );
+
     }
+
 }
 
 
@@ -301,116 +525,153 @@ function renderPhrases() {
             "phrases-list"
         );
 
+
     if (!phrasesList) {
         return;
     }
 
-    if (currentPhrases.length === 0) {
+
+    if (
+        currentPhrases.length === 0
+    ) {
 
         phrasesList.innerHTML = `
             <div class="empty-state">
-                <h3>No phrases yet</h3>
-                <p>Add the first phrase to this lesson.</p>
+
+                <h3>
+                    No phrases yet
+                </h3>
+
+                <p>
+                    Add the first phrase to this lesson.
+                </p>
+
             </div>
         `;
 
         return;
     }
 
-    phrasesList.innerHTML = "";
 
-    currentPhrases.forEach(phrase => {
+    phrasesList.innerHTML =
+        "";
 
-        const card =
-            document.createElement("div");
 
-        card.className = "content-card";
+    currentPhrases.forEach(
+        function (phrase) {
 
-        card.innerHTML = `
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-            <div class="content-card-main">
 
-                <div class="content-card-title">
-                    ${escapePhraseHtml(
-                        phrase.english
-                    )}
+            card.className =
+                "content-card";
+
+
+            card.innerHTML = `
+
+                <div class="content-card-main">
+
+                    <div class="content-card-title">
+
+                        ${escapePhraseHtml(
+                            phrase.english
+                        )}
+
+                    </div>
+
+
+                    ${
+                        phrase.pronunciation
+                            ? `
+                                <div class="content-card-meta">
+                                    /${escapePhraseHtml(
+                                        phrase.pronunciation
+                                    )}/
+                                </div>
+                            `
+                            : ""
+                    }
+
+
+                    ${
+                        phrase.russian
+                            ? `
+                                <div>
+                                    🇷🇺
+                                    ${escapePhraseHtml(
+                                        phrase.russian
+                                    )}
+                                </div>
+                            `
+                            : ""
+                    }
+
+
+                    ${
+                        phrase.tajik
+                            ? `
+                                <div>
+                                    🇹🇯
+                                    ${escapePhraseHtml(
+                                        phrase.tajik
+                                    )}
+                                </div>
+                            `
+                            : ""
+                    }
+
+
+                    ${
+                        phrase.example_sentence
+                            ? `
+                                <div class="content-card-description">
+                                    ${escapePhraseHtml(
+                                        phrase.example_sentence
+                                    )}
+                                </div>
+                            `
+                            : ""
+                    }
+
+
+                    ${
+                        phrase.audio_url
+                            ? `
+                                <div class="content-card-description">
+                                    🔊 Audio URL added
+                                </div>
+                            `
+                            : ""
+                    }
+
                 </div>
 
-                ${
-                    phrase.pronunciation
-                        ? `
-                        <div class="content-card-meta">
-                            /${escapePhraseHtml(
-                                phrase.pronunciation
-                            )}/
-                        </div>
-                        `
-                        : ""
-                }
 
-                ${
-                    phrase.russian
-                        ? `
-                        <div>
-                            🇷🇺 ${escapePhraseHtml(
-                                phrase.russian
-                            )}
-                        </div>
-                        `
-                        : ""
-                }
+                <div class="content-card-actions">
 
-                ${
-                    phrase.tajik
-                        ? `
-                        <div>
-                            🇹🇯 ${escapePhraseHtml(
-                                phrase.tajik
-                            )}
-                        </div>
-                        `
-                        : ""
-                }
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        onclick="deletePhrase(${phrase.id})"
+                    >
+                        Delete
+                    </button>
 
-                ${
-                    phrase.example_sentence
-                        ? `
-                        <div class="content-card-description">
-                            ${escapePhraseHtml(
-                                phrase.example_sentence
-                            )}
-                        </div>
-                        `
-                        : ""
-                }
+                </div>
 
-                ${
-                    phrase.audio_url
-                        ? `
-                        <div class="content-card-description">
-                            🔊 Audio URL added
-                        </div>
-                        `
-                        : ""
-                }
+            `;
 
-            </div>
 
-            <div class="content-card-actions">
+            phrasesList.appendChild(
+                card
+            );
 
-                <button
-                    type="button"
-                    class="btn btn-danger"
-                    onclick="deletePhrase(${phrase.id})"
-                >
-                    Delete
-                </button>
+        }
+    );
 
-            </div>
-        `;
-
-        phrasesList.appendChild(card);
-    });
 }
 
 
@@ -420,7 +681,14 @@ function renderPhrases() {
 
 function openAddPhraseModal() {
 
-    if (!selectedPhraseLessonId) {
+    console.log(
+        "OPEN ADD PHRASE MODAL"
+    );
+
+
+    if (
+        !selectedPhraseLessonId
+    ) {
 
         showPhraseMessage(
             "Please select a lesson first.",
@@ -430,53 +698,85 @@ function openAddPhraseModal() {
         return;
     }
 
+
     const modal =
         document.getElementById(
             "add-phrase-modal"
         );
 
+
     if (!modal) {
+
+        alert(
+            "ERROR: add-phrase-modal not found."
+        );
+
         console.error(
             "add-phrase-modal not found."
         );
+
         return;
     }
 
-    const selectedLessonText =
+
+    const selectedLessonInput =
         document.getElementById(
             "add-phrase-selected-lesson"
         );
 
+
     const lesson =
         phraseLessons.find(
-            item =>
-                Number(item.id) ===
-                Number(selectedPhraseLessonId)
+            function (item) {
+
+                return (
+                    Number(item.id) ===
+                    Number(
+                        selectedPhraseLessonId
+                    )
+                );
+
+            }
         );
 
+
     if (
-        selectedLessonText &&
+        selectedLessonInput &&
         lesson
     ) {
 
-        selectedLessonText.textContent =
+        selectedLessonInput.value =
             lesson.title;
+
     }
 
+
     resetPhraseForm();
+
 
     const sortInput =
         document.getElementById(
             "phrase-sort-order-input"
         );
 
+
     if (sortInput) {
 
         sortInput.value =
             currentPhrases.length + 1;
+
     }
 
-    modal.classList.add("active");
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    console.log(
+        "Phrase modal opened."
+    );
+
 }
 
 
@@ -491,11 +791,16 @@ function closeAddPhraseModal() {
             "add-phrase-modal"
         );
 
+
     if (!modal) {
         return;
     }
 
-    modal.classList.remove("active");
+
+    modal.classList.remove(
+        "active"
+    );
+
 }
 
 
@@ -508,34 +813,53 @@ function resetPhraseForm() {
     const fields = [
 
         "phrase-english-input",
+
         "phrase-russian-input",
+
         "phrase-tajik-input",
+
         "phrase-pronunciation-input",
+
         "phrase-audio-input",
+
         "phrase-example-input"
 
     ];
 
-    fields.forEach(id => {
 
-        const element =
-            document.getElementById(id);
+    fields.forEach(
+        function (id) {
 
-        if (element) {
-            element.value = "";
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.value =
+                    "";
+
+            }
+
         }
-    });
+    );
+
 
     const sortInput =
         document.getElementById(
             "phrase-sort-order-input"
         );
 
+
     if (sortInput) {
 
         sortInput.value =
             currentPhrases.length + 1;
+
     }
+
 }
 
 
@@ -545,59 +869,88 @@ function resetPhraseForm() {
 
 async function addPhrase() {
 
-    if (!selectedPhraseLessonId) {
+    console.log(
+        "ADD PHRASE START"
+    );
 
-        showPhraseMessage(
-            "Please select a lesson first.",
-            "error"
+
+    if (
+        !selectedPhraseLessonId
+    ) {
+
+        alert(
+            "Please select a lesson first."
         );
 
         return;
     }
+
 
     const english =
         getPhraseInput(
             "phrase-english-input"
         );
 
+
     const russian =
         getPhraseInput(
             "phrase-russian-input"
         );
+
 
     const tajik =
         getPhraseInput(
             "phrase-tajik-input"
         );
 
+
     const pronunciation =
         getPhraseInput(
             "phrase-pronunciation-input"
         );
+
 
     const audioUrl =
         getPhraseInput(
             "phrase-audio-input"
         );
 
+
     const exampleSentence =
         getPhraseInput(
             "phrase-example-input"
         );
+
 
     const sortOrder =
         Number(
             getPhraseInput(
                 "phrase-sort-order-input"
             )
-        ) || currentPhrases.length + 1;
+        ) ||
+        (
+            currentPhrases.length + 1
+        );
 
 
     if (!english) {
 
-        showPhraseMessage(
-            "English phrase is required.",
-            "error"
+        alert(
+            "English phrase is required."
+        );
+
+        return;
+    }
+
+
+    if (!window.supabaseClient) {
+
+        alert(
+            "Supabase connection is not available."
+        );
+
+        console.error(
+            "supabaseClient missing."
         );
 
         return;
@@ -607,7 +960,9 @@ async function addPhrase() {
     const phraseData = {
 
         lesson_id:
-            Number(selectedPhraseLessonId),
+            Number(
+                selectedPhraseLessonId
+            ),
 
         english:
             english,
@@ -629,24 +984,44 @@ async function addPhrase() {
 
         sort_order:
             sortOrder
+
     };
+
+
+    console.log(
+        "Phrase data:",
+        phraseData
+    );
 
 
     try {
 
-        const { data, error } =
-            await supabaseClient
+        const {
+            data,
+            error
+        } =
+            await window.supabaseClient
                 .from("phrases")
-                .insert(phraseData)
+                .insert(
+                    phraseData
+                )
                 .select()
                 .single();
+
 
         if (error) {
 
             console.error(
-                "Error adding phrase:",
+                "SUPABASE ADD PHRASE ERROR:",
                 error
             );
+
+
+            alert(
+                "Could not add phrase:\n\n" +
+                error.message
+            );
+
 
             showPhraseMessage(
                 "Could not add phrase: " +
@@ -654,34 +1029,51 @@ async function addPhrase() {
                 "error"
             );
 
+
             return;
         }
 
+
         console.log(
-            "Phrase added:",
+            "PHRASE ADDED SUCCESSFULLY:",
             data
         );
 
+
         closeAddPhraseModal();
+
 
         await loadPhrases(
             selectedPhraseLessonId
         );
+
 
         showPhraseMessage(
             "Phrase added successfully.",
             "success"
         );
 
+
+        alert(
+            "Phrase added successfully!"
+        );
+
+
     } catch (error) {
 
-        console.error(error);
-
-        showPhraseMessage(
-            "Could not add phrase.",
-            "error"
+        console.error(
+            "ADD PHRASE EXCEPTION:",
+            error
         );
+
+
+        alert(
+            "Could not add phrase:\n\n" +
+            error.message
+        );
+
     }
+
 }
 
 
@@ -689,24 +1081,32 @@ async function addPhrase() {
    DELETE PHRASE
    ========================================================= */
 
-async function deletePhrase(phraseId) {
+async function deletePhrase(
+    phraseId
+) {
 
     const confirmed =
         confirm(
             "Are you sure you want to delete this phrase?"
         );
 
+
     if (!confirmed) {
         return;
     }
 
+
     try {
 
         const { error } =
-            await supabaseClient
+            await window.supabaseClient
                 .from("phrases")
                 .delete()
-                .eq("id", phraseId);
+                .eq(
+                    "id",
+                    phraseId
+                );
+
 
         if (error) {
 
@@ -715,33 +1115,42 @@ async function deletePhrase(phraseId) {
                 error
             );
 
-            showPhraseMessage(
-                "Could not delete phrase: " +
-                error.message,
-                "error"
+
+            alert(
+                "Could not delete phrase:\n\n" +
+                error.message
             );
+
 
             return;
         }
 
+
         await loadPhrases(
             selectedPhraseLessonId
         );
+
 
         showPhraseMessage(
             "Phrase deleted successfully.",
             "success"
         );
 
+
     } catch (error) {
 
-        console.error(error);
-
-        showPhraseMessage(
-            "Could not delete phrase.",
-            "error"
+        console.error(
+            error
         );
+
+
+        alert(
+            "Could not delete phrase:\n\n" +
+            error.message
+        );
+
     }
+
 }
 
 
@@ -756,19 +1165,28 @@ async function updatePhrasesDashboard() {
             "dashboard-phrases-count"
         );
 
+
     if (!countElement) {
         return;
     }
 
+
     try {
 
-        const { count, error } =
-            await supabaseClient
+        const {
+            count,
+            error
+        } =
+            await window.supabaseClient
                 .from("phrases")
-                .select("*", {
-                    count: "exact",
-                    head: true
-                });
+                .select(
+                    "*",
+                    {
+                        count: "exact",
+                        head: true
+                    }
+                );
+
 
         if (error) {
 
@@ -780,13 +1198,19 @@ async function updatePhrasesDashboard() {
             return;
         }
 
+
         countElement.textContent =
             count ?? 0;
 
+
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
     }
+
 }
 
 
@@ -801,17 +1225,26 @@ function clearPhrasesList() {
             "phrases-list"
         );
 
+
     if (!phrasesList) {
         return;
     }
 
+
     phrasesList.innerHTML = `
+
         <div class="empty-state">
+
             Select a lesson to view phrases.
+
         </div>
+
     `;
 
-    currentPhrases = [];
+
+    currentPhrases =
+        [];
+
 }
 
 
@@ -819,16 +1252,31 @@ function clearPhrasesList() {
    GET INPUT
    ========================================================= */
 
-function getPhraseInput(id) {
+function getPhraseInput(
+    id
+) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
+
 
     if (!element) {
+
+        console.error(
+            "Input not found:",
+            id
+        );
+
         return "";
     }
 
-    return element.value.trim();
+
+    return (
+        element.value || ""
+    ).trim();
+
 }
 
 
@@ -836,21 +1284,47 @@ function getPhraseInput(id) {
    ESCAPE HTML
    ========================================================= */
 
-function escapePhraseHtml(value) {
+function escapePhraseHtml(
+    value
+) {
 
     if (
         value === null ||
         value === undefined
     ) {
+
         return "";
+
     }
 
+
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
 
 
@@ -864,11 +1338,11 @@ function showPhraseMessage(
 ) {
 
     if (
-        typeof window.showMessage ===
+        typeof window.showAdminMessage ===
         "function"
     ) {
 
-        window.showMessage(
+        window.showAdminMessage(
             message,
             type
         );
@@ -876,9 +1350,14 @@ function showPhraseMessage(
         return;
     }
 
+
     console.log(
-        `[${type}] ${message}`
+        "[" +
+        type +
+        "] " +
+        message
     );
+
 }
 
 
@@ -889,14 +1368,22 @@ function showPhraseMessage(
 window.openAddPhraseModal =
     openAddPhraseModal;
 
+
 window.closeAddPhraseModal =
     closeAddPhraseModal;
+
 
 window.addPhrase =
     addPhrase;
 
+
 window.deletePhrase =
     deletePhrase;
 
+
 window.loadPhrases =
     loadPhrases;
+
+
+window.loadPhraseLevels =
+    loadPhraseLevels;
