@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -20,6 +21,7 @@
         href="css/admin.css"
     >
 </head>
+
 
 <body>
 
@@ -299,6 +301,7 @@
 
                 </div>
 
+
             </div>
 
 
@@ -365,7 +368,6 @@
         </section>
 
 
-
         <!-- =================================================
              LEVELS
              ================================================= -->
@@ -426,7 +428,6 @@
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -503,7 +504,6 @@
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -584,6 +584,7 @@
 
                     </div>
 
+
                 </div>
 
 
@@ -601,7 +602,6 @@
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -628,6 +628,11 @@
                 </div>
 
 
+                <!-- IMPORTANT:
+                     Now Add Phrase can be opened
+                     WITHOUT selecting a lesson first.
+                -->
+
                 <button
                     type="button"
                     class="primary-button"
@@ -640,7 +645,6 @@
 
 
             <div class="content-card">
-
 
                 <div class="form-row">
 
@@ -683,6 +687,7 @@
 
                     </div>
 
+
                 </div>
 
 
@@ -700,7 +705,6 @@
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -785,11 +789,13 @@
 
                     </div>
 
+
                 </div>
 
             </div>
 
         </section>
+
 
     </main>
 
@@ -804,6 +810,7 @@
 <div
     id="add-level-modal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div
@@ -841,7 +848,6 @@
 
 
         <div class="modal-body">
-
 
             <div class="form-group">
 
@@ -935,11 +941,13 @@
 
 <!-- =========================================================
      EDIT LEVEL MODAL
+     IMPORTANT: IDs MATCH levels.js
      ========================================================= -->
 
 <div
     id="edit-level-modal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div
@@ -986,12 +994,12 @@
 
             <div class="form-group">
 
-                <label for="edit-level-code-input">
+                <label for="edit-level-code">
                     Level Code
                 </label>
 
                 <input
-                    id="edit-level-code-input"
+                    id="edit-level-code"
                     type="text"
                 >
 
@@ -1000,12 +1008,12 @@
 
             <div class="form-group">
 
-                <label for="edit-level-name-input">
+                <label for="edit-level-name">
                     Level Name
                 </label>
 
                 <input
-                    id="edit-level-name-input"
+                    id="edit-level-name"
                     type="text"
                 >
 
@@ -1014,12 +1022,12 @@
 
             <div class="form-group">
 
-                <label for="edit-level-description-input">
+                <label for="edit-level-description">
                     Description
                 </label>
 
                 <textarea
-                    id="edit-level-description-input"
+                    id="edit-level-description"
                     rows="3"
                 ></textarea>
 
@@ -1028,12 +1036,12 @@
 
             <div class="form-group">
 
-                <label for="edit-level-sort-order-input">
+                <label for="edit-level-sort-order">
                     Sort Order
                 </label>
 
                 <input
-                    id="edit-level-sort-order-input"
+                    id="edit-level-sort-order"
                     type="number"
                     min="1"
                 >
@@ -1077,6 +1085,7 @@
 <div
     id="add-lesson-modal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div
@@ -1122,12 +1131,12 @@
                     Selected Level
                 </label>
 
-                <input
+                <div
                     id="add-lesson-selected-level"
-                    type="text"
-                    readonly
-                    placeholder="Selected from Lessons"
+                    class="selected-value"
                 >
+                    Select a level first
+                </div>
 
             </div>
 
@@ -1209,11 +1218,13 @@
 
 <!-- =========================================================
      EDIT LESSON MODAL
+     IMPORTANT: IDs MATCH lessons.js
      ========================================================= -->
 
 <div
     id="edit-lesson-modal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div
@@ -1260,12 +1271,12 @@
 
             <div class="form-group">
 
-                <label for="edit-lesson-title-input">
+                <label for="edit-lesson-title">
                     Lesson Title
                 </label>
 
                 <input
-                    id="edit-lesson-title-input"
+                    id="edit-lesson-title"
                     type="text"
                 >
 
@@ -1274,12 +1285,12 @@
 
             <div class="form-group">
 
-                <label for="edit-lesson-description-input">
+                <label for="edit-lesson-description">
                     Description
                 </label>
 
                 <textarea
-                    id="edit-lesson-description-input"
+                    id="edit-lesson-description"
                     rows="3"
                 ></textarea>
 
@@ -1288,12 +1299,12 @@
 
             <div class="form-group">
 
-                <label for="edit-lesson-sort-order-input">
+                <label for="edit-lesson-sort-order">
                     Sort Order
                 </label>
 
                 <input
-                    id="edit-lesson-sort-order-input"
+                    id="edit-lesson-sort-order"
                     type="number"
                     min="1"
                 >
@@ -1337,6 +1348,7 @@
 <div
     id="add-word-modal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div
@@ -1382,12 +1394,12 @@
                     Selected Lesson
                 </label>
 
-                <input
+                <div
                     id="add-word-selected-lesson"
-                    type="text"
-                    readonly
-                    placeholder="Select a lesson first"
+                    class="selected-value"
                 >
+                    Select a lesson first
+                </div>
 
             </div>
 
@@ -1544,11 +1556,19 @@
 
 <!-- =========================================================
      ADD PHRASE MODAL
+     
+     IMPORTANT:
+     THIS MODAL NOW HAS ITS OWN
+     LEVEL → LESSON SELECTORS.
+     
+     You no longer need to select a lesson
+     before opening Add Phrase.
      ========================================================= -->
 
 <div
     id="add-phrase-modal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div
@@ -1559,6 +1579,9 @@
 
     <div class="modal-content">
 
+
+        <!-- HEADER -->
+
         <div class="modal-header">
 
             <div>
@@ -1568,7 +1591,7 @@
                 </h2>
 
                 <p>
-                    Add an English phrase to the selected lesson.
+                    Select a level and lesson, then add the phrase.
                 </p>
 
             </div>
@@ -1585,8 +1608,58 @@
         </div>
 
 
+
+        <!-- BODY -->
+
         <div class="modal-body">
 
+
+            <!-- LEVEL -->
+
+            <div class="form-group">
+
+                <label for="add-phrase-level-select">
+                    Select Level
+                </label>
+
+                <select
+                    id="add-phrase-level-select"
+                >
+
+                    <option value="">
+                        Select Level
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- LESSON -->
+
+            <div class="form-group">
+
+                <label for="add-phrase-lesson-select">
+                    Select Lesson
+                </label>
+
+                <select
+                    id="add-phrase-lesson-select"
+                    disabled
+                >
+
+                    <option value="">
+                        Select Lesson
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- SELECTED LESSON INFO -->
 
             <div class="form-group">
 
@@ -1594,15 +1667,18 @@
                     Selected Lesson
                 </label>
 
-                <input
+                <div
                     id="add-phrase-selected-lesson"
-                    type="text"
-                    readonly
-                    placeholder="Select a lesson first"
+                    class="selected-value"
                 >
+                    No lesson selected
+                </div>
 
             </div>
 
+
+
+            <!-- ENGLISH -->
 
             <div class="form-group">
 
@@ -1619,6 +1695,9 @@
             </div>
 
 
+
+            <!-- RUSSIAN -->
+
             <div class="form-group">
 
                 <label for="phrase-russian-input">
@@ -1633,6 +1712,9 @@
 
             </div>
 
+
+
+            <!-- TAJIK -->
 
             <div class="form-group">
 
@@ -1649,6 +1731,9 @@
             </div>
 
 
+
+            <!-- PRONUNCIATION -->
+
             <div class="form-group">
 
                 <label for="phrase-pronunciation-input">
@@ -1663,6 +1748,9 @@
 
             </div>
 
+
+
+            <!-- AUDIO -->
 
             <div class="form-group">
 
@@ -1679,6 +1767,9 @@
             </div>
 
 
+
+            <!-- EXAMPLE -->
+
             <div class="form-group">
 
                 <label for="phrase-example-input">
@@ -1693,6 +1784,9 @@
 
             </div>
 
+
+
+            <!-- SORT ORDER -->
 
             <div class="form-group">
 
@@ -1709,10 +1803,15 @@
 
             </div>
 
+
         </div>
 
 
+
+        <!-- FOOTER -->
+
         <div class="modal-footer">
+
 
             <button
                 type="button"
@@ -1731,7 +1830,9 @@
                 Save Phrase
             </button>
 
+
         </div>
+
 
     </div>
 
@@ -1751,10 +1852,15 @@
 
 
 <!-- =========================================================
-     SCRIPTS
+     SUPABASE
      ========================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================================
+     ADMIN SCRIPTS
+     ========================================================= -->
 
 <script src="js/supabase.js"></script>
 
@@ -1767,6 +1873,7 @@
 <script src="js/words.js"></script>
 
 <script src="js/phrases.js"></script>
+
 
 
 <!-- =========================================================
@@ -1783,13 +1890,15 @@ function showSection(sectionName) {
         );
 
 
-    sections.forEach(function(section) {
+    sections.forEach(
+        function(section) {
 
-        section.classList.remove(
-            "active"
-        );
+            section.classList.remove(
+                "active"
+            );
 
-    });
+        }
+    );
 
 
     const selectedSection =
@@ -1813,13 +1922,15 @@ function showSection(sectionName) {
         );
 
 
-    navItems.forEach(function(item) {
+    navItems.forEach(
+        function(item) {
 
-        item.classList.remove(
-            "active"
-        );
+            item.classList.remove(
+                "active"
+            );
 
-    });
+        }
+    );
 
 
     const activeNav =
@@ -1856,6 +1967,7 @@ function showSection(sectionName) {
 }
 
 
+
 function toggleSidebar() {
 
     const sidebar =
@@ -1879,4 +1991,5 @@ function toggleSidebar() {
 
 
 </body>
+
 </html>
