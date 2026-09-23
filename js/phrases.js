@@ -1,3 +1,4 @@
+```javascript
 /* =========================================================
    SHOHIN ENGLISH — PHRASES MANAGEMENT
    Supabase + Phrases
@@ -10,24 +11,16 @@
    ========================================================= */
 
 let phraseLevels = [];
-
 let phraseLessons = [];
-
 let currentPhrases = [];
 
-
 let selectedPhraseLevelId = null;
-
 let selectedPhraseLessonId = null;
 
-
 /*
-   These two variables are used specifically
-   by the Add Phrase modal.
+   Variables used by Add Phrase modal
 */
-
 let addPhraseLevelId = null;
-
 let addPhraseLessonId = null;
 
 
@@ -42,7 +35,6 @@ document.addEventListener(
         console.log(
             "SHOHIN PHRASES: initialized"
         );
-
 
         loadPhraseLevels();
 
@@ -61,7 +53,6 @@ async function loadPhraseLevels() {
             "phrase-level-select"
         );
 
-
     if (!levelSelect) {
 
         console.error(
@@ -70,7 +61,6 @@ async function loadPhraseLevels() {
 
         return;
     }
-
 
     if (!window.supabaseClient) {
 
@@ -86,10 +76,8 @@ async function loadPhraseLevels() {
         return;
     }
 
-
     levelSelect.innerHTML =
         '<option value="">Select Level</option>';
-
 
     try {
 
@@ -109,7 +97,6 @@ async function loadPhraseLevels() {
                     }
                 );
 
-
         if (error) {
 
             console.error(
@@ -117,21 +104,17 @@ async function loadPhraseLevels() {
                 error
             );
 
-
             showPhraseMessage(
                 "Could not load levels: " +
                 error.message,
                 "error"
             );
 
-
             return;
         }
 
-
         phraseLevels =
             data || [];
-
 
         phraseLevels.forEach(
             function (level) {
@@ -141,16 +124,13 @@ async function loadPhraseLevels() {
                         "option"
                     );
 
-
                 option.value =
                     level.id;
-
 
                 option.textContent =
                     level.code +
                     " — " +
                     level.name;
-
 
                 levelSelect.appendChild(
                     option
@@ -159,23 +139,14 @@ async function loadPhraseLevels() {
             }
         );
 
-
-        /*
-           Also prepare the Add Phrase modal
-           level selector.
-        */
-
         populateAddPhraseLevelSelect();
 
-
         updatePhrasesDashboard();
-
 
         console.log(
             "PHRASE LEVELS:",
             phraseLevels
         );
-
 
     } catch (error) {
 
@@ -183,7 +154,6 @@ async function loadPhraseLevels() {
             "Could not load phrase levels:",
             error
         );
-
 
         showPhraseMessage(
             "Could not load levels.",
@@ -206,7 +176,6 @@ function populateAddPhraseLevelSelect() {
             "add-phrase-level-select"
         );
 
-
     if (!select) {
 
         console.error(
@@ -216,10 +185,8 @@ function populateAddPhraseLevelSelect() {
         return;
     }
 
-
     select.innerHTML =
         '<option value="">Select Level</option>';
-
 
     phraseLevels.forEach(
         function (level) {
@@ -229,16 +196,13 @@ function populateAddPhraseLevelSelect() {
                     "option"
                 );
 
-
             option.value =
                 level.id;
-
 
             option.textContent =
                 level.code +
                 " — " +
                 level.name;
-
 
             select.appendChild(
                 option
@@ -264,9 +228,7 @@ document.addEventListener(
         ) {
 
             return;
-
         }
-
 
         selectedPhraseLevelId =
             event.target.value
@@ -275,16 +237,13 @@ document.addEventListener(
                 )
                 : null;
 
-
         selectedPhraseLessonId =
             null;
-
 
         const lessonSelect =
             document.getElementById(
                 "phrase-lesson-select"
             );
-
 
         if (!lessonSelect) {
 
@@ -295,26 +254,20 @@ document.addEventListener(
             return;
         }
 
-
         lessonSelect.innerHTML =
             '<option value="">Select Lesson</option>';
-
 
         lessonSelect.disabled =
             true;
 
-
         clearPhrasesList();
-
 
         if (
             !selectedPhraseLevelId
         ) {
 
             return;
-
         }
-
 
         loadPhraseLessons(
             selectedPhraseLevelId
@@ -338,9 +291,7 @@ document.addEventListener(
         ) {
 
             return;
-
         }
-
 
         selectedPhraseLessonId =
             event.target.value
@@ -349,18 +300,14 @@ document.addEventListener(
                 )
                 : null;
 
-
         clearPhrasesList();
-
 
         if (
             !selectedPhraseLessonId
         ) {
 
             return;
-
         }
-
 
         loadPhrases(
             selectedPhraseLessonId
@@ -383,19 +330,15 @@ async function loadPhraseLessons(
             "phrase-lesson-select"
         );
 
-
     if (!lessonSelect) {
         return;
     }
 
-
     lessonSelect.innerHTML =
         '<option value="">Loading lessons...</option>';
 
-
     lessonSelect.disabled =
         true;
-
 
     try {
 
@@ -419,7 +362,6 @@ async function loadPhraseLessons(
                     }
                 );
 
-
         if (error) {
 
             console.error(
@@ -427,10 +369,8 @@ async function loadPhraseLessons(
                 error
             );
 
-
             lessonSelect.innerHTML =
                 '<option value="">Could not load lessons</option>';
-
 
             showPhraseMessage(
                 "Could not load lessons: " +
@@ -438,18 +378,14 @@ async function loadPhraseLessons(
                 "error"
             );
 
-
             return;
         }
-
 
         phraseLessons =
             data || [];
 
-
         lessonSelect.innerHTML =
             '<option value="">Select Lesson</option>';
-
 
         if (
             phraseLessons.length === 0
@@ -458,14 +394,11 @@ async function loadPhraseLessons(
             lessonSelect.innerHTML =
                 '<option value="">No lessons found</option>';
 
-
             lessonSelect.disabled =
                 true;
 
-
             return;
         }
-
 
         phraseLessons.forEach(
             function (lesson) {
@@ -475,16 +408,13 @@ async function loadPhraseLessons(
                         "option"
                     );
 
-
                 option.value =
                     lesson.id;
-
 
                 option.textContent =
                     lesson.sort_order +
                     ". " +
                     lesson.title;
-
 
                 lessonSelect.appendChild(
                     option
@@ -493,10 +423,8 @@ async function loadPhraseLessons(
             }
         );
 
-
         lessonSelect.disabled =
             false;
-
 
     } catch (error) {
 
@@ -504,10 +432,8 @@ async function loadPhraseLessons(
             error
         );
 
-
         lessonSelect.innerHTML =
             '<option value="">Could not load lessons</option>';
-
 
         showPhraseMessage(
             "Could not load lessons.",
@@ -532,15 +458,12 @@ async function loadPhrases(
             "phrases-list"
         );
 
-
     if (!phrasesList) {
         return;
     }
 
-
     phrasesList.innerHTML =
         '<div class="loading-state">Loading phrases...</div>';
-
 
     try {
 
@@ -562,7 +485,6 @@ async function loadPhrases(
                     }
                 );
 
-
         if (error) {
 
             console.error(
@@ -570,10 +492,8 @@ async function loadPhrases(
                 error
             );
 
-
             phrasesList.innerHTML =
                 '<div class="empty-state">Could not load phrases.</div>';
-
 
             showPhraseMessage(
                 "Could not load phrases: " +
@@ -581,20 +501,15 @@ async function loadPhrases(
                 "error"
             );
 
-
             return;
         }
-
 
         currentPhrases =
             data || [];
 
-
         renderPhrases();
 
-
         updatePhrasesDashboard();
-
 
     } catch (error) {
 
@@ -602,10 +517,8 @@ async function loadPhrases(
             error
         );
 
-
         phrasesList.innerHTML =
             '<div class="empty-state">Could not load phrases.</div>';
-
 
         showPhraseMessage(
             "Could not load phrases.",
@@ -628,11 +541,9 @@ function renderPhrases() {
             "phrases-list"
         );
 
-
     if (!phrasesList) {
         return;
     }
-
 
     if (
         currentPhrases.length === 0
@@ -657,10 +568,8 @@ function renderPhrases() {
         return;
     }
 
-
     phrasesList.innerHTML =
         "";
-
 
     currentPhrases.forEach(
         function (phrase) {
@@ -670,10 +579,8 @@ function renderPhrases() {
                     "div"
                 );
 
-
             card.className =
                 "content-card";
-
 
             card.innerHTML = `
 
@@ -682,11 +589,12 @@ function renderPhrases() {
                     <div class="content-card-title">
 
                         ${escapePhraseHtml(
-                            phrase.english
+                            phrase.english ||
+                            phrase.phrase ||
+                            ""
                         )}
 
                     </div>
-
 
                     ${
                         phrase.pronunciation
@@ -699,7 +607,6 @@ function renderPhrases() {
                             `
                             : ""
                     }
-
 
                     ${
                         phrase.russian
@@ -714,7 +621,6 @@ function renderPhrases() {
                             : ""
                     }
 
-
                     ${
                         phrase.tajik
                             ? `
@@ -728,7 +634,6 @@ function renderPhrases() {
                             : ""
                     }
 
-
                     ${
                         phrase.example_sentence
                             ? `
@@ -741,7 +646,6 @@ function renderPhrases() {
                             : ""
                     }
 
-
                     ${
                         phrase.audio_url
                             ? `
@@ -753,7 +657,6 @@ function renderPhrases() {
                     }
 
                 </div>
-
 
                 <div class="content-card-actions">
 
@@ -768,7 +671,6 @@ function renderPhrases() {
                 </div>
 
             `;
-
 
             phrasesList.appendChild(
                 card
@@ -790,12 +692,10 @@ function openAddPhraseModal() {
         "OPEN ADD PHRASE MODAL"
     );
 
-
     const modal =
         document.getElementById(
             "add-phrase-modal"
         );
-
 
     if (!modal) {
 
@@ -810,36 +710,26 @@ function openAddPhraseModal() {
         return;
     }
 
-
-    /*
-       Reset modal state.
-    */
-
     addPhraseLevelId =
         null;
 
-
     addPhraseLessonId =
         null;
-
 
     const levelSelect =
         document.getElementById(
             "add-phrase-level-select"
         );
 
-
     const lessonSelect =
         document.getElementById(
             "add-phrase-lesson-select"
         );
 
-
     const selectedLessonBox =
         document.getElementById(
             "add-phrase-selected-lesson"
         );
-
 
     if (levelSelect) {
 
@@ -848,18 +738,15 @@ function openAddPhraseModal() {
 
     }
 
-
     if (lessonSelect) {
 
         lessonSelect.innerHTML =
             '<option value="">Select Lesson</option>';
 
-
         lessonSelect.disabled =
             true;
 
     }
-
 
     if (selectedLessonBox) {
 
@@ -868,15 +755,12 @@ function openAddPhraseModal() {
 
     }
 
-
     resetPhraseForm();
-
 
     const sortInput =
         document.getElementById(
             "phrase-sort-order-input"
         );
-
 
     if (sortInput) {
 
@@ -884,11 +768,6 @@ function openAddPhraseModal() {
             "1";
 
     }
-
-
-    /*
-       Make sure levels are available.
-    */
 
     if (
         phraseLevels.length === 0
@@ -898,29 +777,23 @@ function openAddPhraseModal() {
 
     }
 
-
     modal.classList.add(
         "active"
     );
 
-
     modal.style.display =
         "flex";
-
 
     modal.style.visibility =
         "visible";
 
-
     modal.style.opacity =
         "1";
-
 
     modal.setAttribute(
         "aria-hidden",
         "false"
     );
-
 
     console.log(
         "Phrase modal opened."
@@ -943,9 +816,7 @@ document.addEventListener(
         ) {
 
             return;
-
         }
-
 
         addPhraseLevelId =
             event.target.value
@@ -954,34 +825,28 @@ document.addEventListener(
                 )
                 : null;
 
-
         addPhraseLessonId =
             null;
-
 
         const lessonSelect =
             document.getElementById(
                 "add-phrase-lesson-select"
             );
 
-
         const selectedLessonBox =
             document.getElementById(
                 "add-phrase-selected-lesson"
             );
-
 
         if (lessonSelect) {
 
             lessonSelect.innerHTML =
                 '<option value="">Select Lesson</option>';
 
-
             lessonSelect.disabled =
                 true;
 
         }
-
 
         if (selectedLessonBox) {
 
@@ -990,15 +855,12 @@ document.addEventListener(
 
         }
 
-
         if (
             !addPhraseLevelId
         ) {
 
             return;
-
         }
-
 
         await loadAddPhraseLessons(
             addPhraseLevelId
@@ -1021,7 +883,6 @@ async function loadAddPhraseLessons(
             "add-phrase-lesson-select"
         );
 
-
     if (!lessonSelect) {
 
         console.error(
@@ -1031,14 +892,11 @@ async function loadAddPhraseLessons(
         return;
     }
 
-
     lessonSelect.innerHTML =
         '<option value="">Loading lessons...</option>';
 
-
     lessonSelect.disabled =
         true;
-
 
     try {
 
@@ -1062,7 +920,6 @@ async function loadAddPhraseLessons(
                     }
                 );
 
-
         if (error) {
 
             console.error(
@@ -1070,24 +927,19 @@ async function loadAddPhraseLessons(
                 error
             );
 
-
             lessonSelect.innerHTML =
                 '<option value="">Could not load lessons</option>';
-
 
             alert(
                 "Could not load lessons:\n\n" +
                 error.message
             );
 
-
             return;
         }
 
-
         lessonSelect.innerHTML =
             '<option value="">Select Lesson</option>';
-
 
         if (
             !data ||
@@ -1097,14 +949,11 @@ async function loadAddPhraseLessons(
             lessonSelect.innerHTML =
                 '<option value="">No lessons found</option>';
 
-
             lessonSelect.disabled =
                 true;
 
-
             return;
         }
-
 
         data.forEach(
             function (lesson) {
@@ -1114,16 +963,13 @@ async function loadAddPhraseLessons(
                         "option"
                     );
 
-
                 option.value =
                     lesson.id;
-
 
                 option.textContent =
                     lesson.sort_order +
                     ". " +
                     lesson.title;
-
 
                 lessonSelect.appendChild(
                     option
@@ -1132,10 +978,8 @@ async function loadAddPhraseLessons(
             }
         );
 
-
         lessonSelect.disabled =
             false;
-
 
     } catch (error) {
 
@@ -1144,10 +988,8 @@ async function loadAddPhraseLessons(
             error
         );
 
-
         lessonSelect.innerHTML =
             '<option value="">Could not load lessons</option>';
-
 
         alert(
             "Could not load lessons:\n\n" +
@@ -1173,9 +1015,7 @@ document.addEventListener(
         ) {
 
             return;
-
         }
-
 
         addPhraseLessonId =
             event.target.value
@@ -1184,18 +1024,15 @@ document.addEventListener(
                 )
                 : null;
 
-
         const selectedLessonBox =
             document.getElementById(
                 "add-phrase-selected-lesson"
             );
 
-
         const selectedOption =
             event.target.options[
                 event.target.selectedIndex
             ];
-
 
         if (
             selectedLessonBox &&
@@ -1214,11 +1051,6 @@ document.addEventListener(
                 "No lesson selected";
 
         }
-
-
-        /*
-           Set next sort order for selected lesson.
-        */
 
         if (
             addPhraseLessonId
@@ -1247,11 +1079,9 @@ async function loadAddPhraseSortOrder(
             "phrase-sort-order-input"
         );
 
-
     if (!sortInput) {
         return;
     }
-
 
     try {
 
@@ -1274,7 +1104,6 @@ async function loadAddPhraseSortOrder(
                 )
                 .limit(1);
 
-
         if (error) {
 
             console.error(
@@ -1282,14 +1111,11 @@ async function loadAddPhraseSortOrder(
                 error
             );
 
-
             sortInput.value =
                 "1";
 
-
             return;
         }
-
 
         if (
             data &&
@@ -1300,7 +1126,6 @@ async function loadAddPhraseSortOrder(
                 Number(
                     data[0].sort_order
                 ) || 0;
-
 
             sortInput.value =
                 String(
@@ -1319,7 +1144,6 @@ async function loadAddPhraseSortOrder(
         console.error(
             error
         );
-
 
         sortInput.value =
             "1";
@@ -1340,28 +1164,22 @@ function closeAddPhraseModal() {
             "add-phrase-modal"
         );
 
-
     if (!modal) {
         return;
     }
-
 
     modal.classList.remove(
         "active"
     );
 
-
     modal.style.display =
         "none";
-
 
     modal.style.visibility =
         "hidden";
 
-
     modal.style.opacity =
         "0";
-
 
     modal.setAttribute(
         "aria-hidden",
@@ -1393,7 +1211,6 @@ function resetPhraseForm() {
 
     ];
 
-
     fields.forEach(
         function (id) {
 
@@ -1401,7 +1218,6 @@ function resetPhraseForm() {
                 document.getElementById(
                     id
                 );
-
 
             if (element) {
 
@@ -1413,12 +1229,10 @@ function resetPhraseForm() {
         }
     );
 
-
     const sortInput =
         document.getElementById(
             "phrase-sort-order-input"
         );
-
 
     if (sortInput) {
 
@@ -1440,60 +1254,57 @@ async function addPhrase() {
         "ADD PHRASE START"
     );
 
+    if (
+        !addPhraseLevelId
+    ) {
 
-    /*
-       IMPORTANT:
-       We now use the Lesson selected
-       INSIDE the Add Phrase modal.
-    */
+        alert(
+            "Please select a level first."
+        );
+
+        return;
+    }
 
     if (
         !addPhraseLessonId
     ) {
 
         alert(
-            "Please select a level and lesson first."
+            "Please select a lesson first."
         );
 
         return;
     }
-
 
     const english =
         getPhraseInput(
             "phrase-english-input"
         );
 
-
     const russian =
         getPhraseInput(
             "phrase-russian-input"
         );
-
 
     const tajik =
         getPhraseInput(
             "phrase-tajik-input"
         );
 
-
     const pronunciation =
         getPhraseInput(
             "phrase-pronunciation-input"
         );
-
 
     const audioUrl =
         getPhraseInput(
             "phrase-audio-input"
         );
 
-
     const exampleSentence =
         getPhraseInput(
             "phrase-example-input"
         );
-
 
     const sortOrder =
         Number(
@@ -1501,7 +1312,6 @@ async function addPhrase() {
                 "phrase-sort-order-input"
             )
         ) || 1;
-
 
     if (!english) {
 
@@ -1511,7 +1321,6 @@ async function addPhrase() {
 
         return;
     }
-
 
     if (!window.supabaseClient) {
 
@@ -1527,7 +1336,30 @@ async function addPhrase() {
     }
 
 
+    /*
+       IMPORTANT
+
+       Your current Supabase table contains
+       both the new fields and old legacy fields.
+
+       New structure:
+       lesson_id
+       english
+       russian
+       tajik
+
+       Legacy structure:
+       level_id
+       phrase
+       translation
+
+       We fill both so the existing table
+       can work correctly.
+    */
+
     const phraseData = {
+
+        /* NEW STRUCTURE */
 
         lesson_id:
             Number(
@@ -1553,13 +1385,29 @@ async function addPhrase() {
             exampleSentence || null,
 
         sort_order:
-            sortOrder
+            sortOrder,
+
+
+        /* OLD / LEGACY STRUCTURE */
+
+        level_id:
+            Number(
+                addPhraseLevelId
+            ),
+
+        phrase:
+            english,
+
+        translation:
+            russian ||
+            tajik ||
+            null
 
     };
 
 
     console.log(
-        "PHRASE DATA:",
+        "PHRASE DATA TO INSERT:",
         phraseData
     );
 
@@ -1586,19 +1434,16 @@ async function addPhrase() {
                 error
             );
 
-
             alert(
                 "Could not add phrase:\n\n" +
                 error.message
             );
-
 
             showPhraseMessage(
                 "Could not add phrase: " +
                 error.message,
                 "error"
             );
-
 
             return;
         }
@@ -1610,9 +1455,10 @@ async function addPhrase() {
         );
 
 
-        /*
-           Remember which lesson was used.
-        */
+        selectedPhraseLevelId =
+            Number(
+                addPhraseLevelId
+            );
 
         selectedPhraseLessonId =
             Number(
@@ -1620,27 +1466,20 @@ async function addPhrase() {
             );
 
 
-        /*
-           Close modal.
-        */
-
         closeAddPhraseModal();
 
 
         /*
-           Refresh main phrase list.
-           If the main page is currently
-           showing the same lesson,
-           it will update immediately.
+           Refresh phrase list
         */
 
         await loadPhrases(
-            addPhraseLessonId
+            selectedPhraseLessonId
         );
 
 
         /*
-           Update dashboard count.
+           Refresh dashboard
         */
 
         await updatePhrasesDashboard();
@@ -1663,7 +1502,6 @@ async function addPhrase() {
             "ADD PHRASE EXCEPTION:",
             error
         );
-
 
         alert(
             "Could not add phrase:\n\n" +
@@ -1688,11 +1526,9 @@ async function deletePhrase(
             "Are you sure you want to delete this phrase?"
         );
 
-
     if (!confirmed) {
         return;
     }
-
 
     try {
 
@@ -1707,7 +1543,6 @@ async function deletePhrase(
                     phraseId
                 );
 
-
         if (error) {
 
             console.error(
@@ -1715,16 +1550,13 @@ async function deletePhrase(
                 error
             );
 
-
             alert(
                 "Could not delete phrase:\n\n" +
                 error.message
             );
 
-
             return;
         }
-
 
         if (
             selectedPhraseLessonId
@@ -1736,22 +1568,18 @@ async function deletePhrase(
 
         }
 
-
         await updatePhrasesDashboard();
-
 
         showPhraseMessage(
             "Phrase deleted successfully.",
             "success"
         );
 
-
     } catch (error) {
 
         console.error(
             error
         );
-
 
         alert(
             "Could not delete phrase:\n\n" +
@@ -1774,11 +1602,9 @@ async function updatePhrasesDashboard() {
             "dashboard-phrases-count"
         );
 
-
     if (!countElement) {
         return;
     }
-
 
     try {
 
@@ -1796,7 +1622,6 @@ async function updatePhrasesDashboard() {
                     }
                 );
 
-
         if (error) {
 
             console.error(
@@ -1807,10 +1632,8 @@ async function updatePhrasesDashboard() {
             return;
         }
 
-
         countElement.textContent =
             count ?? 0;
-
 
     } catch (error) {
 
@@ -1834,11 +1657,9 @@ function clearPhrasesList() {
             "phrases-list"
         );
 
-
     if (!phrasesList) {
         return;
     }
-
 
     phrasesList.innerHTML = `
 
@@ -1849,7 +1670,6 @@ function clearPhrasesList() {
         </div>
 
     `;
-
 
     currentPhrases =
         [];
@@ -1870,7 +1690,6 @@ function getPhraseInput(
             id
         );
 
-
     if (!element) {
 
         console.error(
@@ -1880,7 +1699,6 @@ function getPhraseInput(
 
         return "";
     }
-
 
     return (
         element.value || ""
@@ -1905,7 +1723,6 @@ function escapePhraseHtml(
         return "";
 
     }
-
 
     return String(value)
 
@@ -1959,7 +1776,6 @@ function showPhraseMessage(
         return;
     }
 
-
     console.log(
         "[" +
         type +
@@ -1977,22 +1793,18 @@ function showPhraseMessage(
 window.openAddPhraseModal =
     openAddPhraseModal;
 
-
 window.closeAddPhraseModal =
     closeAddPhraseModal;
-
 
 window.addPhrase =
     addPhrase;
 
-
 window.deletePhrase =
     deletePhrase;
-
 
 window.loadPhrases =
     loadPhrases;
 
-
 window.loadPhraseLevels =
     loadPhraseLevels;
+```
