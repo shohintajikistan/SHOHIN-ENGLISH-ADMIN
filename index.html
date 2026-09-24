@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#071c16"
     >
 
     <title>SHOHIN ENGLISH — Admin Panel</title>
-
-    <meta
-        name="description"
-        content="SHOHIN ENGLISH Administration Panel"
-    >
 
     <link rel="stylesheet" href="css/admin.css">
 
@@ -22,60 +23,140 @@
 
 <body>
 
-<div class="admin-app">
+<!-- =========================================================
+     SHOHIN ENGLISH — ADMIN PANEL
+     Supabase Authentication
+     
+     SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
+     ========================================================= -->
 
-    <!-- =====================================================
-         MOBILE OVERLAY
-         ===================================================== -->
-    <div
-        id="sidebar-overlay"
-        class="sidebar-overlay"
-        onclick="toggleSidebar()"
-    ></div>
+
+<!-- =========================================================
+     LOGIN SCREEN
+     ========================================================= -->
+
+<div id="login-screen" class="login-screen">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            <div class="login-logo-main">SHOHIN</div>
+            <div class="login-logo-sub">ENGLISH</div>
+        </div>
+
+        <div class="login-title">
+            Admin Panel
+        </div>
+
+        <div class="login-description">
+            Sign in to manage SHOHIN ENGLISH
+        </div>
+
+
+        <form id="login-form">
+
+            <div class="form-group">
+
+                <label for="login-email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="login-email"
+                    placeholder="admin@example.com"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="login-password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="login-password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="login-button"
+                class="login-button"
+            >
+                <span id="login-button-text">
+                    Sign In
+                </span>
+            </button>
+
+
+            <div
+                id="login-error"
+                class="login-error"
+                hidden
+            ></div>
+
+        </form>
+
+
+        <div
+            id="login-loading"
+            class="login-loading"
+            hidden
+        >
+            Checking authentication...
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     ADMIN APPLICATION
+     ========================================================= -->
+
+<div id="admin-app" class="admin-app" hidden>
 
 
     <!-- =====================================================
          SIDEBAR
          ===================================================== -->
-    <aside id="admin-sidebar" class="admin-sidebar">
 
-        <!-- BRAND -->
+    <aside id="sidebar" class="sidebar">
+
         <div class="sidebar-brand">
 
-            <div class="brand-mark">
-                S
+            <div class="brand-main">
+                SHOHIN
             </div>
 
-            <div class="brand-text">
-                <strong>SHOHIN</strong>
-                <span>ENGLISH</span>
+            <div class="brand-sub">
+                ENGLISH
+            </div>
+
+            <div class="brand-admin">
+                ADMIN PANEL
             </div>
 
         </div>
 
 
-        <!-- CLOSE MOBILE -->
-        <button
-            type="button"
-            class="sidebar-close"
-            onclick="toggleSidebar()"
-            aria-label="Close menu"
-        >
-            ×
-        </button>
-
-
-        <!-- NAVIGATION -->
         <nav class="sidebar-nav">
 
-            <div class="nav-label">
-                MAIN
-            </div>
 
-
-            <!-- DASHBOARD -->
             <button
-                type="button"
                 class="nav-item active"
                 data-section="dashboard"
                 onclick="openSection('dashboard')"
@@ -85,21 +166,17 @@
             </button>
 
 
-            <!-- LEVELS -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="levels"
                 onclick="openSection('levels')"
             >
-                <span class="nav-icon">◈</span>
+                <span class="nav-icon">▣</span>
                 <span>Levels</span>
             </button>
 
 
-            <!-- LESSONS -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="lessons"
                 onclick="openSection('lessons')"
@@ -109,38 +186,27 @@
             </button>
 
 
-            <div class="nav-label">
-                CONTENT
-            </div>
-
-
-            <!-- VOCABULARY -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="vocabulary"
                 onclick="openSection('vocabulary')"
             >
-                <span class="nav-icon">Aa</span>
+                <span class="nav-icon">A</span>
                 <span>Vocabulary</span>
             </button>
 
 
-            <!-- PHRASES -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="phrases"
                 onclick="openSection('phrases')"
             >
-                <span class="nav-icon">“</span>
+                <span class="nav-icon">"</span>
                 <span>Phrases</span>
             </button>
 
 
-            <!-- EXERCISES -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="exercises"
                 onclick="openSection('exercises')"
@@ -150,9 +216,7 @@
             </button>
 
 
-            <!-- VIDEOS -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="videos"
                 onclick="openSection('videos')"
@@ -162,9 +226,7 @@
             </button>
 
 
-            <!-- TESTS -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="tests"
                 onclick="openSection('tests')"
@@ -174,26 +236,17 @@
             </button>
 
 
-            <div class="nav-label">
-                SYSTEM
-            </div>
-
-
-            <!-- USERS -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="users"
                 onclick="openSection('users')"
             >
-                <span class="nav-icon">◉</span>
+                <span class="nav-icon">●</span>
                 <span>Users</span>
             </button>
 
 
-            <!-- SETTINGS -->
             <button
-                type="button"
                 class="nav-item"
                 data-section="settings"
                 onclick="openSection('settings')"
@@ -205,24 +258,42 @@
         </nav>
 
 
-        <!-- SIDEBAR FOOTER -->
-        <div class="sidebar-footer">
+        <!-- SIDEBAR BOTTOM -->
 
-            <div class="connection-mini">
+        <div class="sidebar-bottom">
 
-                <span
-                    id="connection-dot"
-                    class="connection-dot"
-                ></span>
+            <div class="admin-user-mini">
 
-                <div>
-                    <strong>Supabase</strong>
-                    <small id="supabase-status">
-                        Connecting...
-                    </small>
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-user-info">
+
+                    <div
+                        id="sidebar-user-email"
+                        class="admin-user-email"
+                    >
+                        Admin
+                    </div>
+
+                    <div class="admin-user-role">
+                        Administrator
+                    </div>
+
                 </div>
 
             </div>
+
+
+            <button
+                id="logout-button"
+                class="logout-button"
+                type="button"
+            >
+                <span>↪</span>
+                <span>Logout</span>
+            </button>
 
         </div>
 
@@ -231,38 +302,32 @@
 
 
     <!-- =====================================================
-         MAIN
+         MAIN AREA
          ===================================================== -->
-    <main class="admin-main">
+
+    <main class="main-content">
 
 
-        <!-- =================================================
-             TOPBAR
-             ================================================= -->
-        <header class="admin-topbar">
+        <!-- TOP BAR -->
 
-            <div class="topbar-left">
+        <header class="topbar">
 
-                <button
-                    type="button"
-                    class="menu-button"
-                    onclick="toggleSidebar()"
-                    aria-label="Open menu"
+            <button
+                id="sidebar-toggle"
+                class="sidebar-toggle"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <div
+                    id="page-title"
+                    class="page-title"
                 >
-                    ☰
-                </button>
-
-
-                <div class="page-heading">
-
-                    <h1 id="page-title">
-                        Dashboard
-                    </h1>
-
-                    <p id="page-subtitle">
-                        Manage SHOHIN ENGLISH
-                    </p>
-
+                    Dashboard
                 </div>
 
             </div>
@@ -270,28 +335,11 @@
 
             <div class="topbar-right">
 
-                <button
-                    type="button"
-                    class="topbar-button"
-                    data-action="refresh-data"
-                    onclick="if(window.SHOHIN_ADMIN && typeof window.SHOHIN_ADMIN.refreshData === 'function'){window.SHOHIN_ADMIN.refreshData();}else if(typeof updateDashboard === 'function'){updateDashboard();}"
-                    title="Refresh data"
+                <div
+                    id="supabase-status"
+                    class="status-badge"
                 >
-                    ↻
-                </button>
-
-
-                <div class="admin-profile">
-
-                    <div class="profile-avatar">
-                        A
-                    </div>
-
-                    <div class="profile-info">
-                        <strong>Admin</strong>
-                        <span>SHOHIN ENGLISH</span>
-                    </div>
-
+                    Checking...
                 </div>
 
             </div>
@@ -303,72 +351,50 @@
         <!-- =================================================
              CONTENT
              ================================================= -->
-        <div class="admin-content">
+
+        <div class="content-area">
 
 
             <!-- =================================================
                  DASHBOARD
                  ================================================= -->
+
             <section
-                id="dashboard-section"
+                id="section-dashboard"
                 class="admin-section active"
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Dashboard</h2>
+
+                        <h1>
+                            Dashboard
+                        </h1>
 
                         <p>
-                            Overview of your English learning platform.
+                            SHOHIN ENGLISH administration
                         </p>
-                    </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="refresh-data"
-                        onclick="if(window.SHOHIN_ADMIN && typeof window.SHOHIN_ADMIN.refreshData === 'function'){window.SHOHIN_ADMIN.refreshData();}else if(typeof updateDashboard === 'function'){updateDashboard();}"
-                    >
-                        ↻ Refresh
-                    </button>
+                    </div>
 
                 </div>
 
 
-                <!-- STATISTICS -->
                 <div class="stats-grid">
 
 
                     <div class="stat-card">
 
-                        <div class="stat-icon">
-                            ◈
+                        <div class="stat-label">
+                            Levels
                         </div>
 
-                        <div>
-                            <span>Levels</span>
-
-                            <strong id="stat-levels">
-                                0
-                            </strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-                            ▤
-                        </div>
-
-                        <div>
-                            <span>Lessons</span>
-
-                            <strong id="stat-lessons">
-                                0
-                            </strong>
+                        <div
+                            id="stat-levels"
+                            class="stat-number"
+                        >
+                            0
                         </div>
 
                     </div>
@@ -376,16 +402,15 @@
 
                     <div class="stat-card">
 
-                        <div class="stat-icon">
-                            Aa
+                        <div class="stat-label">
+                            Lessons
                         </div>
 
-                        <div>
-                            <span>Words</span>
-
-                            <strong id="stat-words">
-                                0
-                            </strong>
+                        <div
+                            id="stat-lessons"
+                            class="stat-number"
+                        >
+                            0
                         </div>
 
                     </div>
@@ -393,16 +418,31 @@
 
                     <div class="stat-card">
 
-                        <div class="stat-icon">
-                            “
+                        <div class="stat-label">
+                            Vocabulary
                         </div>
 
-                        <div>
-                            <span>Phrases</span>
+                        <div
+                            id="stat-words"
+                            class="stat-number"
+                        >
+                            0
+                        </div>
 
-                            <strong id="stat-phrases">
-                                0
-                            </strong>
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-label">
+                            Phrases
+                        </div>
+
+                        <div
+                            id="stat-phrases"
+                            class="stat-number"
+                        >
+                            0
                         </div>
 
                     </div>
@@ -410,81 +450,26 @@
                 </div>
 
 
-                <!-- DASHBOARD BODY -->
-                <div class="dashboard-grid">
+                <div class="dashboard-card">
 
+                    <h2>
+                        Admin account
+                    </h2>
 
-                    <div class="panel-card">
+                    <div class="account-info">
 
-                        <div class="panel-header">
-
-                            <div>
-                                <h3>English Levels</h3>
-                                <p>Current learning levels</p>
-                            </div>
-
-                            <button
-                                type="button"
-                                class="text-button"
-                                onclick="openSection('levels')"
-                            >
-                                Open
-                            </button>
-
+                        <div>
+                            <strong>Email:</strong>
+                            <span id="account-email">
+                                —
+                            </span>
                         </div>
 
-
-                        <div
-                            id="levels-list"
-                            class="levels-list"
-                            data-levels-list
-                        >
-
-                            <div class="empty-state">
-                                <div class="empty-icon">
-                                    ◈
-                                </div>
-
-                                <h3>Loading levels...</h3>
-
-                                <p>
-                                    Levels will appear here.
-                                </p>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="panel-card">
-
-                        <div class="panel-header">
-
-                            <div>
-                                <h3>Database</h3>
-                                <p>Connection status</p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="database-status">
-
-                            <div class="database-status-icon">
-                                ●
-                            </div>
-
-                            <div>
-                                <strong id="database-status-title">
-                                    Checking...
-                                </strong>
-
-                                <span id="database-status-text">
-                                    Connecting to Supabase
-                                </span>
-                            </div>
-
+                        <div>
+                            <strong>Status:</strong>
+                            <span id="account-status">
+                                —
+                            </span>
                         </div>
 
                     </div>
@@ -498,65 +483,48 @@
             <!-- =================================================
                  LEVELS
                  ================================================= -->
+
             <section
-                id="levels-section"
+                id="section-levels"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Levels</h2>
+
+                        <h1>
+                            Levels
+                        </h1>
 
                         <p>
-                            Manage CEFR English levels.
+                            Manage English levels
                         </p>
-                    </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-level"
-                    >
-                        + Add Level
-                    </button>
+                    </div>
 
                 </div>
 
 
-                <div class="panel-card">
+                <div class="admin-card">
 
-                    <div class="table-wrapper">
+                    <div class="empty-state">
 
-                        <table class="admin-table">
+                        <div class="empty-icon">
+                            ▣
+                        </div>
 
-                            <thead>
+                        <h2>
+                            Levels Management
+                        </h2>
 
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Code</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Order</th>
-                                    <th>Actions</th>
-                                </tr>
+                        <p>
+                            Levels management will use Supabase.
+                        </p>
 
-                            </thead>
-
-                            <tbody
-                                id="levels-table-body"
-                                data-levels-table
-                            >
-
-                                <tr>
-                                    <td colspan="6">
-                                        Loading...
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <div id="levels-list">
+                        </div>
 
                     </div>
 
@@ -569,84 +537,45 @@
             <!-- =================================================
                  LESSONS
                  ================================================= -->
+
             <section
-                id="lessons-section"
+                id="section-lessons"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Lessons</h2>
+
+                        <h1>
+                            Lessons
+                        </h1>
 
                         <p>
-                            Create and manage lessons by level.
+                            Manage lessons by level
                         </p>
+
                     </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-lesson"
-                    >
-                        + Add Lesson
-                    </button>
-
                 </div>
 
 
-                <div class="filter-bar">
+                <div class="admin-card">
 
-                    <label>
-                        <span>Level</span>
+                    <div class="empty-state">
 
-                        <select
-                            id="lesson-level-filter"
-                            data-lesson-level-filter
-                        >
-                            <option value="">
-                                All levels
-                            </option>
-                        </select>
+                        <div class="empty-icon">
+                            ▤
+                        </div>
 
-                    </label>
+                        <h2>
+                            Lessons Management
+                        </h2>
 
-                </div>
-
-
-                <div class="panel-card">
-
-                    <div class="table-wrapper">
-
-                        <table class="admin-table">
-
-                            <thead>
-
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Level</th>
-                                    <th>Lesson</th>
-                                    <th>Title</th>
-                                    <th>Order</th>
-                                    <th>Actions</th>
-                                </tr>
-
-                            </thead>
-
-                            <tbody
-                                id="lessons-table-body"
-                                data-lessons-table
-                            >
-
-                                <tr>
-                                    <td colspan="6">
-                                        No lessons loaded.
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <p>
+                            Lesson management will be connected here.
+                        </p>
 
                     </div>
 
@@ -659,43 +588,47 @@
             <!-- =================================================
                  VOCABULARY
                  ================================================= -->
+
             <section
-                id="vocabulary-section"
+                id="section-vocabulary"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Vocabulary</h2>
+
+                        <h1>
+                            Vocabulary
+                        </h1>
 
                         <p>
-                            Manage English words and their translations.
+                            Manage English vocabulary
                         </p>
-                    </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-word"
-                    >
-                        + Add Word
-                    </button>
+                    </div>
 
                 </div>
 
 
-                <div class="content-placeholder">
+                <div class="admin-card">
 
-                    <div class="placeholder-icon">
-                        Aa
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            A
+                        </div>
+
+                        <h2>
+                            Vocabulary Management
+                        </h2>
+
+                        <p>
+                            Vocabulary management will be connected here.
+                        </p>
+
                     </div>
-
-                    <h3>Vocabulary Management</h3>
-
-                    <p>
-                        Words will be managed here by level and lesson.
-                    </p>
 
                 </div>
 
@@ -706,99 +639,45 @@
             <!-- =================================================
                  PHRASES
                  ================================================= -->
+
             <section
-                id="phrases-section"
+                id="section-phrases"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Phrases</h2>
+
+                        <h1>
+                            Phrases
+                        </h1>
 
                         <p>
-                            Manage English phrases by level and lesson.
+                            Manage phrases and sentences
                         </p>
+
                     </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-phrase"
-                    >
-                        + Add Phrase
-                    </button>
-
                 </div>
 
 
-                <div class="filter-bar">
+                <div class="admin-card">
 
-                    <label>
-                        <span>Level</span>
+                    <div class="empty-state">
 
-                        <select
-                            id="phrase-level-filter"
-                            data-phrase-level-filter
-                        >
-                            <option value="">
-                                Select level
-                            </option>
-                        </select>
+                        <div class="empty-icon">
+                            "
+                        </div>
 
-                    </label>
+                        <h2>
+                            Phrases Management
+                        </h2>
 
-
-                    <label>
-                        <span>Lesson</span>
-
-                        <select
-                            id="phrase-lesson-filter"
-                            data-phrase-lesson-filter
-                        >
-                            <option value="">
-                                Select lesson
-                            </option>
-                        </select>
-
-                    </label>
-
-                </div>
-
-
-                <div class="panel-card">
-
-                    <div class="table-wrapper">
-
-                        <table class="admin-table">
-
-                            <thead>
-
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Level</th>
-                                    <th>Lesson</th>
-                                    <th>Phrase</th>
-                                    <th>Translation</th>
-                                    <th>Actions</th>
-                                </tr>
-
-                            </thead>
-
-                            <tbody
-                                id="phrases-table-body"
-                                data-phrases-table
-                            >
-
-                                <tr>
-                                    <td colspan="6">
-                                        No phrases loaded.
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <p>
+                            Phrase management will be connected here.
+                        </p>
 
                     </div>
 
@@ -811,43 +690,47 @@
             <!-- =================================================
                  EXERCISES
                  ================================================= -->
+
             <section
-                id="exercises-section"
+                id="section-exercises"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Exercises</h2>
+
+                        <h1>
+                            Exercises
+                        </h1>
 
                         <p>
-                            Manage learning exercises.
+                            Manage learning exercises
                         </p>
-                    </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-exercise"
-                    >
-                        + Add Exercise
-                    </button>
+                    </div>
 
                 </div>
 
 
-                <div class="content-placeholder">
+                <div class="admin-card">
 
-                    <div class="placeholder-icon">
-                        ✓
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ✓
+                        </div>
+
+                        <h2>
+                            Exercises Management
+                        </h2>
+
+                        <p>
+                            Exercise management will be connected here.
+                        </p>
+
                     </div>
-
-                    <h3>Exercises</h3>
-
-                    <p>
-                        Exercise management will appear here.
-                    </p>
 
                 </div>
 
@@ -858,65 +741,45 @@
             <!-- =================================================
                  VIDEOS
                  ================================================= -->
+
             <section
-                id="videos-section"
+                id="section-videos"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Videos</h2>
+
+                        <h1>
+                            Videos
+                        </h1>
 
                         <p>
-                            Manage learning videos.
+                            Manage learning videos
                         </p>
-                    </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-video"
-                    >
-                        + Add Video
-                    </button>
+                    </div>
 
                 </div>
 
 
-                <div class="panel-card">
+                <div class="admin-card">
 
-                    <div class="table-wrapper">
+                    <div class="empty-state">
 
-                        <table class="admin-table">
+                        <div class="empty-icon">
+                            ▶
+                        </div>
 
-                            <thead>
+                        <h2>
+                            Videos Management
+                        </h2>
 
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Level</th>
-                                    <th>Lesson</th>
-                                    <th>Title</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-
-                            </thead>
-
-                            <tbody
-                                id="videos-table-body"
-                                data-videos-table
-                            >
-
-                                <tr>
-                                    <td colspan="6">
-                                        No videos loaded.
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <p>
+                            Video management will be connected here.
+                        </p>
 
                     </div>
 
@@ -929,43 +792,47 @@
             <!-- =================================================
                  TESTS
                  ================================================= -->
+
             <section
-                id="tests-section"
+                id="section-tests"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Tests</h2>
+
+                        <h1>
+                            Tests
+                        </h1>
 
                         <p>
-                            Manage assessments for each level.
+                            Manage level assessments
                         </p>
-                    </div>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        data-action="add-test"
-                    >
-                        + Add Test
-                    </button>
+                    </div>
 
                 </div>
 
 
-                <div class="content-placeholder">
+                <div class="admin-card">
 
-                    <div class="placeholder-icon">
-                        ?
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ?
+                        </div>
+
+                        <h2>
+                            Tests Management
+                        </h2>
+
+                        <p>
+                            Tests management will be connected here.
+                        </p>
+
                     </div>
-
-                    <h3>Tests</h3>
-
-                    <p>
-                        Tests and assessments will appear here.
-                    </p>
 
                 </div>
 
@@ -976,56 +843,45 @@
             <!-- =================================================
                  USERS
                  ================================================= -->
+
             <section
-                id="users-section"
+                id="section-users"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Users</h2>
+
+                        <h1>
+                            Users
+                        </h1>
 
                         <p>
-                            Application users and learning progress.
+                            Application users
                         </p>
+
                     </div>
 
                 </div>
 
 
-                <div class="panel-card">
+                <div class="admin-card">
 
-                    <div class="table-wrapper">
+                    <div class="empty-state">
 
-                        <table class="admin-table">
+                        <div class="empty-icon">
+                            ●
+                        </div>
 
-                            <thead>
+                        <h2>
+                            Users Management
+                        </h2>
 
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Level</th>
-                                    <th>Progress</th>
-                                    <th>Created</th>
-                                </tr>
-
-                            </thead>
-
-                            <tbody
-                                id="users-table-body"
-                                data-users-table
-                            >
-
-                                <tr>
-                                    <td colspan="5">
-                                        No users loaded.
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <p>
+                            User management will be connected later.
+                        </p>
 
                     </div>
 
@@ -1038,102 +894,52 @@
             <!-- =================================================
                  SETTINGS
                  ================================================= -->
+
             <section
-                id="settings-section"
+                id="section-settings"
                 class="admin-section"
+                hidden
             >
 
                 <div class="section-header">
 
                     <div>
-                        <h2>Settings</h2>
+
+                        <h1>
+                            Settings
+                        </h1>
 
                         <p>
-                            SHOHIN ENGLISH administration settings.
+                            Admin settings
                         </p>
+
                     </div>
 
                 </div>
 
 
-                <div
-                    id="settings-container"
-                    data-settings-container
-                    class="settings-grid"
-                >
+                <div class="admin-card">
 
-                    <div class="panel-card">
+                    <div class="empty-state">
 
-                        <div class="panel-header">
-
-                            <div>
-                                <h3>Supabase</h3>
-                                <p>Database connection</p>
-                            </div>
-
+                        <div class="empty-icon">
+                            ⚙
                         </div>
 
+                        <h2>
+                            Settings
+                        </h2>
 
-                        <div class="setting-row">
-
-                            <span>Status</span>
-
-                            <strong id="settings-supabase-status">
-                                Checking...
-                            </strong>
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="secondary-button"
-                            onclick="if(typeof testSupabaseConnection === 'function'){testSupabaseConnection();}"
-                        >
-                            Test Connection
-                        </button>
-
-                    </div>
-
-
-                    <div class="panel-card">
-
-                        <div class="panel-header">
-
-                            <div>
-                                <h3>Application</h3>
-                                <p>SHOHIN ENGLISH</p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="setting-row">
-
-                            <span>Version</span>
-
-                            <strong>
-                                Admin Panel
-                            </strong>
-
-                        </div>
-
-
-                        <div class="setting-row">
-
-                            <span>Platform</span>
-
-                            <strong>
-                                SHOHIN ENGLISH
-                            </strong>
-
-                        </div>
+                        <p>
+                            Settings will be added later.
+                        </p>
 
                     </div>
 
                 </div>
 
             </section>
+
 
         </div>
 
@@ -1144,220 +950,10 @@
 
 
 <!-- =========================================================
-     GLOBAL LOADING
+     ADMIN JAVASCRIPT
      ========================================================= -->
-<div
-    id="global-loading"
-    class="global-loading"
-    hidden
->
 
-    <div class="loading-spinner"></div>
-
-    <span>
-        Loading...
-    </span>
-
-</div>
-
-
-
-<!-- =========================================================
-     TOAST
-     ========================================================= -->
-<div
-    id="admin-toast"
-    class="admin-toast"
-    aria-live="polite"
->
-    <span id="toast-message"></span>
-</div>
-
-
-
-<!-- =========================================================
-     ADMIN JS
-     ========================================================= -->
 <script src="js/admin.js"></script>
-
-
-<!-- =========================================================
-     BASIC SECTION FALLBACK
-     ========================================================= -->
-<script>
-
-(function () {
-
-    "use strict";
-
-
-    /*
-     * SHOHIN ENGLISH ADMIN PANEL
-     *
-     * This fallback keeps navigation working even if
-     * admin.js has not loaded its section handler yet.
-     */
-
-    window.openSection = window.openSection || function (sectionName) {
-
-        if (!sectionName) {
-            return;
-        }
-
-
-        const sections = document.querySelectorAll(
-            ".admin-section"
-        );
-
-
-        sections.forEach(function (section) {
-
-            section.classList.remove("active");
-
-        });
-
-
-        const target = document.getElementById(
-            sectionName + "-section"
-        );
-
-
-        if (target) {
-
-            target.classList.add("active");
-
-        }
-
-
-        const navItems = document.querySelectorAll(
-            ".nav-item"
-        );
-
-
-        navItems.forEach(function (item) {
-
-            item.classList.remove("active");
-
-            if (
-                item.getAttribute("data-section") ===
-                sectionName
-            ) {
-
-                item.classList.add("active");
-
-            }
-
-        });
-
-
-        const title = document.getElementById(
-            "page-title"
-        );
-
-
-        if (title) {
-
-            const names = {
-
-                dashboard: "Dashboard",
-                levels: "Levels",
-                lessons: "Lessons",
-                vocabulary: "Vocabulary",
-                phrases: "Phrases",
-                exercises: "Exercises",
-                videos: "Videos",
-                tests: "Tests",
-                users: "Users",
-                settings: "Settings"
-
-            };
-
-
-            title.textContent =
-                names[sectionName] || "SHOHIN ENGLISH";
-
-        }
-
-
-        const sidebar =
-            document.getElementById("admin-sidebar");
-
-
-        const overlay =
-            document.getElementById("sidebar-overlay");
-
-
-        if (window.innerWidth <= 900) {
-
-            if (sidebar) {
-                sidebar.classList.remove("open");
-            }
-
-            if (overlay) {
-                overlay.classList.remove("active");
-            }
-
-        }
-
-    };
-
-
-
-    window.toggleSidebar = window.toggleSidebar || function () {
-
-        const sidebar =
-            document.getElementById("admin-sidebar");
-
-
-        const overlay =
-            document.getElementById("sidebar-overlay");
-
-
-        if (!sidebar) {
-            return;
-        }
-
-
-        sidebar.classList.toggle("open");
-
-
-        if (overlay) {
-
-            overlay.classList.toggle(
-                "active",
-                sidebar.classList.contains("open")
-            );
-
-        }
-
-    };
-
-
-
-    /*
-     * Refresh fallback
-     */
-
-    window.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            if (
-                typeof window.SHOHIN_ADMIN === "undefined"
-            ) {
-
-                console.log(
-                    "SHOHIN ADMIN: waiting for admin.js"
-                );
-
-            }
-
-        }
-    );
-
-})();
-
-</script>
 
 </body>
 </html>
