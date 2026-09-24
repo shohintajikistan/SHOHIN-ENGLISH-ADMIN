@@ -3,11 +3,6 @@
    SUPABASE AUTHENTICATION
 
    SHOHIN BRAND COLORS — НЕ МЕНЯТЬ
-
-   IMPORTANT:
-   1. Replace SUPABASE_URL
-   2. Replace SUPABASE_ANON_KEY
-   3. NEVER put service_role key here
    ========================================================= */
 
 
@@ -15,9 +10,11 @@
    SUPABASE CONFIG
    ========================================================= */
 
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_URL =
+    "https://axialbwwmablgrbqwpkc.supabase.co";
 
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4aWFsYnd3bWFibGdyYnF3cGtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4ODI5MTMsImV4cCI6MjEwNTQ1ODkxM30.OZ6mkKZZxj_kGsRdD1USvumYV2PQ-5BPshnpOWBVrJs";
 
 
 /* =========================================================
@@ -26,76 +23,98 @@ const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
 let supabaseClient = null;
 
-
-/* =========================================================
-   APP STATE
-   ========================================================= */
-
 let currentUser = null;
 
 
 /* =========================================================
-   PAGE ELEMENTS
+   ELEMENTS
    ========================================================= */
 
-const loginScreen = document.getElementById("login-screen");
+const loginScreen =
+    document.getElementById("login-screen");
 
-const adminApp = document.getElementById("admin-app");
+const adminApp =
+    document.getElementById("admin-app");
 
-const loginForm = document.getElementById("login-form");
+const loginForm =
+    document.getElementById("login-form");
 
-const loginEmail = document.getElementById("login-email");
+const loginEmail =
+    document.getElementById("login-email");
 
-const loginPassword = document.getElementById("login-password");
+const loginPassword =
+    document.getElementById("login-password");
 
-const loginButton = document.getElementById("login-button");
+const loginButton =
+    document.getElementById("login-button");
 
-const loginButtonText = document.getElementById("login-button-text");
+const loginButtonText =
+    document.getElementById("login-button-text");
 
-const loginError = document.getElementById("login-error");
+const loginError =
+    document.getElementById("login-error");
 
-const loginLoading = document.getElementById("login-loading");
+const loginLoading =
+    document.getElementById("login-loading");
 
-const logoutButton = document.getElementById("logout-button");
+const logoutButton =
+    document.getElementById("logout-button");
 
-const sidebarUserEmail = document.getElementById("sidebar-user-email");
+const sidebarUserEmail =
+    document.getElementById("sidebar-user-email");
 
-const accountEmail = document.getElementById("account-email");
+const accountEmail =
+    document.getElementById("account-email");
 
-const accountStatus = document.getElementById("account-status");
+const accountStatus =
+    document.getElementById("account-status");
 
-const supabaseStatus = document.getElementById("supabase-status");
+const supabaseStatus =
+    document.getElementById("supabase-status");
 
-const pageTitle = document.getElementById("page-title");
+const pageTitle =
+    document.getElementById("page-title");
 
-const sidebar = document.getElementById("sidebar");
+const sidebar =
+    document.getElementById("sidebar");
 
-const sidebarToggle = document.getElementById("sidebar-toggle");
+const sidebarToggle =
+    document.getElementById("sidebar-toggle");
 
 
 /* =========================================================
-   INITIALIZATION
+   START
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-    console.log("SHOHIN ENGLISH ADMIN starting...");
-
-    initializeSupabase();
-
-    if (!supabaseClient) {
-        showLoginError(
-            "Supabase configuration is missing. Add your Supabase URL and anon key in js/admin.js."
+        console.log(
+            "SHOHIN ENGLISH ADMIN starting..."
         );
 
-        return;
+
+        initializeSupabase();
+
+
+        if (!supabaseClient) {
+
+            showLoginError(
+                "Supabase could not be initialized."
+            );
+
+            return;
+        }
+
+
+        setupEventListeners();
+
+
+        await checkAuthentication();
+
     }
-
-    setupEventListeners();
-
-    await checkAuthentication();
-
-});
+);
 
 
 /* =========================================================
@@ -107,12 +126,11 @@ function initializeSupabase() {
     try {
 
         if (
-            SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
-            SUPABASE_ANON_KEY === "YOUR_SUPABASE_ANON_KEY"
+            typeof window.supabase === "undefined"
         ) {
 
             console.error(
-                "Supabase URL or anon key has not been configured."
+                "Supabase JS library was not loaded."
             );
 
             return;
@@ -120,26 +138,27 @@ function initializeSupabase() {
 
 
         if (
-            typeof window.supabase === "undefined" ||
-            typeof window.supabase.createClient !== "function"
+            typeof window.supabase.createClient !==
+            "function"
         ) {
 
             console.error(
-                "Supabase library was not loaded."
+                "Supabase createClient is unavailable."
             );
 
             return;
         }
 
 
-        supabaseClient = window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
 
 
         console.log(
-            "Supabase initialized successfully."
+            "Supabase initialized."
         );
 
 
@@ -160,6 +179,7 @@ function initializeSupabase() {
    ========================================================= */
 
 function setupEventListeners() {
+
 
     if (loginForm) {
 
@@ -191,24 +211,24 @@ function setupEventListeners() {
     }
 
 
-    /*
-     * Supabase authentication state listener
-     */
-
     if (supabaseClient) {
 
         supabaseClient.auth.onAuthStateChange(
-            async function (event, session) {
+            function (event, session) {
 
                 console.log(
-                    "Auth event:",
+                    "Auth state:",
                     event
                 );
 
 
-                if (session && session.user) {
+                if (
+                    session &&
+                    session.user
+                ) {
 
-                    currentUser = session.user;
+                    currentUser =
+                        session.user;
 
                     showAdminPanel(
                         session.user
@@ -231,12 +251,15 @@ function setupEventListeners() {
 
 
 /* =========================================================
-   CHECK CURRENT AUTHENTICATION
+   CHECK AUTHENTICATION
    ========================================================= */
 
 async function checkAuthentication() {
 
     if (!supabaseClient) {
+
+        showLoginScreen();
+
         return;
     }
 
@@ -249,7 +272,8 @@ async function checkAuthentication() {
         const {
             data,
             error
-        } = await supabaseClient.auth.getSession();
+        } =
+            await supabaseClient.auth.getSession();
 
 
         if (error) {
@@ -259,9 +283,11 @@ async function checkAuthentication() {
                 error
             );
 
+
             showLoginError(
                 getFriendlyAuthError(error)
             );
+
 
             showLoginScreen();
 
@@ -269,7 +295,8 @@ async function checkAuthentication() {
         }
 
 
-        const session = data ? data.session : null;
+        const session =
+            data?.session;
 
 
         if (
@@ -277,21 +304,15 @@ async function checkAuthentication() {
             session.user
         ) {
 
-            console.log(
-                "Existing session found."
-            );
+            currentUser =
+                session.user;
 
-            currentUser = session.user;
 
             showAdminPanel(
                 session.user
             );
 
         } else {
-
-            console.log(
-                "No active session."
-            );
 
             showLoginScreen();
 
@@ -305,11 +326,14 @@ async function checkAuthentication() {
             error
         );
 
+
         showLoginError(
             getFriendlyAuthError(error)
         );
 
+
         showLoginScreen();
+
 
     } finally {
 
@@ -332,7 +356,7 @@ async function handleLogin(event) {
     if (!supabaseClient) {
 
         showLoginError(
-            "Supabase is not configured."
+            "Supabase is not connected."
         );
 
         return;
@@ -374,21 +398,17 @@ async function handleLogin(event) {
 
     try {
 
-        console.log(
-            "Signing in..."
-        );
-
-
         const {
             data,
             error
-        } = await supabaseClient.auth.signInWithPassword({
+        } =
+            await supabaseClient.auth.signInWithPassword({
 
-            email: email,
+                email: email,
 
-            password: password
+                password: password
 
-        });
+            });
 
 
         if (error) {
@@ -397,6 +417,7 @@ async function handleLogin(event) {
                 "Login error:",
                 error
             );
+
 
             showLoginError(
                 getFriendlyAuthError(error)
@@ -412,28 +433,23 @@ async function handleLogin(event) {
         ) {
 
             showLoginError(
-                "Login failed. User session was not created."
+                "Login failed."
             );
 
             return;
         }
 
 
-        console.log(
-            "Login successful."
-        );
-
-
         currentUser =
             data.user;
+
+
+        loginPassword.value = "";
 
 
         showAdminPanel(
             data.user
         );
-
-
-        loginPassword.value = "";
 
 
     } catch (error) {
@@ -443,9 +459,11 @@ async function handleLogin(event) {
             error
         );
 
+
         showLoginError(
             getFriendlyAuthError(error)
         );
+
 
     } finally {
 
@@ -469,7 +487,7 @@ async function handleLogout() {
 
     const confirmed =
         window.confirm(
-            "Do you want to logout from SHOHIN ENGLISH Admin?"
+            "Do you want to logout?"
         );
 
 
@@ -480,17 +498,17 @@ async function handleLogout() {
 
     try {
 
-        console.log(
-            "Signing out..."
-        );
+        if (logoutButton) {
 
+            logoutButton.disabled = true;
 
-        logoutButton.disabled = true;
+        }
 
 
         const {
             error
-        } = await supabaseClient.auth.signOut();
+        } =
+            await supabaseClient.auth.signOut();
 
 
         if (error) {
@@ -506,18 +524,11 @@ async function handleLogout() {
             );
 
 
-            logoutButton.disabled = false;
-
             return;
         }
 
 
         currentUser = null;
-
-
-        console.log(
-            "Logout successful."
-        );
 
 
         showLoginScreen();
@@ -538,7 +549,11 @@ async function handleLogout() {
 
     } finally {
 
-        logoutButton.disabled = false;
+        if (logoutButton) {
+
+            logoutButton.disabled = false;
+
+        }
 
     }
 
@@ -556,14 +571,16 @@ function showAdminPanel(user) {
     }
 
 
-    currentUser = user;
+    currentUser =
+        user;
 
 
     if (loginScreen) {
 
         loginScreen.hidden = true;
 
-        loginScreen.style.display = "none";
+        loginScreen.style.display =
+            "none";
 
     }
 
@@ -572,7 +589,8 @@ function showAdminPanel(user) {
 
         adminApp.hidden = false;
 
-        adminApp.style.display = "";
+        adminApp.style.display =
+            "";
 
     }
 
@@ -587,24 +605,16 @@ function showAdminPanel(user) {
     );
 
 
-    /*
-     * Start with Dashboard
-     */
-
     openSection(
         "dashboard"
     );
 
 
-    /*
-     * Load dashboard statistics
-     */
-
     loadDashboardStats();
 
 
     console.log(
-        "Admin panel opened for:",
+        "Admin panel opened:",
         user.email
     );
 
@@ -612,7 +622,7 @@ function showAdminPanel(user) {
 
 
 /* =========================================================
-   SHOW LOGIN SCREEN
+   SHOW LOGIN
    ========================================================= */
 
 function showLoginScreen() {
@@ -624,7 +634,8 @@ function showLoginScreen() {
 
         adminApp.hidden = true;
 
-        adminApp.style.display = "none";
+        adminApp.style.display =
+            "none";
 
     }
 
@@ -633,7 +644,8 @@ function showLoginScreen() {
 
         loginScreen.hidden = false;
 
-        loginScreen.style.display = "";
+        loginScreen.style.display =
+            "";
 
     }
 
@@ -645,14 +657,16 @@ function showLoginScreen() {
 
     if (loginEmail) {
 
-        loginEmail.focus();
+        setTimeout(
+            function () {
+
+                loginEmail.focus();
+
+            },
+            100
+        );
 
     }
-
-
-    console.log(
-        "Login screen displayed."
-    );
 
 }
 
@@ -683,7 +697,7 @@ function showLoginError(message) {
 
 
 /* =========================================================
-   CLEAR LOGIN ERROR
+   CLEAR ERROR
    ========================================================= */
 
 function clearLoginError() {
@@ -713,13 +727,12 @@ function clearLoginError() {
 
 function setLoginLoading(isLoading) {
 
-    if (!loginButton) {
-        return;
+    if (loginButton) {
+
+        loginButton.disabled =
+            isLoading;
+
     }
-
-
-    loginButton.disabled =
-        isLoading;
 
 
     if (loginButtonText) {
@@ -735,7 +748,7 @@ function setLoginLoading(isLoading) {
 
 
 /* =========================================================
-   AUTH CHECK LOADING
+   CHECKING SESSION
    ========================================================= */
 
 function showLoginLoading(show) {
@@ -758,7 +771,7 @@ function showLoginLoading(show) {
 
 
 /* =========================================================
-   UPDATE USER INFORMATION
+   USER INFORMATION
    ========================================================= */
 
 function updateUserInformation(user) {
@@ -769,7 +782,8 @@ function updateUserInformation(user) {
 
 
     const email =
-        user.email || "Admin";
+        user.email ||
+        "Admin";
 
 
     if (sidebarUserEmail) {
@@ -846,14 +860,14 @@ function updateSupabaseStatus(isConnected) {
 
 
 /* =========================================================
-   FRIENDLY AUTH ERRORS
+   AUTH ERROR TRANSLATION
    ========================================================= */
 
 function getFriendlyAuthError(error) {
 
     if (!error) {
 
-        return "An unknown authentication error occurred.";
+        return "Authentication error.";
 
     }
 
@@ -885,18 +899,7 @@ function getFriendlyAuthError(error) {
         )
     ) {
 
-        return "Your email has not been confirmed in Supabase.";
-
-    }
-
-
-    if (
-        lower.includes(
-            "user not found"
-        )
-    ) {
-
-        return "Admin account was not found.";
+        return "Your email has not been confirmed.";
 
     }
 
@@ -918,13 +921,15 @@ function getFriendlyAuthError(error) {
         )
     ) {
 
-        return "Could not connect to Supabase. Check your internet connection and Supabase URL.";
+        return "Could not connect to Supabase.";
 
     }
 
 
-    return message ||
-        "Authentication failed.";
+    return (
+        message ||
+        "Authentication failed."
+    );
 
 }
 
@@ -958,7 +963,8 @@ function openSection(sectionName) {
 
     const target =
         document.getElementById(
-            "section-" + sectionName
+            "section-" +
+            sectionName
         );
 
 
@@ -974,10 +980,6 @@ function openSection(sectionName) {
 
     }
 
-
-    /*
-     * Navigation buttons
-     */
 
     const navItems =
         document.querySelectorAll(
@@ -1013,31 +1015,37 @@ function openSection(sectionName) {
     }
 
 
-    /*
-     * Page title
-     */
-
     const titles = {
 
-        dashboard: "Dashboard",
+        dashboard:
+            "Dashboard",
 
-        levels: "Levels",
+        levels:
+            "Levels",
 
-        lessons: "Lessons",
+        lessons:
+            "Lessons",
 
-        vocabulary: "Vocabulary",
+        vocabulary:
+            "Vocabulary",
 
-        phrases: "Phrases",
+        phrases:
+            "Phrases",
 
-        exercises: "Exercises",
+        exercises:
+            "Exercises",
 
-        videos: "Videos",
+        videos:
+            "Videos",
 
-        tests: "Tests",
+        tests:
+            "Tests",
 
-        users: "Users",
+        users:
+            "Users",
 
-        settings: "Settings"
+        settings:
+            "Settings"
 
     };
 
@@ -1051,19 +1059,14 @@ function openSection(sectionName) {
     }
 
 
-    /*
-     * Close mobile sidebar
-     */
+    if (
+        window.innerWidth <= 900 &&
+        sidebar
+    ) {
 
-    if (window.innerWidth <= 900) {
-
-        if (sidebar) {
-
-            sidebar.classList.remove(
-                "open"
-            );
-
-        }
+        sidebar.classList.remove(
+            "open"
+        );
 
     }
 
@@ -1071,7 +1074,7 @@ function openSection(sectionName) {
 
 
 /* =========================================================
-   SIDEBAR TOGGLE
+   SIDEBAR
    ========================================================= */
 
 function toggleSidebar() {
@@ -1101,9 +1104,8 @@ async function loadDashboardStats() {
 
     try {
 
-        /*
-         * LEVELS
-         */
+
+        /* LEVELS */
 
         const levelsResult =
             await supabaseClient
@@ -1118,21 +1120,26 @@ async function loadDashboardStats() {
 
 
         if (
-            !levelsResult.error &&
-            document.getElementById("stat-levels")
+            !levelsResult.error
         ) {
 
-            document.getElementById(
-                "stat-levels"
-            ).textContent =
-                levelsResult.count || 0;
+            const element =
+                document.getElementById(
+                    "stat-levels"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    levelsResult.count || 0;
+
+            }
 
         }
 
 
-        /*
-         * LESSONS
-         */
+        /* LESSONS */
 
         const lessonsResult =
             await supabaseClient
@@ -1147,24 +1154,26 @@ async function loadDashboardStats() {
 
 
         if (
-            !lessonsResult.error &&
-            document.getElementById("stat-lessons")
+            !lessonsResult.error
         ) {
 
-            document.getElementById(
-                "stat-lessons"
-            ).textContent =
-                lessonsResult.count || 0;
+            const element =
+                document.getElementById(
+                    "stat-lessons"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    lessonsResult.count || 0;
+
+            }
 
         }
 
 
-        /*
-         * VOCABULARY
-         *
-         * If your table has another name,
-         * change "vocabulary" later.
-         */
+        /* VOCABULARY */
 
         const wordsResult =
             await supabaseClient
@@ -1179,21 +1188,26 @@ async function loadDashboardStats() {
 
 
         if (
-            !wordsResult.error &&
-            document.getElementById("stat-words")
+            !wordsResult.error
         ) {
 
-            document.getElementById(
-                "stat-words"
-            ).textContent =
-                wordsResult.count || 0;
+            const element =
+                document.getElementById(
+                    "stat-words"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    wordsResult.count || 0;
+
+            }
 
         }
 
 
-        /*
-         * PHRASES
-         */
+        /* PHRASES */
 
         const phrasesResult =
             await supabaseClient
@@ -1208,14 +1222,21 @@ async function loadDashboardStats() {
 
 
         if (
-            !phrasesResult.error &&
-            document.getElementById("stat-phrases")
+            !phrasesResult.error
         ) {
 
-            document.getElementById(
-                "stat-phrases"
-            ).textContent =
-                phrasesResult.count || 0;
+            const element =
+                document.getElementById(
+                    "stat-phrases"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    phrasesResult.count || 0;
+
+            }
 
         }
 
@@ -1233,107 +1254,33 @@ async function loadDashboardStats() {
 
 
 /* =========================================================
-   GLOBAL ERROR HANDLER
+   CURRENT USER
    ========================================================= */
 
-window.addEventListener(
-    "error",
-    function (event) {
+function getCurrentUser() {
 
-        console.error(
-            "Global error:",
-            event.error || event.message
-        );
-
-    }
-);
-
-
-/* =========================================================
-   AUTH SESSION PROTECTION
-   ========================================================= */
-
-async function requireAdminSession() {
-
-    if (!supabaseClient) {
-
-        showLoginScreen();
-
-        return false;
-
-    }
-
-
-    try {
-
-        const {
-            data,
-            error
-        } = await supabaseClient.auth.getSession();
-
-
-        if (
-            error ||
-            !data ||
-            !data.session ||
-            !data.session.user
-        ) {
-
-            showLoginScreen();
-
-            return false;
-
-        }
-
-
-        currentUser =
-            data.session.user;
-
-
-        return true;
-
-
-    } catch (error) {
-
-        console.error(
-            "Session protection error:",
-            error
-        );
-
-
-        showLoginScreen();
-
-        return false;
-
-    }
+    return currentUser;
 
 }
 
 
 /* =========================================================
-   DEBUG HELPER
+   GLOBAL ADMIN OBJECT
    ========================================================= */
 
 window.SHOHIN_ADMIN = {
 
-    getCurrentUser: function () {
+    getCurrentUser:
+        getCurrentUser,
 
-        return currentUser;
+    getSupabase:
+        function () {
 
-    },
+            return supabaseClient;
 
+        },
 
-    getSupabase: function () {
-
-        return supabaseClient;
-
-    },
-
-
-    logout: async function () {
-
-        await handleLogout();
-
-    }
+    logout:
+        handleLogout
 
 };
